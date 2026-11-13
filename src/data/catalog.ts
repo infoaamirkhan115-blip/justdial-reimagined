@@ -53,6 +53,7 @@ export type Business = {
   open: boolean; hours: string; distance: number; phone: string; image: string; tags: string[];
   highlight: string; price: string; services: { name: string; price: string }[]; reviewList: Review[];
   live?: boolean; description?: string; address?: string;
+  gallery?: string[]; logo?: string | undefined; website?: string; email?: string; whatsapp?: string; landmark?: string; pincode?: string; payments?: string[]; days?: string[];
 };
 
 const CAT_IMG: Record<string, string> = { restaurants: restaurant, hotels: restaurant, caterers: restaurant, doctors: clinic, hospitals: clinic, pharmacy: clinic, "beauty-spa": clinic, gyms: clinic };
