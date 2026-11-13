@@ -106,26 +106,26 @@ function rand(seed: number) { const x = Math.sin(seed * 9301 + 49297) * 233280; 
 export const BUSINESSES: Business[] = SEED.flatMap((s, si) =>
   s.names.map((name, ni) => {
     const n = si * 10 + ni + 1;
-    const city = CITIES[(si + ni) % CITIES.length];
+    const city = CITIES[(si + ni) % CITIES.length]!;
     const cat = getCategory(s.cat)!;
     const rating = Math.round((3.9 + rand(n) * 1.05) * 10) / 10;
     return {
       id: `${s.cat}-${ni + 1}`,
-      name, category: s.cat, sub: cat.subs[ni % cat.subs.length], city,
-      area: AREAS[city][ni % 5], rating: Math.min(rating, 4.9),
+      name, category: s.cat, sub: cat.subs[ni % cat.subs.length]!, city,
+      area: AREAS[city][ni % 5]!, rating: Math.min(rating, 4.9),
       reviews: Math.floor(80 + rand(n + 3) * 4200), years: 2 + Math.floor(rand(n + 5) * 22),
       verified: rand(n + 7) > 0.25, trust: rand(n + 8) > 0.55, sponsored: ni === 0 || ni === 3,
       open: rand(n + 9) > 0.2, hours: ni % 2 ? "10:00 am – 9:00 pm" : "9:00 am – 11:00 pm",
       distance: Math.round((0.4 + rand(n + 11) * 8) * 10) / 10,
       phone: `+91 98${String(Math.floor(10000000 + rand(n + 13) * 89999999))}`,
       image: s.img, tags: s.tags, price: s.price,
-      highlight: TEXTS[n % TEXTS.length].split(".")[0] + ".",
+      highlight: TEXTS[n % TEXTS.length]!.split(".")[0] + ".",
       services: s.services.map(([a, b]) => ({ name: a, price: b })),
       reviewList: [0, 1, 2, 3].map((k) => ({
-        name: REVIEWERS[(n + k) % REVIEWERS.length],
+        name: REVIEWERS[(n + k) % REVIEWERS.length]!,
         rating: 5 - ((n + k) % 3 === 0 ? 1 : 0),
         date: `${(k + 1) * 3} days ago`,
-        text: TEXTS[(n + k) % TEXTS.length],
+        text: TEXTS[(n + k) % TEXTS.length]!,
       })),
     } satisfies Business;
   }),

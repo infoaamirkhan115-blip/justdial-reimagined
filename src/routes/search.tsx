@@ -5,11 +5,11 @@ import { CITIES, searchBusinesses } from "@/data/catalog";
 import { BusinessCard, EnquiryForm } from "@/components/site/ui";
 import { cn } from "@/lib/utils";
 
-type S = { q?: string; city?: string };
+type S = { q?: string | undefined; city?: string | undefined };
 export const Route = createFileRoute("/search")({
   validateSearch: (s: Record<string, unknown>): S => ({
-    q: typeof s.q === "string" ? s.q : undefined,
-    city: typeof s.city === "string" && (CITIES as readonly string[]).includes(s.city) ? s.city : undefined,
+    q: typeof s["q"] === "string" ? s["q"] : undefined,
+    city: typeof s["city"] === "string" && (CITIES as readonly string[]).includes(s["city"]) ? s["city"] : undefined,
   }),
   head: () => ({
     meta: [

@@ -115,7 +115,7 @@ export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Sen
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (!/^[6-9]\d{9}$/.test(phone)) return toast.error("Please enter a valid 10-digit mobile number");
+        if (!/^[6-9]\d{9}$/.test(phone)) { toast.error("Please enter a valid 10-digit mobile number"); return; }
         toast.success("Done! Top businesses will call you within minutes.");
         setPhone(""); setName("");
       }}

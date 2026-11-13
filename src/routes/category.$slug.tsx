@@ -56,7 +56,7 @@ function CategoryPage() {
                 [`How do I choose the best ${cat.name.toLowerCase()}?`, "Look for the Verified badge, a 4+ rating with many reviews, and years in business. Compare 2–3 options and ask for quotes."],
                 ["Is it free to enquire?", "Yes. Calling, chatting and getting quotes is always free for customers."],
                 ["What does Verified mean?", "We've checked the business's documents, address and phone number in person or via video."],
-              ].map(([q, a]) => <AccordionItem key={q} value={q}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
+              ].map(([q, a]) => <AccordionItem key={q} value={q!}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
             </Accordion>
           </section>
         </div>

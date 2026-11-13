@@ -43,7 +43,7 @@ export function MobileNav() {
     { to: "/", label: "Home", icon: Home },
     { to: "/categories", label: "Search", icon: Search },
     { to: "/b2b", label: "B2B", icon: Building2 },
-    { to: "/category/hotels", label: "Bookings", icon: CalendarCheck },
+    { to: "/search", label: "Bookings", icon: CalendarCheck },
     { to: "/login", label: "Account", icon: User },
   ] as const;
   return (

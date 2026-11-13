@@ -34,7 +34,7 @@ function Page() {
           <p className="mt-4 max-w-lg text-muted-foreground">Crores of people search every day. Put your business in front of them — free.</p>
           <div className="mt-8 grid grid-cols-2 gap-4">{STATS.slice(0, 2).map((s) => <div key={s.label}><p className="font-display text-3xl font-extrabold">{s.value}</p><p className="text-sm text-muted-foreground">{s.label}</p></div>)}</div>
         </div>
-        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) return toast.error("Enter a valid 10-digit mobile number"); toast.success(`${form.name} is on its way! We'll verify and go live within 24 hours.`); setForm({ ...form, name: "", phone: "" }); }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
+        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; } toast.success(`${form.name} is on its way! We'll verify and go live within 24 hours.`); setForm({ ...form, name: "", phone: "" }); }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
           <h2 className="text-xl font-bold">List your business</h2>
           <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Business name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
           <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })} inputMode="numeric" placeholder="Mobile number" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
@@ -71,7 +71,7 @@ function Page() {
       <section className="mx-auto mt-20 max-w-3xl">
         <h2 className="mb-4 text-center text-3xl font-bold">Questions, answered</h2>
         <Accordion type="single" collapsible className="rounded-3xl border bg-card px-5">
-          {[["Is the free listing really free?", "Yes. Your basic listing, photos and reviews are free forever."], ["How do I get leads?", "Customers call you directly or send enquiries that arrive by SMS and WhatsApp."], ["Can I cancel a paid plan?", "Yes, plans are monthly and you can cancel any time."]].map(([q, a]) => <AccordionItem key={q} value={q}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
+          {[["Is the free listing really free?", "Yes. Your basic listing, photos and reviews are free forever."], ["How do I get leads?", "Customers call you directly or send enquiries that arrive by SMS and WhatsApp."], ["Can I cancel a paid plan?", "Yes, plans are monthly and you can cancel any time."]].map(([q, a]) => <AccordionItem key={q} value={q!}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
         </Accordion>
       </section>
     </div>

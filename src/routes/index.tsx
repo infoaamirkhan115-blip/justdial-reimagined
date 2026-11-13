@@ -44,7 +44,7 @@ function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: str
   const items = BUSINESSES.filter((b) => cat.includes(b.category));
   return (
     <section className="container-page mt-20">
-      <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0] }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />
+      <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0]! }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />
       <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 md:-mx-8 md:px-8">
         {items.map((b) => <div key={b.id} className="snap-start"><MiniBusinessCard b={b} /></div>)}
       </div>
