@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronRight, MapPinned, SearchX, SlidersHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessesQ } from "@/lib/public-data";
+import { BUSINESSES } from "@/data/catalog";
 import { CITIES, searchBusinesses } from "@/data/catalog";
 import { BusinessCard, EnquiryForm } from "@/components/site/ui";
 import { cn } from "@/lib/utils";
@@ -30,14 +33,15 @@ function SearchPage() {
   const { q = "", city } = Route.useSearch();
   const [sort, setSort] = useState<(typeof SORTS)[number]>("Relevance");
   const [f, setF] = useState({ top: false, open: false, verified: false, near: false });
+  const { data: live = [] } = useQuery(liveBusinessesQ);
   const results = useMemo(() => {
-    let r = searchBusinesses(q, city).filter((b) =>
+    let r = searchBusinesses(q, city, [...live, ...BUSINESSES]).filter((b) =>
       (!f.top || b.rating >= 4.5) && (!f.open || b.open) && (!f.verified || b.verified) && (!f.near || b.distance <= 3));
     if (sort === "Rating") r = [...r].sort((a, b) => b.rating - a.rating);
     if (sort === "Distance") r = [...r].sort((a, b) => a.distance - b.distance);
     if (sort === "Popular") r = [...r].sort((a, b) => b.reviews - a.reviews);
     return r;
-  }, [q, city, sort, f]);
+  }, [q, city, sort, f, live]);
   const chip = (k: keyof typeof f, label: string) => (
     <button onClick={() => setF({ ...f, [k]: !f[k] })} aria-pressed={f[k]}
       className={cn("shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition", f[k] ? "border-ink bg-ink text-ink-foreground" : "bg-card hover:bg-muted")}>{label}</button>

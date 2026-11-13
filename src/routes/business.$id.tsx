@@ -1,16 +1,14 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { BadgeCheck, Bookmark, Clock, MapPin, MessageCircle, Navigation, Phone, Share2, ShieldCheck, Star, PenLine, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { BUSINESSES, getBusiness, getCategory } from "@/data/catalog";
+import { BUSINESSES, getBusiness, getCategory, type Business } from "@/data/catalog";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessQ } from "@/lib/public-data";
 import { EnquiryForm, MiniBusinessCard, RatingBadge, btnClass } from "@/components/site/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/business/$id")({
-  loader: ({ params }) => {
-    const b = getBusiness(params.id);
-    if (!b) throw notFound();
-    return { b };
-  },
+  loader: ({ params }) => ({ b: getBusiness(params.id) ?? null }),
   head: ({ loaderData }) => {
     const b = loaderData?.b;
     const t = b ? `${b.name}, ${b.area} ${b.city} — Reviews & Contact | Justdial` : "Business — Justdial";
@@ -26,9 +24,27 @@ export const Route = createFileRoute("/business/$id")({
 
 function BusinessPage() {
   const { b } = Route.useLoaderData();
+  const { id } = Route.useParams();
+  const isUuid = /^[0-9a-f-]{36}$/.test(id);
+  const live = useQuery({ ...liveBusinessQ(id), enabled: !b && isUuid });
+  if (b) return <BusinessView b={b} />;
+  if (isUuid && live.isLoading) return <div className="container-page py-24 text-center text-muted-foreground">Loading…</div>;
+  if (live.data) return <BusinessView b={live.data} />;
+  return (
+    <div className="container-page py-24 text-center">
+      <h1 className="text-3xl font-extrabold">This business isn't available</h1>
+      <p className="mt-2 text-muted-foreground">It may have been removed or is still waiting for approval.</p>
+      <Link to="/categories" className={`${btnClass("primary")} mt-6`}>Browse categories</Link>
+    </div>
+  );
+}
+
+function BusinessView({ b }: { b: Business }) {
   const cat = getCategory(b.category);
   const similar = BUSINESSES.filter((x) => x.category === b.category && x.id !== b.id);
-  const dist = [62, 22, 9, 4, 3];
+  const dist = b.live
+    ? [5, 4, 3, 2, 1].map((n) => (b.reviewList.length ? Math.round((b.reviewList.filter((r) => r.rating === n).length / b.reviewList.length) * 100) : 0))
+    : [62, 22, 9, 4, 3];
   const actions = [
     { icon: MessageCircle, label: "WhatsApp" }, { icon: Navigation, label: "Directions" },
     { icon: Share2, label: "Share" }, { icon: Bookmark, label: "Save" }, { icon: PenLine, label: "Review" },
@@ -59,7 +75,7 @@ function BusinessPage() {
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />{b.phone}</a>
-            <Link to="/write-review" className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
+            <Link to="/write-review" search={{ b: b.id }} className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
             {actions.filter((a) => a.label !== "Review").map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
           </div>
 
@@ -68,22 +84,22 @@ function BusinessPage() {
               {["overview", "services", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Q&A" : t}</TabsTrigger>)}
             </TabsList>
             <TabsContent value="overview" className="mt-6 space-y-4">
-              <p className="leading-relaxed">{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</p>
+              <p className="leading-relaxed">{b.description || <>{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</>}</p>
               <div className="flex flex-wrap gap-2">{b.tags.map((t) => <span key={t} className="rounded-full bg-muted px-3 py-1 text-sm font-medium">{t}</span>)}</div>
-              <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>
+              {b.price && <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>}
             </TabsContent>
             <TabsContent value="services" className="mt-6">
-              <ul className="divide-y rounded-3xl border bg-card">{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
+              <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-6">
               <div className="grid gap-6 rounded-3xl border bg-card p-6 sm:grid-cols-[160px_1fr]">
                 <div className="text-center"><p className="font-display text-5xl font-extrabold">{b.rating}</p><div className="mt-1 flex justify-center text-primary">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}</div><p className="mt-1 text-xs text-muted-foreground">{b.reviews} ratings</p></div>
                 <div className="space-y-1.5">{dist.map((p, i) => <div key={i} className="flex items-center gap-2 text-sm"><span className="w-3">{5 - i}</span><div className="h-2 flex-1 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-success" style={{ width: `${p}%` }} /></div><span className="w-8 text-right text-muted-foreground">{p}%</span></div>)}</div>
               </div>
-              <ul className="mt-4 space-y-3">{b.reviewList.map((r, i) => (
+              <ul className="mt-4 space-y-3">{b.reviewList.length === 0 && <li className="rounded-3xl border border-dashed bg-card p-6 text-center text-sm text-muted-foreground">No reviews yet — be the first.</li>}{b.reviewList.map((r, i) => (
                 <li key={i} className="rounded-3xl border bg-card p-5">
                   <div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-full bg-saffron-soft font-bold">{r.name[0]}</span><div><p className="font-bold">{r.name}</p><p className="text-xs text-muted-foreground">{r.date}</p></div><RatingBadge rating={r.rating} className="ml-auto" /></div>
-                  <p className="mt-3 text-[15px] leading-relaxed">{r.text}</p>
+                  <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed">{r.text}</p>
                 </li>))}</ul>
             </TabsContent>
             <TabsContent value="qa" className="mt-6 space-y-3">
@@ -92,7 +108,7 @@ function BusinessPage() {
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">Is this your business? <Link to="/free-listing" className="font-bold text-foreground underline">Claim it for free</Link></p>
         </div>
-        <aside className="lg:sticky lg:top-24 lg:self-start"><EnquiryForm subtitle={`${b.name} usually replies in under 10 minutes.`} /></aside>
+        <aside id="enquire" className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"><EnquiryForm businessId={b.live ? b.id : undefined} subtitle={`${b.name} usually replies in under 10 minutes.`} /></aside>
       </div>
 
       {similar.length > 0 && (

@@ -9,12 +9,14 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useRouterState } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header, Footer, MobileNav } from "@/components/site/layout";
 import { CityProvider } from "@/components/site/city";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/lib/auth";
 
 function NotFoundComponent() {
   return (
@@ -126,17 +128,25 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const path = useRouterState({ select: (s) => s.location.pathname });
+  const app = path.startsWith("/dashboard") || path.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <CityProvider>
-        <Header />
-        <main className="min-h-[60vh]"><Outlet /></main>
-        <Footer />
-        <MobileNav />
-        <Toaster position="top-center" />
-      </CityProvider>
+      <AuthProvider>
+        <CityProvider>
+          {app ? <Outlet /> : (
+            <>
+              <Header />
+              <main className="min-h-[60vh]"><Outlet /></main>
+              <Footer />
+              <MobileNav />
+            </>
+          )}
+          <Toaster position="top-center" />
+        </CityProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
