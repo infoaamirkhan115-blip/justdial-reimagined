@@ -20,5 +20,5 @@ export async function photoUrls(paths: string[]): Promise<Record<string, string>
   const uniq = [...new Set(paths.filter(Boolean))];
   if (!uniq.length) return {};
   const { data } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(uniq, 60 * 60 * 24 * 7);
-  return Object.fromEntries((data ?? []).filter((d) => d.signedUrl && d.path).map((d) => [d.path!, d.signedUrl]));
+  return Object.fromEntries((data ?? []).filter((d) => d.signedUrl && d.path).map((d) => [d.path!, d.signedUrl as string]));
 }
