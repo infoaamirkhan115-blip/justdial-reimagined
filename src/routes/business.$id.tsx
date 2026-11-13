@@ -59,7 +59,8 @@ function BusinessPage() {
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />{b.phone}</a>
-            {actions.map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
+            <Link to="/write-review" className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
+            {actions.filter((a) => a.label !== "Review").map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
           </div>
 
           <Tabs defaultValue="overview" className="mt-8">

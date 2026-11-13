@@ -27,6 +27,8 @@ export function Header() {
         <div className="hidden flex-1 md:block">{showSearch && <div className="max-w-xl"><SearchBar size="sm" /></div>}</div>
         <nav className="ml-auto flex items-center gap-1 text-sm font-semibold">
           <Link to="/b2b" className="hidden rounded-lg px-3 py-2 hover:bg-muted lg:block">B2B</Link>
+          <Link to="/offers" className="hidden rounded-lg px-3 py-2 hover:bg-muted lg:block">Offers</Link>
+          <Link to="/travel" className="hidden rounded-lg px-3 py-2 hover:bg-muted xl:block">Travel</Link>
           <Link to="/advertise" className="hidden rounded-lg px-3 py-2 hover:bg-muted lg:block">Advertise</Link>
           <button onClick={() => setLang(lang === "EN" ? "हिं" : "EN")} className="rounded-lg px-3 py-2 hover:bg-muted" aria-label="Switch language">{lang}</button>
           <button className="hidden rounded-lg p-2 hover:bg-muted sm:block" aria-label="Notifications"><Bell className="size-5" /></button>
@@ -43,8 +45,8 @@ export function MobileNav() {
     { to: "/", label: "Home", icon: Home },
     { to: "/categories", label: "Search", icon: Search },
     { to: "/b2b", label: "B2B", icon: Building2 },
-    { to: "/search", label: "Bookings", icon: CalendarCheck },
-    { to: "/login", label: "Account", icon: User },
+    { to: "/travel", label: "Bookings", icon: CalendarCheck },
+    { to: "/account", label: "Account", icon: User },
   ] as const;
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
@@ -75,6 +77,9 @@ export function Footer() {
             <li><Link to="/about" className="hover:text-ink-foreground">About us</Link></li>
             <li><Link to="/categories" className="hover:text-ink-foreground">All categories</Link></li>
             <li><Link to="/b2b" className="hover:text-ink-foreground">B2B marketplace</Link></li>
+            <li><Link to="/offers" className="hover:text-ink-foreground">Offers</Link></li>
+            <li><Link to="/careers" className="hover:text-ink-foreground">Careers</Link></li>
+            <li><Link to="/contact" className="hover:text-ink-foreground">Customer care</Link></li>
           </ul>
         </div>
         <div>
@@ -83,6 +88,10 @@ export function Footer() {
             <li><Link to="/free-listing" className="hover:text-ink-foreground">Free listing</Link></li>
             <li><Link to="/advertise" className="hover:text-ink-foreground">Advertise</Link></li>
             <li><Link to="/free-listing" className="hover:text-ink-foreground">Plans & pricing</Link></li>
+            <li><Link to="/write-review" className="hover:text-ink-foreground">Write a review</Link></li>
+            <li><Link to="/recharge" className="hover:text-ink-foreground">Bills & recharge</Link></li>
+            <li><Link to="/travel" className="hover:text-ink-foreground">Travel</Link></li>
+            <li><Link to="/movies" className="hover:text-ink-foreground">Movies</Link></li>
           </ul>
         </div>
         <div>
@@ -97,7 +106,7 @@ export function Footer() {
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-muted">
           {CATEGORIES.slice(0, 20).map((c) => <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="hover:text-ink-foreground">{c.name}</Link>)}
         </div>
-        <p className="mt-6 text-xs text-ink-muted">© 2026 Justdial Ltd. Redesign concept. All rights reserved.</p>
+        <div className="mt-6 flex flex-wrap gap-4 text-xs text-ink-muted"><span>© 2026 Justdial Ltd. Redesign concept.</span><Link to="/terms" className="hover:text-ink-foreground">Terms</Link><Link to="/privacy" className="hover:text-ink-foreground">Privacy</Link><Link to="/about" className="hover:text-ink-foreground">About</Link></div>
       </div>
     </footer>
   );

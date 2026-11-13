@@ -1,11 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Building2, CarTaxiFront, Clapperboard, Flame, Hotel, Plane, Smartphone, Stethoscope, Wrench, Zap, Tv, Fuel, CreditCard, Star, TrendingUp, Apple, Play, CheckCircle2 } from "lucide-react";
 import hero from "@/assets/hero-street.jpg";
 import { BUSINESSES, CATEGORIES, STATS, TRENDING } from "@/data/catalog";
 import { SearchBar } from "@/components/site/search-bar";
 import { CategoryTile, MiniBusinessCard, SectionHeader, btnClass, EnquiryForm } from "@/components/site/ui";
 import { useCity } from "@/components/site/city";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,8 +25,8 @@ const QUICK = [
   { label: "Doctors", icon: Stethoscope, slug: "doctors" },
   { label: "Hotels", icon: Hotel, slug: "hotels" },
   { label: "Repairs", icon: Wrench, slug: "ac-repair" },
-  { label: "Movies", icon: Clapperboard, slug: "dance" },
-  { label: "Travel", icon: Plane, slug: "travel-agents" },
+  { label: "Movies", icon: Clapperboard, to: "/movies" as const },
+  { label: "Travel", icon: Plane, to: "/travel" as const },
   { label: "Cabs", icon: CarTaxiFront, slug: "car-rental" },
 ];
 const BILLS = [
@@ -54,6 +53,7 @@ function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: str
 
 function Home() {
   const { city } = useCity();
+  const navigate = useNavigate();
   return (
     <>
       {/* Hero */}
@@ -110,7 +110,7 @@ function Home() {
           </div>
           <div className="mt-6 grid grid-cols-3 gap-3 md:grid-cols-6">
             {BILLS.map((b) => (
-              <button key={b.label} onClick={() => toast(`${b.label} payments coming soon`)} className="flex flex-col items-center gap-2 rounded-2xl bg-muted p-4 text-sm font-semibold transition hover:bg-accent">
+              <button key={b.label} onClick={() => navigate({ to: "/recharge" })} className="flex flex-col items-center gap-2 rounded-2xl bg-muted p-4 text-sm font-semibold transition hover:bg-accent">
                 <b.icon className="size-6" />{b.label}
               </button>
             ))}
