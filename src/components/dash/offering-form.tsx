@@ -83,7 +83,7 @@ export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: 
         <Btn type="button" variant="ghost" aria-label="Remove price range" onClick={() => price("tiers", f.pricing.tiers.filter((_, n) => n !== i))}><Trash2 className="size-4" /></Btn>
       </div>)}<Btn type="button" variant="outline" onClick={() => price("tiers", [...f.pricing.tiers, { min: (f.pricing.tiers.at(-1)?.max ?? 0) + 1, max: null, price: 0 }])}><Plus className="size-4" />Add range</Btn></div>}
     </Section>
-    <Section title="Description"><Field label="Description"><textarea rows={5} maxLength={3000} value={f.description} onChange={e => update("description", e.target.value)} className="w-full rounded-xl border border-input bg-background p-3 text-sm font-normal" /></Field><p className="text-right text-xs text-muted-foreground">{f.description.length}/3000</p></Section>
+    <Section title="Description"><Field label="Description"><textarea aria-label="Description" rows={5} maxLength={3000} value={f.description} onChange={e => update("description", e.target.value)} className="w-full rounded-xl border border-input bg-background p-3 text-sm font-normal" /></Field><p className="text-right text-xs text-muted-foreground">{f.description.length}/3000</p></Section>
     {f.kind === "product" && <Section title="Product details"><div className="grid gap-4 sm:grid-cols-2">
       <Field label="Brand"><input value={f.product_details.brand} maxLength={120} onChange={e => detail("brand", e.target.value)} className={inputCls} /></Field>
       <Field label="Manufacturer"><input value={f.product_details.manufacturer} maxLength={200} onChange={e => detail("manufacturer", e.target.value)} className={inputCls} /></Field>
