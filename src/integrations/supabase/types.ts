@@ -22,21 +22,32 @@ export type Database = {
           category: string
           city: string
           created_at: string
+          days_open: string[]
           description: string
+          email: string
           hours: string
           id: string
+          landmark: string
+          logo: string | null
           name: string
           owner_id: string
+          payment_methods: string[]
           phone: string
+          photos: string[]
+          pincode: string
           plan: string
           price: string
           requested_plan: string | null
+          services: Json
           sponsored: boolean
           status: string
           sub: string
           tags: string[]
           updated_at: string
           verified: boolean
+          website: string
+          whatsapp: string
+          year_established: number | null
         }
         Insert: {
           address?: string
@@ -45,21 +56,32 @@ export type Database = {
           category: string
           city: string
           created_at?: string
+          days_open?: string[]
           description?: string
+          email?: string
           hours?: string
           id?: string
+          landmark?: string
+          logo?: string | null
           name: string
           owner_id: string
+          payment_methods?: string[]
           phone?: string
+          photos?: string[]
+          pincode?: string
           plan?: string
           price?: string
           requested_plan?: string | null
+          services?: Json
           sponsored?: boolean
           status?: string
           sub?: string
           tags?: string[]
           updated_at?: string
           verified?: boolean
+          website?: string
+          whatsapp?: string
+          year_established?: number | null
         }
         Update: {
           address?: string
@@ -68,21 +90,32 @@ export type Database = {
           category?: string
           city?: string
           created_at?: string
+          days_open?: string[]
           description?: string
+          email?: string
           hours?: string
           id?: string
+          landmark?: string
+          logo?: string | null
           name?: string
           owner_id?: string
+          payment_methods?: string[]
           phone?: string
+          photos?: string[]
+          pincode?: string
           plan?: string
           price?: string
           requested_plan?: string | null
+          services?: Json
           sponsored?: boolean
           status?: string
           sub?: string
           tags?: string[]
           updated_at?: string
           verified?: boolean
+          website?: string
+          whatsapp?: string
+          year_established?: number | null
         }
         Relationships: []
       }
