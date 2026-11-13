@@ -53,7 +53,7 @@ function Page() {
             <ul className="divide-y">{upgrades.map((b) => (
               <li key={b.id} className="flex items-center gap-3 py-3 text-sm">
                 <div className="min-w-0 flex-1"><p className="truncate font-semibold">{b.name}</p><p className="text-muted-foreground capitalize">{b.plan} → {b.requested_plan}</p></div>
-                <Btn className="min-h-9 px-3" onClick={() => set(b.id, { plan: b.requested_plan, requested_plan: null, verified: true, sponsored: b.requested_plan === "platinum" }, "Plan activated")}>Activate</Btn>
+                <Btn className="min-h-9 px-3" onClick={() => set(b.id, { plan: b.requested_plan ?? b.plan, requested_plan: null, verified: true, sponsored: b.requested_plan === "platinum" }, "Plan activated")}>Activate</Btn>
                 <Btn variant="ghost" className="min-h-9 px-3" onClick={() => set(b.id, { requested_plan: null }, "Request declined")}>Decline</Btn>
               </li>))}</ul>}
         </section>
