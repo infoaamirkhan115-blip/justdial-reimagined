@@ -1,16 +1,14 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { BadgeCheck, Bookmark, Clock, MapPin, MessageCircle, Navigation, Phone, Share2, ShieldCheck, Star, PenLine, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { BUSINESSES, getBusiness, getCategory } from "@/data/catalog";
+import { BUSINESSES, getBusiness, getCategory, type Business } from "@/data/catalog";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessQ } from "@/lib/public-data";
 import { EnquiryForm, MiniBusinessCard, RatingBadge, btnClass } from "@/components/site/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/business/$id")({
-  loader: ({ params }) => {
-    const b = getBusiness(params.id);
-    if (!b) throw notFound();
-    return { b };
-  },
+  loader: ({ params }) => ({ b: getBusiness(params.id) ?? null }),
   head: ({ loaderData }) => {
     const b = loaderData?.b;
     const t = b ? `${b.name}, ${b.area} ${b.city} — Reviews & Contact | Justdial` : "Business — Justdial";
@@ -26,9 +24,27 @@ export const Route = createFileRoute("/business/$id")({
 
 function BusinessPage() {
   const { b } = Route.useLoaderData();
+  const { id } = Route.useParams();
+  const isUuid = /^[0-9a-f-]{36}$/.test(id);
+  const live = useQuery({ ...liveBusinessQ(id), enabled: !b && isUuid });
+  if (b) return <BusinessView b={b} />;
+  if (isUuid && live.isLoading) return <div className="container-page py-24 text-center text-muted-foreground">Loading…</div>;
+  if (live.data) return <BusinessView b={live.data} />;
+  return (
+    <div className="container-page py-24 text-center">
+      <h1 className="text-3xl font-extrabold">This business isn't available</h1>
+      <p className="mt-2 text-muted-foreground">It may have been removed or is still waiting for approval.</p>
+      <Link to="/categories" className={`${btnClass("primary")} mt-6`}>Browse categories</Link>
+    </div>
+  );
+}
+
+function BusinessView({ b }: { b: Business }) {
   const cat = getCategory(b.category);
   const similar = BUSINESSES.filter((x) => x.category === b.category && x.id !== b.id);
-  const dist = [62, 22, 9, 4, 3];
+  const dist = b.live
+    ? [5, 4, 3, 2, 1].map((n) => (b.reviewList.length ? Math.round((b.reviewList.filter((r) => r.rating === n).length / b.reviewList.length) * 100) : 0))
+    : [62, 22, 9, 4, 3];
   const actions = [
     { icon: MessageCircle, label: "WhatsApp" }, { icon: Navigation, label: "Directions" },
     { icon: Share2, label: "Share" }, { icon: Bookmark, label: "Save" }, { icon: PenLine, label: "Review" },
@@ -92,7 +108,7 @@ function BusinessPage() {
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">Is this your business? <Link to="/free-listing" className="font-bold text-foreground underline">Claim it for free</Link></p>
         </div>
-        <aside className="lg:sticky lg:top-24 lg:self-start"><EnquiryForm subtitle={`${b.name} usually replies in under 10 minutes.`} /></aside>
+        <aside id="enquire" className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"><EnquiryForm businessId={b.live ? b.id : undefined} subtitle={`${b.name} usually replies in under 10 minutes.`} /></aside>
       </div>
 
       {similar.length > 0 && (
