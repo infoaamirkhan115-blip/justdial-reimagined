@@ -30,5 +30,5 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Site content (businesses, categories, cities) lives as sample data in src/data/catalog.ts; shared site chrome and building blocks live in src/components/site/. Why: no backend yet, so one data module keeps pages consistent and easy to swap for Lovable Cloud later.
-- Real listings, leads and reviews live in Lovable Cloud tables guarded by RLS plus guard triggers (owners cannot change status/plan/verified/sponsored); public pages merge approved DB listings with the sample catalog. Why: lets owners and admins manage real data without breaking the demo content.
+- Real listings, leads and reviews live in Lovable Cloud tables guarded by RLS plus guard triggers (owners cannot change status/plan/verified/sponsored); public pages show only DB listings (the former sample businesses were imported as approved rows; catalog.ts keeps categories/cities). Why: lets owners and admins manage real data without breaking the demo content.
 - Owner dashboard lives under /dashboard and admin panel under /admin (both inside the _authenticated gate; admin also checks has_role). Why: one sign-in, two role-based workspaces.
