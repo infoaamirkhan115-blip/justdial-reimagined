@@ -73,7 +73,7 @@ function Page() {
           </div>))}</div>
       )}
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(undefined)}>
-        <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto rounded-3xl">
+        <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto rounded-3xl">
           <DialogHeader><DialogTitle className="font-display text-2xl">Edit listing</DialogTitle></DialogHeader>
           {editing && <BusinessForm key={editing.id} initial={editing} ownerId={editing.owner_id} onDone={() => setEditing(undefined)} />}
         </DialogContent>

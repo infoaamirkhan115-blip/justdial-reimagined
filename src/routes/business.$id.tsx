@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BadgeCheck, Bookmark, Clock, MapPin, MessageCircle, Navigation, Phone, Share2, ShieldCheck, Star, PenLine, ChevronRight } from "lucide-react";
+import { Globe, BadgeCheck, Bookmark, Clock, MapPin, MessageCircle, Navigation, Phone, Share2, ShieldCheck, Star, PenLine, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { getCategory, type Business } from "@/data/catalog";
 import { useQuery } from "@tanstack/react-query";
@@ -43,6 +43,8 @@ function BusinessView({ b }: { b: Business }) {
   const cat = getCategory(b.category);
   const { data: all = [] } = useQuery(liveBusinessesQ);
   const similar = all.filter((x) => x.category === b.category && x.id !== b.id);
+  const pics = b.gallery?.length ? b.gallery : [b.image];
+  const wa = b.whatsapp ? `https://wa.me/91${b.whatsapp}` : undefined;
   const dist = b.live
     ? [5, 4, 3, 2, 1].map((n) => (b.reviewList.length ? Math.round((b.reviewList.filter((r) => r.rating === n).length / b.reviewList.length) * 100) : 0))
     : [62, 22, 9, 4, 3];
@@ -55,13 +57,14 @@ function BusinessView({ b }: { b: Business }) {
       <nav className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground"><Link to="/" className="hover:underline">Home</Link><ChevronRight className="size-4" /><Link to="/category/$slug" params={{ slug: b.category }} className="hover:underline">{cat?.name}</Link><ChevronRight className="size-4" /><span className="text-foreground">{b.name}</span></nav>
 
       <div className="mt-4 grid h-64 grid-cols-4 grid-rows-2 gap-2 overflow-hidden rounded-[2rem] md:h-96">
-        <img src={b.image} alt={b.name} width={944} height={704} className="col-span-4 row-span-2 size-full object-cover md:col-span-2" />
-        {[1, 2, 3, 4].map((i) => <img key={i} src={similar[i % Math.max(similar.length, 1)]?.image ?? b.image} alt="" loading="lazy" className="hidden size-full object-cover md:block" />)}
+        <img src={pics[0]} alt={b.name} width={944} height={704} className={`col-span-4 row-span-2 size-full object-cover ${pics.length > 1 ? "md:col-span-2" : ""}`} />
+        {pics.slice(1, 5).map((src, i) => <img key={src} src={src} alt={`${b.name} photo ${i + 2}`} loading="lazy" className="hidden size-full object-cover md:block" />)}
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
         <div>
           <div className="flex flex-wrap items-center gap-2">
+            {b.logo && <img src={b.logo} alt={`${b.name} logo`} className="size-12 rounded-xl border object-cover" />}
             <h1 className="text-3xl font-extrabold md:text-4xl">{b.name}</h1>
             {b.verified && <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2.5 py-1 text-xs font-bold text-success"><BadgeCheck className="size-4" />Verified</span>}
             {b.trust && <span className="inline-flex items-center gap-1 rounded-full bg-saffron-soft px-2.5 py-1 text-xs font-bold"><ShieldCheck className="size-4" />Trust</span>}
@@ -71,26 +74,33 @@ function BusinessView({ b }: { b: Business }) {
             <span className="text-muted-foreground">{cat?.name} · {b.sub} · {b.years} yrs in business</span>
           </div>
           <div className="mt-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
-            <span className="flex items-center gap-2"><MapPin className="size-4" />{b.area}, {b.city} · {b.distance} km away</span>
-            <span className="flex items-center gap-2"><Clock className="size-4" /><span className={b.open ? "font-bold text-success" : "font-bold text-destructive"}>{b.open ? "Open now" : "Closed"}</span> · {b.hours}</span>
+            <span className="flex items-center gap-2"><MapPin className="size-4" />{b.address || `${b.area}, ${b.city}`}{b.landmark ? ` · ${b.landmark}` : ""}</span>
+            <span className="flex items-center gap-2"><Clock className="size-4" /><span className={b.open ? "font-bold text-success" : "font-bold text-destructive"}>{b.open ? "Open now" : "Closed"}</span> · {b.hours}{b.days?.length ? ` · ${b.days.length === 7 ? "All days" : b.days.join(", ")}` : ""}</span>
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />{b.phone}</a>
             <Link to="/write-review" search={{ b: b.id }} className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
-            {actions.filter((a) => a.label !== "Review").map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
+            {wa && <a href={wa} target="_blank" rel="noreferrer" className={btnClass("outline")}><MessageCircle className="size-4" />WhatsApp</a>}
+            {b.website && <a href={b.website} target="_blank" rel="noreferrer" className={btnClass("outline")}><Globe className="size-4" />Website</a>}
+            {actions.filter((a) => a.label !== "Review" && !(wa && a.label === "WhatsApp")).map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
           </div>
 
           <Tabs defaultValue="overview" className="mt-8">
             <TabsList className="h-auto flex-wrap rounded-2xl p-1">
-              {["overview", "services", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Q&A" : t}</TabsTrigger>)}
+              {["overview", "services", "photos", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Info" : t}</TabsTrigger>)}
             </TabsList>
             <TabsContent value="overview" className="mt-6 space-y-4">
               <p className="leading-relaxed">{b.description || <>{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</>}</p>
               <div className="flex flex-wrap gap-2">{b.tags.map((t) => <span key={t} className="rounded-full bg-muted px-3 py-1 text-sm font-medium">{t}</span>)}</div>
               {b.price && <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>}
+              {!!b.payments?.length && <p className="text-sm"><span className="font-bold">Payments:</span> {b.payments.join(", ")}</p>}
             </TabsContent>
             <TabsContent value="services" className="mt-6">
               <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
+            </TabsContent>
+            <TabsContent value="photos" className="mt-6">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">{pics.map((src, i) => <a key={src} href={src} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border"><img src={src} alt={`${b.name} photo ${i + 1}`} loading="lazy" className="aspect-[4/3] size-full object-cover transition hover:scale-105" /></a>)}</div>
+              {!b.gallery?.length && <p className="mt-3 text-sm text-muted-foreground">The business hasn't added photos yet.</p>}
             </TabsContent>
             <TabsContent value="reviews" className="mt-6">
               <div className="grid gap-6 rounded-3xl border bg-card p-6 sm:grid-cols-[160px_1fr]">
@@ -104,7 +114,11 @@ function BusinessView({ b }: { b: Business }) {
                 </li>))}</ul>
             </TabsContent>
             <TabsContent value="qa" className="mt-6 space-y-3">
-              {[["Do you offer home service?", "Yes, within 10 km of our location."], ["Do you accept UPI?", "Yes — UPI, cards and cash are accepted."]].map(([q, a]) => <div key={q} className="rounded-3xl border bg-card p-5"><p className="font-bold">Q. {q}</p><p className="mt-1 text-muted-foreground">A. {a}</p></div>)}
+              <dl className="divide-y rounded-3xl border bg-card">{([
+                ["Address", [b.address || `${b.area}, ${b.city}`, b.pincode].filter(Boolean).join(" – ")], ["Landmark", b.landmark], ["Phone", b.phone],
+                ["WhatsApp", b.whatsapp ? `+91 ${b.whatsapp}` : ""], ["Email", b.email], ["Website", b.website],
+                ["Open days", b.days?.join(", ")], ["Hours", b.hours], ["Payments", b.payments?.join(", ")], ["In business", `${b.years} years`],
+              ] as [string, string | undefined][]).filter(([, v]) => v).map(([k, v]) => <div key={k} className="grid grid-cols-[120px_1fr] gap-3 p-4 text-sm"><dt className="font-bold">{k}</dt><dd className="break-words text-muted-foreground">{v}</dd></div>)}</dl>
             </TabsContent>
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">Is this your business? <Link to="/free-listing" className="font-bold text-foreground underline">Claim it for free</Link></p>
