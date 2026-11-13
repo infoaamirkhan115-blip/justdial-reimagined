@@ -23,10 +23,10 @@ function Overview() {
   const { data: reviews } = useSuspenseQuery(myReviewsQ(user.id));
   const avg = reviews.length ? (reviews.reduce((a, r) => a + r.rating, 0) / reviews.length).toFixed(1) : "—";
   const fresh = leads.filter((l) => l.status === "new").length;
-  const name = (u?.user_metadata?.["full_name"] as string | undefined)?.split(" ")[0] ?? "there";
+  const name = (u?.user_metadata?.["full_name"] as string | undefined)?.split(" ")[0];
   return (
     <>
-      <PageTitle title={`Namaste, ${name}`} sub="Here's how your business is doing." action={<Link to="/dashboard/businesses" search={{ new: true }} className={btnClass("primary")}><Plus className="size-4" />Add listing</Link>} />
+      <PageTitle title={name ? `Namaste, ${name}` : "Namaste"} sub="Here's how your business is doing." action={<Link to="/dashboard/businesses" search={{ new: true }} className={btnClass("primary")}><Plus className="size-4" />Add listing</Link>} />
       {biz.filter((b) => b.status !== "approved").map((b) => (
         <div key={b.id} className="mb-3 flex items-start gap-3 rounded-2xl bg-saffron-soft p-4 text-sm">
           <AlertCircle className="mt-0.5 size-4 shrink-0" />

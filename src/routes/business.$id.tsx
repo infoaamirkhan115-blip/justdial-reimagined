@@ -86,7 +86,7 @@ function BusinessView({ b }: { b: Business }) {
             <TabsContent value="overview" className="mt-6 space-y-4">
               <p className="leading-relaxed">{b.description || <>{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</>}</p>
               <div className="flex flex-wrap gap-2">{b.tags.map((t) => <span key={t} className="rounded-full bg-muted px-3 py-1 text-sm font-medium">{t}</span>)}</div>
-              <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>
+              {b.price && <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>}
             </TabsContent>
             <TabsContent value="services" className="mt-6">
               <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
