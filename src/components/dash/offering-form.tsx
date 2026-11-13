@@ -18,7 +18,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return <section className="space-y-4 border-t pt-5"><h3 className="font-display text-lg font-bold">{title}</h3>{children}</section>;
 }
-export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: OfferingInput & { images?: string[] }; kind: "product" | "service"; businesses: Choice[]; onDone: () => void }) {
+export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: (OfferingInput & { images?: string[] }) | undefined; kind: "product" | "service"; businesses: Choice[]; onDone: () => void }) {
   const [f, setF] = useState<OfferingInput>(() => ({
     ...(initial?.id ? { id: initial.id } : {}), business_id: initial?.business_id ?? businesses[0]?.id ?? "", kind: initial?.kind ?? kind,
     name: initial?.name ?? "", category: initial?.category ?? "", business_type: initial?.business_type ?? "", description: initial?.description ?? "",
