@@ -10,6 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdvertiseRouteImport } from './routes/advertise'
+import { Route as B2bRouteImport } from './routes/b2b'
+import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as FreeListingRouteImport } from './routes/free-listing'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
@@ -17,6 +23,36 @@ import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdvertiseRoute = AdvertiseRouteImport.update({
+  id: '/advertise',
+  path: '/advertise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const B2bRoute = B2bRouteImport.update({
+  id: '/b2b',
+  path: '/b2b',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreeListingRoute = FreeListingRouteImport.update({
+  id: '/free-listing',
+  path: '/free-listing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -37,12 +73,24 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/b2b': typeof B2bRoute
+  '/categories': typeof CategoriesRoute
+  '/free-listing': typeof FreeListingRoute
+  '/login': typeof LoginRoute
   '/search': typeof SearchRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/b2b': typeof B2bRoute
+  '/categories': typeof CategoriesRoute
+  '/free-listing': typeof FreeListingRoute
+  '/login': typeof LoginRoute
   '/search': typeof SearchRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -50,20 +98,63 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/advertise': typeof AdvertiseRoute
+  '/b2b': typeof B2bRoute
+  '/categories': typeof CategoriesRoute
+  '/free-listing': typeof FreeListingRoute
+  '/login': typeof LoginRoute
   '/search': typeof SearchRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/search' | '/business/$id' | '/category/$slug'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/b2b'
+    | '/categories'
+    | '/free-listing'
+    | '/login'
+    | '/search'
+    | '/business/$id'
+    | '/category/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search' | '/business/$id' | '/category/$slug'
-  id: '__root__' | '/' | '/search' | '/business/$id' | '/category/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/b2b'
+    | '/categories'
+    | '/free-listing'
+    | '/login'
+    | '/search'
+    | '/business/$id'
+    | '/category/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/advertise'
+    | '/b2b'
+    | '/categories'
+    | '/free-listing'
+    | '/login'
+    | '/search'
+    | '/business/$id'
+    | '/category/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdvertiseRoute: typeof AdvertiseRoute
+  B2bRoute: typeof B2bRoute
+  CategoriesRoute: typeof CategoriesRoute
+  FreeListingRoute: typeof FreeListingRoute
+  LoginRoute: typeof LoginRoute
   SearchRoute: typeof SearchRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
@@ -76,6 +167,48 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/advertise': {
+      id: '/advertise'
+      path: '/advertise'
+      fullPath: '/advertise'
+      preLoaderRoute: typeof AdvertiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/b2b': {
+      id: '/b2b'
+      path: '/b2b'
+      fullPath: '/b2b'
+      preLoaderRoute: typeof B2bRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/free-listing': {
+      id: '/free-listing'
+      path: '/free-listing'
+      fullPath: '/free-listing'
+      preLoaderRoute: typeof FreeListingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -104,6 +237,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdvertiseRoute: AdvertiseRoute,
+  B2bRoute: B2bRoute,
+  CategoriesRoute: CategoriesRoute,
+  FreeListingRoute: FreeListingRoute,
+  LoginRoute: LoginRoute,
   SearchRoute: SearchRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
