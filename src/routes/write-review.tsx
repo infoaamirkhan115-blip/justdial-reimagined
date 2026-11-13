@@ -25,7 +25,8 @@ function Page() {
   const { b: pre } = Route.useSearch();
   const { data: live = [] } = useQuery(liveBusinessesQ);
   const all = live;
-  const [biz, setBiz] = useState(pre ?? "");
+  const [picked, setBiz] = useState(pre ?? "");
+  const biz = picked || all[0]?.id || "";
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [r, setR] = useState(0);

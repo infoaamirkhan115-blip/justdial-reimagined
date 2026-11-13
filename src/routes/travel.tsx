@@ -22,6 +22,7 @@ const MODES = [{ k: "Flights", i: Plane }, { k: "Hotels", i: BedDouble }, { k: "
 const DEALS = [["Mumbai → Goa", "from ₹2,149"], ["Delhi → Jaipur", "from ₹699 bus"], ["Bengaluru → Kochi", "from ₹2,899"], ["Chennai → Hyderabad", "from ₹1,999"]];
 
 function Page() {
+  const { data: hotels = [] } = useQuery(liveBusinessesQ);
   const [mode, setMode] = useState("Flights");
   const [from, setFrom] = useState("Mumbai");
   const [to, setTo] = useState("Delhi");
