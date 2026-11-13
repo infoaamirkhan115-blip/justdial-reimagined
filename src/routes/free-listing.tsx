@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, PhoneCall, Store, TrendingUp, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ const FEATURES = ["Business listing & photos", "Customer reviews", "Higher ranki
 
 function Page() {
   const [form, setForm] = useState({ name: "", phone: "", city: "Mumbai", cat: "restaurants" });
+  const nav = useNavigate();
   return (
     <div className="container-page pt-6">
       <section className="grid items-center gap-10 rounded-[2rem] bg-saffron-soft p-8 md:grid-cols-[1.2fr_1fr] md:p-14">
@@ -34,7 +35,7 @@ function Page() {
           <p className="mt-4 max-w-lg text-muted-foreground">Crores of people search every day. Put your business in front of them — free.</p>
           <div className="mt-8 grid grid-cols-2 gap-4">{STATS.slice(0, 2).map((s) => <div key={s.label}><p className="font-display text-3xl font-extrabold">{s.value}</p><p className="text-sm text-muted-foreground">{s.label}</p></div>)}</div>
         </div>
-        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; } toast.success(`${form.name} is on its way! We'll verify and go live within 24 hours.`); setForm({ ...form, name: "", phone: "" }); }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
+        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; } toast.success("Create your free account to finish your listing."); nav({ to: "/auth", search: { redirect: "/dashboard/businesses?new=true" } }); }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
           <h2 className="text-xl font-bold">List your business</h2>
           <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Business name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
           <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })} inputMode="numeric" placeholder="Mobile number" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
