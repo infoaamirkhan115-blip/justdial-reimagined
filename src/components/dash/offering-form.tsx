@@ -36,11 +36,12 @@ export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: 
   const numeric = (label: string, value: number, change: (n: number) => void, min = 0) => <Field label={label}><input type="number" min={min} step="any" value={value} onChange={e => change(Number(e.target.value))} className={inputCls} /></Field>;
   const upload = async (files: FileList | null) => {
     if (!files?.length) return;
+    const selectedFiles = Array.from(files).slice(0, 10 - f.photos.length);
     setUploading(true);
     try {
       const { data } = await supabase.auth.getUser();
       if (!data.user) throw new Error("Please sign in again");
-      for (const file of Array.from(files).slice(0, 10 - f.photos.length)) {
+      for (const file of selectedFiles) {
         const path = await uploadPhoto(file, data.user.id);
         setF(x => ({ ...x, photos: [...x.photos, path] })); setImages(x => [...x, URL.createObjectURL(file)]);
       }
