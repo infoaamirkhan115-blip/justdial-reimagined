@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { BUSINESSES, CATEGORIES, getCategory } from "@/data/catalog";
+import { CATEGORIES, getCategory } from "@/data/catalog";
 import { BusinessCard, CategoryTile, EnquiryForm } from "@/components/site/ui";
 import { DynIcon } from "@/components/site/icon";
 import { useCity } from "@/components/site/city";
@@ -32,7 +32,7 @@ function CategoryPage() {
   const { cat } = Route.useLoaderData();
   const { city } = useCity();
   const { data: live = [] } = useQuery(liveBusinessesQ);
-  const list = [...live, ...BUSINESSES].filter((b) => b.category === cat.slug);
+  const list = live.filter((b) => b.category === cat.slug);
   const related = CATEGORIES.filter((c) => c.group === cat.group && c.slug !== cat.slug).slice(0, 6);
   return (
     <div className="container-page pt-6">

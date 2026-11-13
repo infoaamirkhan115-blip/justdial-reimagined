@@ -3,7 +3,6 @@ import { ChevronRight, MapPinned, SearchX, SlidersHorizontal } from "lucide-reac
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
-import { BUSINESSES } from "@/data/catalog";
 import { CITIES, searchBusinesses } from "@/data/catalog";
 import { BusinessCard, EnquiryForm } from "@/components/site/ui";
 import { cn } from "@/lib/utils";
@@ -35,7 +34,7 @@ function SearchPage() {
   const [f, setF] = useState({ top: false, open: false, verified: false, near: false });
   const { data: live = [] } = useQuery(liveBusinessesQ);
   const results = useMemo(() => {
-    let r = searchBusinesses(q, city, [...live, ...BUSINESSES]).filter((b) =>
+    let r = searchBusinesses(q, city, live).filter((b) =>
       (!f.top || b.rating >= 4.5) && (!f.open || b.open) && (!f.verified || b.verified) && (!f.near || b.distance <= 3));
     if (sort === "Rating") r = [...r].sort((a, b) => b.rating - a.rating);
     if (sort === "Distance") r = [...r].sort((a, b) => a.distance - b.distance);

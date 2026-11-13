@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BadgeCheck, Bookmark, Clock, MapPin, MessageCircle, Navigation, Phone, Share2, ShieldCheck, Star, PenLine, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
-import { BUSINESSES, getBusiness, getCategory, type Business } from "@/data/catalog";
+import { getCategory, type Business } from "@/data/catalog";
 import { useQuery } from "@tanstack/react-query";
-import { liveBusinessQ } from "@/lib/public-data";
+import { liveBusinessQ, liveBusinessesQ } from "@/lib/public-data";
 import { EnquiryForm, MiniBusinessCard, RatingBadge, btnClass } from "@/components/site/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/business/$id")({
-  loader: ({ params }) => ({ b: getBusiness(params.id) ?? null }),
+  loader: async ({ params, context }) => ({ b: /^[0-9a-f-]{36}$/.test(params.id) ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id)).catch(() => null) : null }),
   head: ({ loaderData }) => {
     const b = loaderData?.b;
     const t = b ? `${b.name}, ${b.area} ${b.city} — Reviews & Contact | Justdial` : "Business — Justdial";
@@ -41,7 +41,8 @@ function BusinessPage() {
 
 function BusinessView({ b }: { b: Business }) {
   const cat = getCategory(b.category);
-  const similar = BUSINESSES.filter((x) => x.category === b.category && x.id !== b.id);
+  const { data: all = [] } = useQuery(liveBusinessesQ);
+  const similar = all.filter((x) => x.category === b.category && x.id !== b.id);
   const dist = b.live
     ? [5, 4, 3, 2, 1].map((n) => (b.reviewList.length ? Math.round((b.reviewList.filter((r) => r.rating === n).length / b.reviewList.length) * 100) : 0))
     : [62, 22, 9, 4, 3];

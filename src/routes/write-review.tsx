@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { BUSINESSES } from "@/data/catalog";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { liveBusinessesQ } from "@/lib/public-data";
@@ -25,8 +24,8 @@ const LABELS = ["", "Terrible", "Poor", "Average", "Good", "Excellent"];
 function Page() {
   const { b: pre } = Route.useSearch();
   const { data: live = [] } = useQuery(liveBusinessesQ);
-  const all = [...live, ...BUSINESSES];
-  const [biz, setBiz] = useState(pre ?? BUSINESSES[0]!.id);
+  const all = live;
+  const [biz, setBiz] = useState(pre ?? "");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [r, setR] = useState(0);
