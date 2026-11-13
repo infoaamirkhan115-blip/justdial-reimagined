@@ -5,8 +5,10 @@ import { useState, type ReactNode } from "react";
 import { getCategory, type Business } from "@/data/catalog";
 import { DynIcon } from "./icon";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 export function RatingBadge({ rating, className }: { rating: number; className?: string }) {
+  if (!rating) return <span className={cn("inline-flex rounded-lg bg-saffron-soft px-2 py-0.5 text-sm font-bold text-ink", className)}>New</span>;
   return (
     <span className={cn("inline-flex items-center gap-1 rounded-lg bg-success px-2 py-0.5 text-sm font-bold text-success-foreground", className)}>
       {rating.toFixed(1)} <Star className="size-3.5 fill-current" />
@@ -101,23 +103,32 @@ export function BusinessCard({ b }: { b: Business }) {
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />Call</a>
           <button onClick={() => toast.success(`Opening WhatsApp chat with ${b.name}`)} className={cn(btnClass("outline"), "text-success")}><MessageCircle className="size-4" />WhatsApp</button>
-          <button onClick={() => toast.success(`Enquiry sent to ${b.name}. They'll call you shortly.`)} className={btnClass("primary")}><Send className="size-4" />Get best price</button>
+          {b.live ? <Link to="/business/$id" params={{ id: b.id }} hash="enquire" className={btnClass("primary")}><Send className="size-4" />Get best price</Link>
+            : <button onClick={() => toast.success(`Enquiry sent to ${b.name}. They'll call you shortly.`)} className={btnClass("primary")}><Send className="size-4" />Get best price</button>}
         </div>
       </div>
     </article>
   );
 }
 
-export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Send enquiry" }: { title?: string; subtitle?: string; cta?: string }) {
+export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Send enquiry", businessId }: { title?: string; subtitle?: string; cta?: string; businessId?: string | undefined }) {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState(false);
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         if (!/^[6-9]\d{9}$/.test(phone)) { toast.error("Please enter a valid 10-digit mobile number"); return; }
-        toast.success("Done! Top businesses will call you within minutes.");
-        setPhone(""); setName("");
+        if (businessId) {
+          setBusy(true);
+          const { error } = await supabase.from("leads").insert({ business_id: businessId, name: name.trim(), phone, message: msg.trim() });
+          setBusy(false);
+          if (error) { toast.error("Couldn't send your enquiry. Please try again."); return; }
+          toast.success("Enquiry sent! The business will call you shortly.");
+        } else toast.success("Done! Top businesses will call you within minutes.");
+        setPhone(""); setName(""); setMsg("");
       }}
       className="rounded-3xl border bg-card p-5 shadow-soft"
     >
@@ -129,7 +140,8 @@ export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Sen
           <span className="grid place-items-center border-r px-3 text-sm font-semibold text-muted-foreground">+91</span>
           <input value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} inputMode="numeric" placeholder="Mobile number" className="w-full bg-transparent px-3 text-sm outline-none" />
         </div>
-        <Btn type="submit" className="w-full">{cta}</Btn>
+        {businessId && <textarea value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={1000} rows={2} placeholder="What do you need? (optional)" className="w-full rounded-xl border border-input bg-background p-3 text-sm" />}
+        <Btn type="submit" disabled={busy} className="w-full">{busy ? "Sending…" : cta}</Btn>
         <p className="text-center text-xs text-muted-foreground">Free · No spam · Your number is shared only with matching businesses</p>
       </div>
     </form>

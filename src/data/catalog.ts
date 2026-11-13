@@ -52,7 +52,11 @@ export type Business = {
   rating: number; reviews: number; years: number; verified: boolean; trust: boolean; sponsored: boolean;
   open: boolean; hours: string; distance: number; phone: string; image: string; tags: string[];
   highlight: string; price: string; services: { name: string; price: string }[]; reviewList: Review[];
+  live?: boolean; description?: string; address?: string;
 };
+
+const CAT_IMG: Record<string, string> = { restaurants: restaurant, hotels: restaurant, caterers: restaurant, doctors: clinic, hospitals: clinic, pharmacy: clinic, "beauty-spa": clinic, gyms: clinic };
+export const categoryImage = (slug: string) => CAT_IMG[slug] ?? repair;
 
 const AREAS: Record<City, string[]> = {
   Mumbai: ["Andheri West", "Bandra", "Powai", "Dadar", "Colaba"],
@@ -133,9 +137,9 @@ export const BUSINESSES: Business[] = SEED.flatMap((s, si) =>
 
 export const getBusiness = (id: string) => BUSINESSES.find((b) => b.id === id);
 
-export function searchBusinesses(q = "", city?: string) {
+export function searchBusinesses(q = "", city?: string, list: Business[] = BUSINESSES) {
   const t = q.trim().toLowerCase();
-  return BUSINESSES.filter((b) => {
+  return list.filter((b) => {
     if (!t) return true;
     const cat = getCategory(b.category);
     return [b.name, b.sub, cat?.name, b.area, ...b.tags].some((f) => f?.toLowerCase().includes(t)) ||

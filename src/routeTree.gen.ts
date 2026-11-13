@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as B2bRouteImport } from './routes/b2b'
@@ -20,7 +19,6 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FreeListingRouteImport } from './routes/free-listing'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -58,11 +56,6 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRoute = AccountRouteImport.update({
-  id: '/account',
-  path: '/account',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdvertiseRoute = AdvertiseRouteImport.update({
   id: '/advertise',
   path: '/advertise',
@@ -96,11 +89,6 @@ const ContactRoute = ContactRouteImport.update({
 const FreeListingRoute = FreeListingRouteImport.update({
   id: '/free-listing',
   path: '/free-listing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoviesRoute = MoviesRouteImport.update({
@@ -224,7 +212,6 @@ const AuthenticatedDashboardReviewsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
@@ -232,7 +219,6 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/login': typeof LoginRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -259,7 +245,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
@@ -267,7 +252,6 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/login': typeof LoginRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -294,7 +278,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
@@ -302,7 +285,6 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/login': typeof LoginRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -331,7 +313,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/account'
     | '/advertise'
     | '/auth'
     | '/b2b'
@@ -339,7 +320,6 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/login'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -366,7 +346,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/account'
     | '/advertise'
     | '/auth'
     | '/b2b'
@@ -374,7 +353,6 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/login'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -400,7 +378,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
-    | '/account'
     | '/advertise'
     | '/auth'
     | '/b2b'
@@ -408,7 +385,6 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/login'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -437,7 +413,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  AccountRoute: typeof AccountRoute
   AdvertiseRoute: typeof AdvertiseRoute
   AuthRoute: typeof AuthRoute
   B2bRoute: typeof B2bRoute
@@ -445,7 +420,6 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   FreeListingRoute: typeof FreeListingRoute
-  LoginRoute: typeof LoginRoute
   MoviesRoute: typeof MoviesRoute
   OffersRoute: typeof OffersRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -479,13 +453,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/advertise': {
@@ -535,13 +502,6 @@ declare module '@tanstack/react-router' {
       path: '/free-listing'
       fullPath: '/free-listing'
       preLoaderRoute: typeof FreeListingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movies': {
@@ -760,7 +720,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  AccountRoute: AccountRoute,
   AdvertiseRoute: AdvertiseRoute,
   AuthRoute: AuthRoute,
   B2bRoute: B2bRoute,
@@ -768,7 +727,6 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   FreeListingRoute: FreeListingRoute,
-  LoginRoute: LoginRoute,
   MoviesRoute: MoviesRoute,
   OffersRoute: OffersRoute,
   PrivacyRoute: PrivacyRoute,

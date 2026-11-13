@@ -6,6 +6,18 @@ import { SearchBar } from "./search-bar";
 import { btnClass } from "./ui";
 import { useCity } from "./city";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
+
+function AccountButton() {
+  const { user, isAdmin } = useAuth();
+  if (!user) return <Link to="/auth" className={btnClass("ink")}>Login</Link>;
+  return (
+    <>
+      {isAdmin && <Link to="/admin" className={cn(btnClass("outline"), "hidden md:inline-flex")}>Admin</Link>}
+      <Link to="/dashboard" className={btnClass("ink")}>Dashboard</Link>
+    </>
+  );
+}
 
 export function Logo({ light }: { light?: boolean }) {
   return (
@@ -32,8 +44,8 @@ export function Header() {
           <Link to="/advertise" className="hidden rounded-lg px-3 py-2 hover:bg-muted lg:block">Advertise</Link>
           <button onClick={() => setLang(lang === "EN" ? "हिं" : "EN")} className="rounded-lg px-3 py-2 hover:bg-muted" aria-label="Switch language">{lang}</button>
           <button className="hidden rounded-lg p-2 hover:bg-muted sm:block" aria-label="Notifications"><Bell className="size-5" /></button>
-          <Link to="/free-listing" className={cn(btnClass("outline"), "hidden sm:inline-flex")}>Free listing</Link>
-          <Link to="/login" className={btnClass("ink")}>Login</Link>
+          <Link to="/free-listing" className={cn(btnClass("outline"), "hidden xl:inline-flex")}>Free listing</Link>
+          <AccountButton />
         </nav>
       </div>
     </header>
@@ -46,7 +58,7 @@ export function MobileNav() {
     { to: "/categories", label: "Search", icon: Search },
     { to: "/b2b", label: "B2B", icon: Building2 },
     { to: "/travel", label: "Bookings", icon: CalendarCheck },
-    { to: "/account", label: "Account", icon: User },
+    { to: "/dashboard", label: "Account", icon: User },
   ] as const;
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
