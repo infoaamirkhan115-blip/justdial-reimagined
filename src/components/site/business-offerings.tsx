@@ -6,8 +6,6 @@ import { priceLabel } from "@/lib/offering-schema";
 import { Btn } from "./ui";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-type Item = Awaited<ReturnType<ReturnType<typeof offeringsQ>["queryFn"]>>;
-// Infer display rows directly from the shared query rather than duplicating its shape.
 export function BusinessOfferings({ businessId }: { businessId: string }) {
   const { data = [], isLoading, error } = useQuery(offeringsQ(businessId));
   const [selectedId, setSelectedId] = useState<string>();
