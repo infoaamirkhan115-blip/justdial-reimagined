@@ -29,9 +29,15 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
+import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
+import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBusinessesRouteImport } from './routes/_authenticated/dashboard.businesses'
 import { Route as AuthenticatedDashboardLeadsRouteImport } from './routes/_authenticated/dashboard.leads'
@@ -137,6 +143,11 @@ const WriteReviewRoute = WriteReviewRouteImport.update({
   path: '/write-review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -151,6 +162,33 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminBusinessesRoute =
+  AuthenticatedAdminBusinessesRouteImport.update({
+    id: '/businesses',
+    path: '/businesses',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminLeadsRoute = AuthenticatedAdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminReviewsRoute =
+  AuthenticatedAdminReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
@@ -203,13 +241,19 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/admin/leads': typeof AuthenticatedAdminLeadsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -234,10 +278,15 @@ export interface FileRoutesByTo {
   '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/admin/leads': typeof AuthenticatedAdminLeadsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -262,13 +311,19 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
+  '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
+  '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/_authenticated/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/_authenticated/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -293,13 +348,19 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/admin'
     | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/admin/businesses'
+    | '/admin/leads'
+    | '/admin/reviews'
+    | '/admin/users'
     | '/dashboard/businesses'
     | '/dashboard/leads'
     | '/dashboard/plan'
     | '/dashboard/reviews'
+    | '/admin/'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -324,10 +385,15 @@ export interface FileRouteTypes {
     | '/write-review'
     | '/business/$id'
     | '/category/$slug'
+    | '/admin/businesses'
+    | '/admin/leads'
+    | '/admin/reviews'
+    | '/admin/users'
     | '/dashboard/businesses'
     | '/dashboard/leads'
     | '/dashboard/plan'
     | '/dashboard/reviews'
+    | '/admin'
     | '/dashboard'
   id:
     | '__root__'
@@ -351,13 +417,19 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/_authenticated/admin/businesses'
+    | '/_authenticated/admin/leads'
+    | '/_authenticated/admin/reviews'
+    | '/_authenticated/admin/users'
     | '/_authenticated/dashboard/businesses'
     | '/_authenticated/dashboard/leads'
     | '/_authenticated/dashboard/plan'
     | '/_authenticated/dashboard/reviews'
+    | '/_authenticated/admin/'
     | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -528,6 +600,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WriteReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -548,6 +627,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/businesses': {
+      id: '/_authenticated/admin/businesses'
+      path: '/businesses'
+      fullPath: '/admin/businesses'
+      preLoaderRoute: typeof AuthenticatedAdminBusinessesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/leads': {
+      id: '/_authenticated/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AuthenticatedAdminLeadsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/reviews': {
+      id: '/_authenticated/admin/reviews'
+      path: '/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
@@ -587,6 +701,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminBusinessesRoute: typeof AuthenticatedAdminBusinessesRoute
+  AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
+  AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminBusinessesRoute: AuthenticatedAdminBusinessesRoute,
+  AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
+  AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardBusinessesRoute: typeof AuthenticatedDashboardBusinessesRoute
   AuthenticatedDashboardLeadsRoute: typeof AuthenticatedDashboardLeadsRoute
@@ -611,10 +744,12 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
