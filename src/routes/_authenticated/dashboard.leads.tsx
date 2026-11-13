@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/dashboard/leads")({
   loader: ({ context }) => context.queryClient.ensureQueryData(myLeadsQ(context.user.id)),
   component: Page,
 });
-export const LEAD_STATUSES = ["new", "contacted", "won", "lost"] as const;
+const LEAD_STATUSES = ["new", "contacted", "won", "lost"] as const;
 
 function Page() {
   const { user } = Route.useRouteContext();

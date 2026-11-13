@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as B2bRouteImport } from './routes/b2b'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CategoriesRouteImport } from './routes/categories'
@@ -27,12 +29,22 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardBusinessesRouteImport } from './routes/_authenticated/dashboard.businesses'
+import { Route as AuthenticatedDashboardLeadsRouteImport } from './routes/_authenticated/dashboard.leads'
+import { Route as AuthenticatedDashboardPlanRouteImport } from './routes/_authenticated/dashboard.plan'
+import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -48,6 +60,11 @@ const AccountRoute = AccountRouteImport.update({
 const AdvertiseRoute = AdvertiseRouteImport.update({
   id: '/advertise',
   path: '/advertise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const B2bRoute = B2bRouteImport.update({
@@ -120,6 +137,11 @@ const WriteReviewRoute = WriteReviewRouteImport.update({
   path: '/write-review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const BusinessIdRoute = BusinessIdRouteImport.update({
   id: '/business/$id',
   path: '/business/$id',
@@ -130,12 +152,43 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBusinessesRoute =
+  AuthenticatedDashboardBusinessesRouteImport.update({
+    id: '/businesses',
+    path: '/businesses',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardLeadsRoute =
+  AuthenticatedDashboardLeadsRouteImport.update({
+    id: '/leads',
+    path: '/leads',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardPlanRoute =
+  AuthenticatedDashboardPlanRouteImport.update({
+    id: '/plan',
+    path: '/plan',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardReviewsRoute =
+  AuthenticatedDashboardReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
   '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
@@ -150,14 +203,21 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
   '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
@@ -174,13 +234,20 @@ export interface FileRoutesByTo {
   '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/b2b': typeof B2bRoute
   '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
@@ -195,8 +262,14 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/_authenticated/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/_authenticated/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/_authenticated/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
+  '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -205,6 +278,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/advertise'
+    | '/auth'
     | '/b2b'
     | '/careers'
     | '/categories'
@@ -219,14 +293,21 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/dashboard/businesses'
+    | '/dashboard/leads'
+    | '/dashboard/plan'
+    | '/dashboard/reviews'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/account'
     | '/advertise'
+    | '/auth'
     | '/b2b'
     | '/careers'
     | '/categories'
@@ -243,12 +324,19 @@ export interface FileRouteTypes {
     | '/write-review'
     | '/business/$id'
     | '/category/$slug'
+    | '/dashboard/businesses'
+    | '/dashboard/leads'
+    | '/dashboard/plan'
+    | '/dashboard/reviews'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/account'
     | '/advertise'
+    | '/auth'
     | '/b2b'
     | '/careers'
     | '/categories'
@@ -263,15 +351,23 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/_authenticated/dashboard/businesses'
+    | '/_authenticated/dashboard/leads'
+    | '/_authenticated/dashboard/plan'
+    | '/_authenticated/dashboard/reviews'
+    | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
   AdvertiseRoute: typeof AdvertiseRoute
+  AuthRoute: typeof AuthRoute
   B2bRoute: typeof B2bRoute
   CareersRoute: typeof CareersRoute
   CategoriesRoute: typeof CategoriesRoute
@@ -299,6 +395,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -318,6 +421,13 @@ declare module '@tanstack/react-router' {
       path: '/advertise'
       fullPath: '/advertise'
       preLoaderRoute: typeof AdvertiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/b2b': {
@@ -418,6 +528,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WriteReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/business/$id': {
       id: '/business/$id'
       path: '/business/$id'
@@ -432,14 +549,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/businesses': {
+      id: '/_authenticated/dashboard/businesses'
+      path: '/businesses'
+      fullPath: '/dashboard/businesses'
+      preLoaderRoute: typeof AuthenticatedDashboardBusinessesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/leads': {
+      id: '/_authenticated/dashboard/leads'
+      path: '/leads'
+      fullPath: '/dashboard/leads'
+      preLoaderRoute: typeof AuthenticatedDashboardLeadsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/plan': {
+      id: '/_authenticated/dashboard/plan'
+      path: '/plan'
+      fullPath: '/dashboard/plan'
+      preLoaderRoute: typeof AuthenticatedDashboardPlanRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/reviews': {
+      id: '/_authenticated/dashboard/reviews'
+      path: '/reviews'
+      fullPath: '/dashboard/reviews'
+      preLoaderRoute: typeof AuthenticatedDashboardReviewsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardBusinessesRoute: typeof AuthenticatedDashboardBusinessesRoute
+  AuthenticatedDashboardLeadsRoute: typeof AuthenticatedDashboardLeadsRoute
+  AuthenticatedDashboardPlanRoute: typeof AuthenticatedDashboardPlanRoute
+  AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardBusinessesRoute:
+      AuthenticatedDashboardBusinessesRoute,
+    AuthenticatedDashboardLeadsRoute: AuthenticatedDashboardLeadsRoute,
+    AuthenticatedDashboardPlanRoute: AuthenticatedDashboardPlanRoute,
+    AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
   AdvertiseRoute: AdvertiseRoute,
+  AuthRoute: AuthRoute,
   B2bRoute: B2bRoute,
   CareersRoute: CareersRoute,
   CategoriesRoute: CategoriesRoute,
