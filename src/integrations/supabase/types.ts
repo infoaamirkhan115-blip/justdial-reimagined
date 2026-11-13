@@ -14,6 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_offerings: {
+        Row: {
+          business_id: string
+          business_type: string
+          category: string
+          created_at: string
+          description: string
+          id: string
+          kind: string
+          name: string
+          photos: string[]
+          pricing: Json
+          product_details: Json
+          published: boolean
+          specifications: Json
+          updated_at: string
+        }
+        Insert: {
+          business_id: string
+          business_type?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          name: string
+          photos?: string[]
+          pricing?: Json
+          product_details?: Json
+          published?: boolean
+          specifications?: Json
+          updated_at?: string
+        }
+        Update: {
+          business_id?: string
+          business_type?: string
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          name?: string
+          photos?: string[]
+          pricing?: Json
+          product_details?: Json
+          published?: boolean
+          specifications?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_offerings_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       businesses: {
         Row: {
           address: string
