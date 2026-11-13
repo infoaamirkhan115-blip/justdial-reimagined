@@ -75,7 +75,7 @@ function BusinessView({ b }: { b: Business }) {
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />{b.phone}</a>
-            <Link to="/write-review" className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
+            <Link to="/write-review" search={{ b: b.id }} className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
             {actions.filter((a) => a.label !== "Review").map((a) => <button key={a.label} onClick={() => toast.success(`${a.label} — done`)} className={btnClass("outline")}><a.icon className="size-4" />{a.label}</button>)}
           </div>
 
@@ -84,22 +84,22 @@ function BusinessView({ b }: { b: Business }) {
               {["overview", "services", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Q&A" : t}</TabsTrigger>)}
             </TabsList>
             <TabsContent value="overview" className="mt-6 space-y-4">
-              <p className="leading-relaxed">{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</p>
+              <p className="leading-relaxed">{b.description || <>{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</>}</p>
               <div className="flex flex-wrap gap-2">{b.tags.map((t) => <span key={t} className="rounded-full bg-muted px-3 py-1 text-sm font-medium">{t}</span>)}</div>
               <p className="text-sm"><span className="font-bold">Price:</span> {b.price}</p>
             </TabsContent>
             <TabsContent value="services" className="mt-6">
-              <ul className="divide-y rounded-3xl border bg-card">{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
+              <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
             </TabsContent>
             <TabsContent value="reviews" className="mt-6">
               <div className="grid gap-6 rounded-3xl border bg-card p-6 sm:grid-cols-[160px_1fr]">
                 <div className="text-center"><p className="font-display text-5xl font-extrabold">{b.rating}</p><div className="mt-1 flex justify-center text-primary">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}</div><p className="mt-1 text-xs text-muted-foreground">{b.reviews} ratings</p></div>
                 <div className="space-y-1.5">{dist.map((p, i) => <div key={i} className="flex items-center gap-2 text-sm"><span className="w-3">{5 - i}</span><div className="h-2 flex-1 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-success" style={{ width: `${p}%` }} /></div><span className="w-8 text-right text-muted-foreground">{p}%</span></div>)}</div>
               </div>
-              <ul className="mt-4 space-y-3">{b.reviewList.map((r, i) => (
+              <ul className="mt-4 space-y-3">{b.reviewList.length === 0 && <li className="rounded-3xl border border-dashed bg-card p-6 text-center text-sm text-muted-foreground">No reviews yet — be the first.</li>}{b.reviewList.map((r, i) => (
                 <li key={i} className="rounded-3xl border bg-card p-5">
                   <div className="flex items-center gap-3"><span className="grid size-10 place-items-center rounded-full bg-saffron-soft font-bold">{r.name[0]}</span><div><p className="font-bold">{r.name}</p><p className="text-xs text-muted-foreground">{r.date}</p></div><RatingBadge rating={r.rating} className="ml-auto" /></div>
-                  <p className="mt-3 text-[15px] leading-relaxed">{r.text}</p>
+                  <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed">{r.text}</p>
                 </li>))}</ul>
             </TabsContent>
             <TabsContent value="qa" className="mt-6 space-y-3">
