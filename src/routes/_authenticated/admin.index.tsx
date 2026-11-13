@@ -3,6 +3,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesUpdate } from "@/integrations/supabase/types";
 import { allBusinessesQ, allLeadsQ, allReviewsQ, allUsersQ } from "@/lib/admin-data";
 import { getCategory } from "@/data/catalog";
 import { PageTitle, Stat, timeAgo } from "@/components/dash/shell";
@@ -22,7 +23,7 @@ function Page() {
   const pending = biz.filter((b) => b.status === "pending");
   const upgrades = biz.filter((b) => b.requested_plan);
   const week = Date.now() - 7 * 864e5;
-  const set = async (id: string, patch: Record<string, unknown>, msg: string) => {
+  const set = async (id: string, patch: TablesUpdate<"businesses">, msg: string) => {
     const { error } = await supabase.from("businesses").update(patch).eq("id", id);
     if (error) toast.error(error.message); else { toast.success(msg); qc.invalidateQueries({ queryKey: ["admin"] }); }
   };
