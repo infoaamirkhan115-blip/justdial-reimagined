@@ -11,12 +11,22 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as B2bRouteImport } from './routes/b2b'
+import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CategoriesRouteImport } from './routes/categories'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FreeListingRouteImport } from './routes/free-listing'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MoviesRouteImport } from './routes/movies'
+import { Route as OffersRouteImport } from './routes/offers'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RechargeRouteImport } from './routes/recharge'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TravelRouteImport } from './routes/travel'
+import { Route as WriteReviewRouteImport } from './routes/write-review'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 
@@ -30,6 +40,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdvertiseRoute = AdvertiseRouteImport.update({
   id: '/advertise',
   path: '/advertise',
@@ -40,9 +55,19 @@ const B2bRoute = B2bRouteImport.update({
   path: '/b2b',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoriesRoute = CategoriesRouteImport.update({
   id: '/categories',
   path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FreeListingRoute = FreeListingRouteImport.update({
@@ -55,9 +80,44 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MoviesRoute = MoviesRouteImport.update({
+  id: '/movies',
+  path: '/movies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OffersRoute = OffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechargeRoute = RechargeRouteImport.update({
+  id: '/recharge',
+  path: '/recharge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TravelRoute = TravelRouteImport.update({
+  id: '/travel',
+  path: '/travel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WriteReviewRoute = WriteReviewRouteImport.update({
+  id: '/write-review',
+  path: '/write-review',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusinessIdRoute = BusinessIdRouteImport.update({
@@ -74,24 +134,44 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/b2b': typeof B2bRoute
+  '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
   '/login': typeof LoginRoute
+  '/movies': typeof MoviesRoute
+  '/offers': typeof OffersRoute
+  '/privacy': typeof PrivacyRoute
+  '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
+  '/travel': typeof TravelRoute
+  '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/b2b': typeof B2bRoute
+  '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
   '/login': typeof LoginRoute
+  '/movies': typeof MoviesRoute
+  '/offers': typeof OffersRoute
+  '/privacy': typeof PrivacyRoute
+  '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
+  '/travel': typeof TravelRoute
+  '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
 }
@@ -99,12 +179,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/advertise': typeof AdvertiseRoute
   '/b2b': typeof B2bRoute
+  '/careers': typeof CareersRoute
   '/categories': typeof CategoriesRoute
+  '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
   '/login': typeof LoginRoute
+  '/movies': typeof MoviesRoute
+  '/offers': typeof OffersRoute
+  '/privacy': typeof PrivacyRoute
+  '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
+  '/travel': typeof TravelRoute
+  '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
 }
@@ -113,36 +203,66 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/advertise'
     | '/b2b'
+    | '/careers'
     | '/categories'
+    | '/contact'
     | '/free-listing'
     | '/login'
+    | '/movies'
+    | '/offers'
+    | '/privacy'
+    | '/recharge'
     | '/search'
+    | '/terms'
+    | '/travel'
+    | '/write-review'
     | '/business/$id'
     | '/category/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/advertise'
     | '/b2b'
+    | '/careers'
     | '/categories'
+    | '/contact'
     | '/free-listing'
     | '/login'
+    | '/movies'
+    | '/offers'
+    | '/privacy'
+    | '/recharge'
     | '/search'
+    | '/terms'
+    | '/travel'
+    | '/write-review'
     | '/business/$id'
     | '/category/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/advertise'
     | '/b2b'
+    | '/careers'
     | '/categories'
+    | '/contact'
     | '/free-listing'
     | '/login'
+    | '/movies'
+    | '/offers'
+    | '/privacy'
+    | '/recharge'
     | '/search'
+    | '/terms'
+    | '/travel'
+    | '/write-review'
     | '/business/$id'
     | '/category/$slug'
   fileRoutesById: FileRoutesById
@@ -150,12 +270,22 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   AdvertiseRoute: typeof AdvertiseRoute
   B2bRoute: typeof B2bRoute
+  CareersRoute: typeof CareersRoute
   CategoriesRoute: typeof CategoriesRoute
+  ContactRoute: typeof ContactRoute
   FreeListingRoute: typeof FreeListingRoute
   LoginRoute: typeof LoginRoute
+  MoviesRoute: typeof MoviesRoute
+  OffersRoute: typeof OffersRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RechargeRoute: typeof RechargeRoute
   SearchRoute: typeof SearchRoute
+  TermsRoute: typeof TermsRoute
+  TravelRoute: typeof TravelRoute
+  WriteReviewRoute: typeof WriteReviewRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
 }
@@ -176,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/advertise': {
       id: '/advertise'
       path: '/advertise'
@@ -190,11 +327,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof B2bRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories': {
       id: '/categories'
       path: '/categories'
       fullPath: '/categories'
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/free-listing': {
@@ -211,11 +362,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/movies': {
+      id: '/movies'
+      path: '/movies'
+      fullPath: '/movies'
+      preLoaderRoute: typeof MoviesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/offers': {
+      id: '/offers'
+      path: '/offers'
+      fullPath: '/offers'
+      preLoaderRoute: typeof OffersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recharge': {
+      id: '/recharge'
+      path: '/recharge'
+      fullPath: '/recharge'
+      preLoaderRoute: typeof RechargeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/travel': {
+      id: '/travel'
+      path: '/travel'
+      fullPath: '/travel'
+      preLoaderRoute: typeof TravelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/write-review': {
+      id: '/write-review'
+      path: '/write-review'
+      fullPath: '/write-review'
+      preLoaderRoute: typeof WriteReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/business/$id': {
@@ -238,12 +438,22 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   AdvertiseRoute: AdvertiseRoute,
   B2bRoute: B2bRoute,
+  CareersRoute: CareersRoute,
   CategoriesRoute: CategoriesRoute,
+  ContactRoute: ContactRoute,
   FreeListingRoute: FreeListingRoute,
   LoginRoute: LoginRoute,
+  MoviesRoute: MoviesRoute,
+  OffersRoute: OffersRoute,
+  PrivacyRoute: PrivacyRoute,
+  RechargeRoute: RechargeRoute,
   SearchRoute: SearchRoute,
+  TermsRoute: TermsRoute,
+  TravelRoute: TravelRoute,
+  WriteReviewRoute: WriteReviewRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
 }
