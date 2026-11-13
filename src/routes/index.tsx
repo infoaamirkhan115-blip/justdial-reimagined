@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Building2, CarTaxiFront, Clapperboard, Flame, Hotel, Plane, Smartphone, Stethoscope, Wrench, Zap, Tv, Fuel, CreditCard, Star, TrendingUp, Apple, Play, CheckCircle2 } from "lucide-react";
 import hero from "@/assets/hero-street.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessesQ } from "@/lib/public-data";
 import { BUSINESSES, CATEGORIES, STATS, TRENDING } from "@/data/catalog";
 import { SearchBar } from "@/components/site/search-bar";
 import { CategoryTile, MiniBusinessCard, SectionHeader, btnClass, EnquiryForm } from "@/components/site/ui";
@@ -40,7 +42,8 @@ const REVIEWS = [
 ];
 
 function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: string[] }) {
-  const items = BUSINESSES.filter((b) => cat.includes(b.category));
+  const { data: live = [] } = useQuery(liveBusinessesQ);
+  const items = live.filter((b) => cat.includes(b.category));
   return (
     <section className="container-page mt-20">
       <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0]! }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />

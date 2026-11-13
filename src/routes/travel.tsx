@@ -5,7 +5,8 @@ import { toast } from "sonner";
 import { CITIES } from "@/data/catalog";
 import { PageHero } from "@/components/site/page-hero";
 import { Btn, SectionHeader, MiniBusinessCard } from "@/components/site/ui";
-import { BUSINESSES } from "@/data/catalog";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessesQ } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/travel")({
@@ -21,6 +22,7 @@ const MODES = [{ k: "Flights", i: Plane }, { k: "Hotels", i: BedDouble }, { k: "
 const DEALS = [["Mumbai → Goa", "from ₹2,149"], ["Delhi → Jaipur", "from ₹699 bus"], ["Bengaluru → Kochi", "from ₹2,899"], ["Chennai → Hyderabad", "from ₹1,999"]];
 
 function Page() {
+  const { data: hotels = [] } = useQuery(liveBusinessesQ);
   const [mode, setMode] = useState("Flights");
   const [from, setFrom] = useState("Mumbai");
   const [to, setTo] = useState("Delhi");
@@ -43,7 +45,7 @@ function Page() {
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">{DEALS.map(([r, p]) => <div key={r} className="rounded-3xl border bg-card p-5 lift"><p className="font-bold">{r}</p><p className="mt-1 text-sm font-semibold text-success">{p}</p></div>)}</div>
       </section>
       <section className="mt-12"><SectionHeader eyebrow="Stay" title="Top hotels" action={<Link to="/category/$slug" params={{ slug: "hotels" }} className="text-sm font-bold hover:underline">View all</Link>} />
-        <div className="no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-4">{BUSINESSES.filter((b) => b.category === "hotels").map((b) => <MiniBusinessCard key={b.id} b={b} />)}</div>
+        <div className="no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-4">{hotels.filter((b) => b.category === "hotels").map((b) => <MiniBusinessCard key={b.id} b={b} />)}</div>
       </section>
     </div>
   );
