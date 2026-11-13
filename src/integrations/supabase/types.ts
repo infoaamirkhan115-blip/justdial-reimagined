@@ -14,16 +14,217 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      businesses: {
+        Row: {
+          address: string
+          admin_note: string | null
+          area: string
+          category: string
+          city: string
+          created_at: string
+          description: string
+          hours: string
+          id: string
+          name: string
+          owner_id: string
+          phone: string
+          plan: string
+          price: string
+          requested_plan: string | null
+          sponsored: boolean
+          status: string
+          sub: string
+          tags: string[]
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          address?: string
+          admin_note?: string | null
+          area?: string
+          category: string
+          city: string
+          created_at?: string
+          description?: string
+          hours?: string
+          id?: string
+          name: string
+          owner_id: string
+          phone?: string
+          plan?: string
+          price?: string
+          requested_plan?: string | null
+          sponsored?: boolean
+          status?: string
+          sub?: string
+          tags?: string[]
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          address?: string
+          admin_note?: string | null
+          area?: string
+          category?: string
+          city?: string
+          created_at?: string
+          description?: string
+          hours?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          phone?: string
+          plan?: string
+          price?: string
+          requested_plan?: string | null
+          sponsored?: boolean
+          status?: string
+          sub?: string
+          tags?: string[]
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          business_id: string
+          created_at: string
+          id: string
+          message: string
+          name: string
+          phone: string
+          status: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          id?: string
+          message?: string
+          name: string
+          phone: string
+          status?: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          business_id: string
+          created_at: string
+          id: string
+          name: string
+          owner_reply: string | null
+          rating: number
+          status: string
+          text: string
+          user_id: string | null
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          id?: string
+          name: string
+          owner_reply?: string | null
+          rating: number
+          status?: string
+          text: string
+          user_id?: string | null
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          owner_reply?: string | null
+          rating?: number
+          status?: string
+          text?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "business_owner" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +351,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "business_owner", "user"],
+    },
   },
 } as const
