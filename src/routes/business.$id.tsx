@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { liveBusinessQ, liveBusinessesQ } from "@/lib/public-data";
 import { EnquiryForm, MiniBusinessCard, RatingBadge, btnClass } from "@/components/site/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BusinessOfferings } from "@/components/site/business-offerings";
 
 export const Route = createFileRoute("/business/$id")({
   loader: async ({ params, context }) => ({ b: /^[0-9a-f-]{36}$/.test(params.id) ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id)).catch(() => null) : null }),
@@ -87,7 +88,7 @@ function BusinessView({ b }: { b: Business }) {
 
           <Tabs defaultValue="overview" className="mt-8">
             <TabsList className="h-auto flex-wrap rounded-2xl p-1">
-              {["overview", "services", "photos", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Info" : t}</TabsTrigger>)}
+              {["overview", "catalog", "services", "photos", "reviews", "qa"].map((t) => <TabsTrigger key={t} value={t} className="rounded-xl px-4 py-2 capitalize">{t === "qa" ? "Info" : t === "catalog" ? "Products & services" : t}</TabsTrigger>)}
             </TabsList>
             <TabsContent value="overview" className="mt-6 space-y-4">
               <p className="leading-relaxed">{b.description || <>{b.name} is a trusted {b.sub.toLowerCase()} {cat?.name.toLowerCase()} in {b.area}, {b.city}, serving customers for over {b.years} years. Known for {b.tags.join(", ").toLowerCase()}.</>}</p>
@@ -98,6 +99,7 @@ function BusinessView({ b }: { b: Business }) {
             <TabsContent value="services" className="mt-6">
               <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
             </TabsContent>
+            <TabsContent value="catalog" className="mt-6"><BusinessOfferings businessId={b.id} /></TabsContent>
             <TabsContent value="photos" className="mt-6">
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">{pics.map((src, i) => <a key={src} href={src} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border"><img src={src} alt={`${b.name} photo ${i + 1}`} loading="lazy" className="aspect-[4/3] size-full object-cover transition hover:scale-105" /></a>)}</div>
               {!b.gallery?.length && <p className="mt-3 text-sm text-muted-foreground">The business hasn't added photos yet.</p>}
