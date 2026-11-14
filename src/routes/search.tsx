@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { trackDirectory } from "@/lib/directory-analytics";
 import { useWebMCP } from "use-webmcp-tool";
 import { runWebMCPTool } from "@/lib/webmcp-telemetry";
+import { SponsoredResults } from "@/components/site/sponsored-results";
 
 type S = {
   q?: string | undefined;
@@ -20,6 +21,7 @@ type S = {
   rated?: boolean | undefined;
 };
 export const Route = createFileRoute("/search")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): S => ({
     q: typeof s["q"] === "string" ? s["q"] : undefined,
     city: typeof s["city"] === "string" ? s["city"] : undefined,
@@ -46,6 +48,7 @@ export const Route = createFileRoute("/search")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex,follow" },
     ],
   }),
   component: SearchPage,
@@ -114,6 +117,7 @@ function SearchPage() {
   });
   return (
     <div className="container-page pt-6">
+      <SponsoredResults city={city} allowedIds={directoryResults(query.data??[],{...s,city,page:1}).results.map(b=>b.id)} />
       <nav className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
         <Link to="/">Home</Link>
         <ChevronRight className="size-4" />

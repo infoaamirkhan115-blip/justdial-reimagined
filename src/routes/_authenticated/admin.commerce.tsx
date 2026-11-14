@@ -1,0 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { CommerceManager } from "@/components/dash/commerce-manager";
+export const Route=createFileRoute("/_authenticated/admin/commerce")({
+  staticData: { sitemap: false },head:()=>({meta:[{title:"Commercial centre — Justdial Admin"},{name:"description",content:"Manage dated plans, invoices, placements and merchant offers."},{property:"og:title",content:"Commercial centre — Justdial Admin"},{property:"og:description",content:"Audited commercial records and dated privileges."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"},{name:"robots",content:"noindex"}]}),component:CommerceManager});

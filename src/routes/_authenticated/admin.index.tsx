@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { OperationsOverview, operationsQ } from "@/components/dash/operations-overview";
 export const Route = createFileRoute("/_authenticated/admin/")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Operations overview — Justdial admin" },

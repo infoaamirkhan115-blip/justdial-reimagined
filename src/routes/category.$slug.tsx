@@ -19,8 +19,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { EnquiryPopup } from "@/components/site/enquiry-popup";
+import { SponsoredResults } from "@/components/site/sponsored-results";
 
 export const Route = createFileRoute("/category/$slug")({
+  staticData: { sitemap: true },
   loader: async ({ params, context }) => {
     const definitions = await context.queryClient.ensureQueryData(directoryDefinitionsQ);
     const cat = mapCategories(definitions.categories).find(
@@ -93,6 +95,7 @@ function CategoryPage() {
   );
   return (
     <div className="container-page pt-6">
+      <SponsoredResults city={city} category={cat.slug} placement="category" allowedIds={list.map(b=>b.id)} />
       <nav className="flex items-center gap-1 text-sm text-muted-foreground">
         <Link to="/" className="hover:underline">
           Home

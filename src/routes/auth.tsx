@@ -10,6 +10,7 @@ import { oauthReturnPath } from "@/lib/oauth-return-path";
 
 type S = { redirect?: string | undefined; next?: string | undefined };
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): S => ({
     redirect: typeof s["redirect"] === "string" ? oauthReturnPath(s["redirect"]) : undefined,
     next: typeof s["next"] === "string" ? oauthReturnPath(s["next"]) : undefined,

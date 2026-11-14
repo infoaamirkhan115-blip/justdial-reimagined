@@ -3,6 +3,7 @@ import { Building2, Crown, Inbox, LayoutDashboard, Package, Star, LifeBuoy, Bell
 import { DashShell } from "@/components/dash/shell";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Business workspace \u2014 Justdial" },

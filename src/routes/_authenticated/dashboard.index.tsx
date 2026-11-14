@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { OperationsOverview, operationsQ } from "@/components/dash/operations-overview";
 import { btnClass } from "@/components/site/ui";
 export const Route = createFileRoute("/_authenticated/dashboard/")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Business performance — Justdial" },

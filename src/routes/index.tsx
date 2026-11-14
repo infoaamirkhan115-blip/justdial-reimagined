@@ -24,7 +24,7 @@ import {
 import hero from "@/assets/hero-street.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
-import { BUSINESSES, STATS, TRENDING } from "@/data/catalog";
+import { TRENDING } from "@/data/catalog";
 import { SearchBar } from "@/components/site/search-bar";
 import {
   CategoryTile,
@@ -34,9 +34,12 @@ import {
   EnquiryForm,
   DirectoryState,
 } from "@/components/site/ui";
+import { ManagedHome } from "@/components/site/managed-content";
+import { SponsoredResults } from "@/components/site/sponsored-results";
 import { useCity } from "@/components/site/city";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Justdial — Find anything near you, in seconds" },
@@ -138,7 +141,7 @@ function Home() {
               <SearchBar />
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-2">
-              <span className="text-sm text-ink-muted">Trending in {city}:</span>
+              <span className="text-sm text-ink-muted">Explore in {city}:</span>
               {TRENDING.slice(0, 6).map((t) => (
                 <Link
                   key={t}
@@ -216,11 +219,11 @@ function Home() {
             <div>
               <h2 className="text-2xl font-bold">Bills & recharge</h2>
               <p className="text-sm text-muted-foreground">
-                Pay in seconds. Earn cashback on every payment.
+                Online bill payments are not configured.
               </p>
             </div>
             <span className="rounded-full bg-coral-soft px-3 py-1 text-sm font-bold text-coral">
-              Up to ₹100 cashback
+              Setup required
             </span>
           </div>
           <div className="mt-6 grid grid-cols-3 gap-3 md:grid-cols-6">
@@ -249,7 +252,7 @@ function Home() {
               Find local wholesale suppliers
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Tell us what you need. Verified manufacturers and wholesalers send you quotes — free.
+              Find published local suppliers and contact the businesses that match your requirement.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {[
@@ -275,21 +278,14 @@ function Home() {
           </div>
           <EnquiryForm
             title="Post your requirement"
-            subtitle="Get quotes from verified suppliers in minutes."
+            subtitle="Send an enquiry to a listed supplier."
             cta="Get quotes"
           />
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="container-page mt-20 grid grid-cols-2 gap-6 md:grid-cols-4">
-        {STATS.map((s) => (
-          <div key={s.label} className="border-l-4 border-primary pl-4">
-            <p className="font-display text-3xl font-extrabold md:text-5xl">{s.value}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
-          </div>
-        ))}
-      </section>
+      <ManagedHome />
+      <div className="container-page mt-8"><SponsoredResults city={city} placement="home" /></div>
 
       {/* Grow business */}
       <section className="container-page mt-20">
@@ -299,14 +295,13 @@ function Home() {
               Own a business? <span className="text-primary">Get found.</span>
             </h2>
             <p className="mt-4 max-w-lg text-ink-muted">
-              Crores of people search every day for what you sell. List free in 2 minutes and start
-              getting calls.
+              Publish your business details after review and receive customer enquiries.
             </p>
             <ul className="mt-6 space-y-2 text-sm">
               {[
                 "Free listing, forever",
-                "Leads straight to your phone & WhatsApp",
-                "Verified badge builds instant trust",
+                "Enquiries saved in your business dashboard",
+                "Information checks reviewed separately",
               ].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <CheckCircle2 className="size-4 text-primary" />
@@ -329,60 +324,6 @@ function Home() {
         </div>
       </section>
 
-      {/* App */}
-      <section className="container-page mt-20 grid items-center gap-10 md:grid-cols-2">
-        <div>
-          <h2 className="text-3xl font-extrabold md:text-4xl">Justdial in your pocket</h2>
-          <p className="mt-3 text-muted-foreground">
-            Voice search in 10+ languages, saved favourites and instant offers near you.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#" className={btnClass("ink")}>
-              <Apple className="size-5" />
-              App Store
-            </a>
-            <a href="#" className={btnClass("ink")}>
-              <Play className="size-5" />
-              Google Play
-            </a>
-          </div>
-        </div>
-        <div className="mx-auto w-64 rounded-[2.5rem] border-8 border-ink bg-background p-4 shadow-lift">
-          <div className="mx-auto mb-4 h-1.5 w-16 rounded-full bg-ink/20" />
-          <div className="rounded-2xl bg-gradient-ink p-4 text-ink-foreground">
-            <p className="text-xs text-ink-muted">Good evening</p>
-            <p className="font-display text-lg font-bold">What do you need?</p>
-          </div>
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            {CATEGORIES.slice(0, 6).map((c) => (
-              <div
-                key={c.slug}
-                className="rounded-xl bg-saffron-soft p-2 text-center text-[10px] font-bold leading-tight"
-              >
-                {c.name}
-              </div>
-            ))}
-          </div>
-          <div className="mt-3 space-y-2">
-            {BUSINESSES.slice(0, 2).map((b) => (
-              <div key={b.id} className="flex items-center gap-2 rounded-xl border p-2">
-                <img
-                  src={b.image}
-                  alt=""
-                  className="size-9 rounded-lg object-cover"
-                  loading="lazy"
-                />
-                <div className="min-w-0">
-                  <p className="truncate text-xs font-bold">{b.name}</p>
-                  <p className="text-[10px] text-muted-foreground">
-                    ★ {b.rating} · {b.area}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }

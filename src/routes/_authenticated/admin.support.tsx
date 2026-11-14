@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SupportCenter, supportQ } from "@/components/dash/support-center";
 export const Route = createFileRoute("/_authenticated/admin/support")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>) => ({
     ticket: typeof s["ticket"] === "string" ? s["ticket"] : undefined,
   }),

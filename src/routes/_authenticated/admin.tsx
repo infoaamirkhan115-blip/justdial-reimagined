@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/shell";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  staticData: { sitemap: false },
   beforeLoad: async ({ context }) => {
     const { data } = await supabase.rpc("is_staff");
     if (!data) throw redirect({ to: "/dashboard" });
@@ -39,6 +40,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
       label="Admin"
       nav={[
         { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+        { to: "/admin/content", label: "Content studio", icon: ClipboardCheck },
+        { to: "/admin/commerce", label: "Commercial centre", icon: Tags },
         { to: "/admin/operations", label: "Requirements & outcomes", icon: Inbox },
         { to: "/admin/support", label: "Support tickets", icon: LifeBuoy },
         { to: "/admin/notifications", label: "Notifications", icon: Bell },

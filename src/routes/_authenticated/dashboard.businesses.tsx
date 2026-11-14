@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 type S = { new?: boolean | undefined };
 export const Route = createFileRoute("/_authenticated/dashboard/businesses")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "My listings & AI profile assistant — Justdial" },

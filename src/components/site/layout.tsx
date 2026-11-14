@@ -20,6 +20,7 @@ import { btnClass } from "./ui";
 import { useCity } from "./city";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
+import { ManagedLinks } from "./managed-content";
 
 function AccountButton() {
   const { user, isAdmin, isStaff } = useAuth();
@@ -78,6 +79,7 @@ export function Header() {
           )}
         </div>
         <nav className="ml-auto flex items-center gap-1 text-sm font-semibold">
+          <div className="hidden lg:flex"><ManagedLinks kind="navigation" /></div>
           <Link to="/b2b" className="hidden rounded-lg px-3 py-2 hover:bg-muted lg:block">
             B2B
           </Link>
@@ -155,18 +157,7 @@ export function Footer() {
             India's local search engine. Find, compare and connect with trusted businesses near you
             — in one search.
           </p>
-          <div className="mt-6 flex gap-2">
-            {[Facebook, Instagram, Twitter, Youtube, Linkedin].map((I, i) => (
-              <a
-                key={i}
-                href="#"
-                aria-label="Social link"
-                className="grid size-10 place-items-center rounded-xl bg-ink-foreground/10 hover:bg-ink-foreground/20"
-              >
-                <I className="size-4" />
-              </a>
-            ))}
-          </div>
+          <div className="mt-6 flex flex-wrap gap-2"><ManagedLinks kind="footer" /></div>
         </div>
         <div>
           <h3 className="mb-3 text-sm font-bold">Company</h3>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TrustCenter, trustQ } from "@/components/dash/trust-center";
 export const Route = createFileRoute("/_authenticated/dashboard/reports")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Review reports and appeals — Justdial" },

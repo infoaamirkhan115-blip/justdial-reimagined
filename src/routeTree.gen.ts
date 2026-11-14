@@ -25,6 +25,7 @@ import { Route as OffersRouteImport } from './routes/offers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RechargeRouteImport } from './routes/recharge'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
@@ -34,6 +35,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ClaimIdRouteImport } from './routes/claim.$id'
+import { Route as LocalKeyRouteImport } from './routes/local.$key'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
@@ -41,6 +43,8 @@ import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 import { Route as AuthenticatedAdminChangesRouteImport } from './routes/_authenticated/admin.changes'
 import { Route as AuthenticatedAdminClaimsRouteImport } from './routes/_authenticated/admin.claims'
+import { Route as AuthenticatedAdminCommerceRouteImport } from './routes/_authenticated/admin.commerce'
+import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin.content'
 import { Route as AuthenticatedAdminImportsRouteImport } from './routes/_authenticated/admin.imports'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminLocationsRouteImport } from './routes/_authenticated/admin.locations'
@@ -144,6 +148,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -190,6 +199,11 @@ const ClaimIdRoute = ClaimIdRouteImport.update({
   path: '/claim/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocalKeyRoute = LocalKeyRouteImport.update({
+  id: '/local/$key',
+  path: '/local/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -227,6 +241,18 @@ const AuthenticatedAdminClaimsRoute =
   AuthenticatedAdminClaimsRouteImport.update({
     id: '/claims',
     path: '/claims',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCommerceRoute =
+  AuthenticatedAdminCommerceRouteImport.update({
+    id: '/commerce',
+    path: '/commerce',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminContentRoute =
+  AuthenticatedAdminContentRouteImport.update({
+    id: '/content',
+    path: '/content',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminImportsRoute =
@@ -382,6 +408,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -391,12 +418,15 @@ export interface FileRoutesByFullPath {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/admin/commerce': typeof AuthenticatedAdminCommerceRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -438,6 +468,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -445,12 +476,15 @@ export interface FileRoutesByTo {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/admin/commerce': typeof AuthenticatedAdminCommerceRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -494,6 +528,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -503,12 +538,15 @@ export interface FileRoutesById {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/_authenticated/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/_authenticated/admin/commerce': typeof AuthenticatedAdminCommerceRoute
+  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/_authenticated/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -552,6 +590,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -561,12 +600,15 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
     | '/admin/claims'
+    | '/admin/commerce'
+    | '/admin/content'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
@@ -608,6 +650,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -615,12 +658,15 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
     | '/admin/claims'
+    | '/admin/commerce'
+    | '/admin/content'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
@@ -663,6 +709,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -672,12 +719,15 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/businesses'
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/changes'
     | '/_authenticated/admin/claims'
+    | '/_authenticated/admin/commerce'
+    | '/_authenticated/admin/content'
     | '/_authenticated/admin/imports'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/locations'
@@ -721,6 +771,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RechargeRoute: typeof RechargeRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TravelRoute: typeof TravelRoute
   WriteReviewRoute: typeof WriteReviewRoute
@@ -728,6 +779,7 @@ export interface RootRouteChildren {
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ClaimIdRoute: typeof ClaimIdRoute
+  LocalKeyRoute: typeof LocalKeyRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -845,6 +897,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -908,6 +967,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClaimIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/local/$key': {
+      id: '/local/$key'
+      path: '/local/$key'
+      fullPath: '/local/$key'
+      preLoaderRoute: typeof LocalKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -955,6 +1021,20 @@ declare module '@tanstack/react-router' {
       path: '/claims'
       fullPath: '/admin/claims'
       preLoaderRoute: typeof AuthenticatedAdminClaimsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/commerce': {
+      id: '/_authenticated/admin/commerce'
+      path: '/commerce'
+      fullPath: '/admin/commerce'
+      preLoaderRoute: typeof AuthenticatedAdminCommerceRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/content': {
+      id: '/_authenticated/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/imports': {
@@ -1127,6 +1207,8 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedAdminChangesRoute: typeof AuthenticatedAdminChangesRoute
   AuthenticatedAdminClaimsRoute: typeof AuthenticatedAdminClaimsRoute
+  AuthenticatedAdminCommerceRoute: typeof AuthenticatedAdminCommerceRoute
+  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminImportsRoute: typeof AuthenticatedAdminImportsRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
   AuthenticatedAdminLocationsRoute: typeof AuthenticatedAdminLocationsRoute
@@ -1148,6 +1230,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
   AuthenticatedAdminChangesRoute: AuthenticatedAdminChangesRoute,
   AuthenticatedAdminClaimsRoute: AuthenticatedAdminClaimsRoute,
+  AuthenticatedAdminCommerceRoute: AuthenticatedAdminCommerceRoute,
+  AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminImportsRoute: AuthenticatedAdminImportsRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
   AuthenticatedAdminLocationsRoute: AuthenticatedAdminLocationsRoute,
@@ -1233,6 +1317,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RechargeRoute: RechargeRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TravelRoute: TravelRoute,
   WriteReviewRoute: WriteReviewRoute,
@@ -1241,6 +1326,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
   ClaimIdRoute: ClaimIdRoute,
+  LocalKeyRoute: LocalKeyRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
