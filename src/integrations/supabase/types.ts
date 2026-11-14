@@ -1051,6 +1051,10 @@ export type Database = {
         Args: { reason: string; source_id: string; target_id: string }
         Returns: undefined
       }
+      moderate_review: {
+        Args: { decision_reason: string; hide: boolean; review_id: string }
+        Returns: undefined
+      }
       obvious_placeholder: { Args: { t: string }; Returns: boolean }
       public_verification: {
         Args: { bid: string }
