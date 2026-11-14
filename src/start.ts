@@ -2,7 +2,6 @@ import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/r
 
 import { renderErrorPage } from "./lib/error-page";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
-import { createClient } from "@supabase/supabase-js";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -26,18 +25,6 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
 
-const editorialRedirects = createMiddleware().server(async ({ request, next }) => {
-  const path = new URL(request.url).pathname;
-  if (request.method !== "GET" || path.startsWith("/_") || path.startsWith("/api") || path.startsWith("/admin") || path.startsWith("/dashboard") || path.includes(".")) return next();
-  const url=process.env["SUPABASE_URL"],key=process.env["SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) return next();
-  const s=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith("sb_")&&h.get("Authorization")===`Bearer ${key}`)h.delete("Authorization");h.set("apikey",key);return fetch(input,{...init,headers:h});}}});
-  const r=await s.rpc("resolve_site_redirect",{path});
-  if(r.error) throw new Error("Could not resolve editorial redirects");
-  if(typeof r.data==="string" && /^\/(?!\/)/.test(r.data) && !/[\\\u0000-\u001f]/.test(r.data) && r.data!==path) return new Response(null,{status:301,headers:{Location:r.data}});
-  return next();
-});
-
 // requestMiddleware runs on every request; functionMiddleware only on server functions, where
 // client sendContext is unvalidated input. Append to these arrays, never replace them.
 // Enabling Lovable Cloud adds functionMiddleware: [attachSupabaseAuth], the bearer token that
@@ -46,5 +33,5 @@ const editorialRedirects = createMiddleware().server(async ({ request, next }) =
 // project did not intentionally replace it.
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [errorMiddleware, csrfMiddleware, editorialRedirects],
+  requestMiddleware: [errorMiddleware, csrfMiddleware],
 }));

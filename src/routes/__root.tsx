@@ -14,7 +14,6 @@ import { useRouterState } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header, Footer, MobileNav } from "@/components/site/layout";
-import { DirectoryDefinitionsProvider } from "@/lib/managed-directory";
 import { CityProvider } from "@/components/site/city";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
@@ -80,7 +79,6 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  staticData: { sitemap: false },
   head: () => ({
     // Replace these placeholders with the app's name and description when first building the app.
     // Each content route, / included, must still set its own head(). Never add og:image or
@@ -89,18 +87,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Justdial — Find trusted local businesses near you" },
-      {
-        name: "description",
-        content: "Search, compare and connect with trusted local businesses across India.",
-      },
+      { name: "description", content: "Search, compare and connect with trusted local businesses across India." },
       { name: "author", content: "Justdial" },
       { property: "og:title", content: "Justdial — Find trusted local businesses" },
-      {
-        property: "og:description",
-        content: "Search, compare and connect with trusted local businesses across India.",
-      },
+      { property: "og:description", content: "Search, compare and connect with trusted local businesses across India." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      
     ],
     links: [
       {
@@ -110,10 +103,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap",
-      },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -145,23 +135,17 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
-        <DirectoryDefinitionsProvider>
-          <CityProvider>
-            {app ? (
-              <Outlet />
-            ) : (
-              <>
-                <Header />
-                <main className="min-h-[60vh]">
-                  <Outlet />
-                </main>
-                <Footer />
-                <MobileNav />
-              </>
-            )}
-            <Toaster position="top-center" />
-          </CityProvider>
-        </DirectoryDefinitionsProvider>
+        <CityProvider>
+          {app ? <Outlet /> : (
+            <>
+              <Header />
+              <main className="min-h-[60vh]"><Outlet /></main>
+              <Footer />
+              <MobileNav />
+            </>
+          )}
+          <Toaster position="top-center" />
+        </CityProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

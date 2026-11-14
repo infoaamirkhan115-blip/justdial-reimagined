@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 
 type S = { b?: string | undefined };
 export const Route = createFileRoute("/write-review")({
-  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): S => ({ b: typeof s["b"] === "string" ? s["b"] : undefined }),
   head: () => ({ meta: [
     { title: "Write a review — Help others choose | Justdial" }, { name: "description", content: "Rate and review a local business you've visited to help others make better choices." },

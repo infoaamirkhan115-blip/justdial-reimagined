@@ -1,1 +1,0 @@
-CREATE TRIGGER guard_offering_insert BEFORE INSERT ON public.business_offerings FOR EACH ROW EXECUTE FUNCTION public.guard_offering_update();

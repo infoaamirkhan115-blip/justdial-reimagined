@@ -3,7 +3,7 @@ import clinic from "@/assets/biz-clinic.jpg";
 import repair from "@/assets/biz-repair.jpg";
 
 export const CITIES = ["Noida", "Mumbai", "Delhi", "Bengaluru", "Chennai", "Hyderabad", "Pune", "Kolkata", "Ahmedabad"] as const;
-export type City = string;
+export type City = (typeof CITIES)[number];
 
 export type Category = { slug: string; name: string; icon: string; group: string; subs: string[] };
 
@@ -46,13 +46,11 @@ export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === s
 
 export const TRENDING = ["Restaurants", "AC Repair", "Dentists", "Packers & Movers", "PG", "Gyms", "Beauty & Spa", "Plumbers"];
 
-export type Review = { id?: string; name: string; rating: number; date: string; text: string };
+export type Review = { name: string; rating: number; date: string; text: string };
 export type Business = {
   id: string; name: string; category: string; sub: string; city: City; area: string;
   rating: number; reviews: number; years: number; verified: boolean; trust: boolean; sponsored: boolean;
-  open: boolean | null; hours: string; distance: number | null; phone: string; image: string; tags: string[];
-  offeringTitles?: string[]; matchedOfferings?: string[];
-  categoryName?: string | undefined; searchAliases?: string[] | undefined; attributes?: Record<string, unknown>; serviceAreas?: string[];
+  open: boolean; hours: string; distance: number; phone: string; image: string; tags: string[];
   highlight: string; price: string; services: { name: string; price: string }[]; reviewList: Review[];
   live?: boolean; description?: string; address?: string;
   gallery?: string[]; logo?: string | undefined; website?: string; email?: string; whatsapp?: string; landmark?: string; pincode?: string; payments?: string[]; days?: string[];
@@ -120,7 +118,7 @@ export const BUSINESSES: Business[] = SEED.flatMap((s, si) =>
     return {
       id: `${s.cat}-${ni + 1}`,
       name, category: s.cat, sub: cat.subs[ni % cat.subs.length]!, city,
-      area: (AREAS[city] ?? AREAS["Noida"] ?? [])[ni % 5] ?? "", rating: Math.min(rating, 4.9),
+      area: AREAS[city][ni % 5]!, rating: Math.min(rating, 4.9),
       reviews: Math.floor(80 + rand(n + 3) * 4200), years: 2 + Math.floor(rand(n + 5) * 22),
       verified: rand(n + 7) > 0.25, trust: rand(n + 8) > 0.55, sponsored: ni === 0 || ni === 3,
       open: rand(n + 9) > 0.2, hours: ni % 2 ? "10:00 am – 9:00 pm" : "9:00 am – 11:00 pm",

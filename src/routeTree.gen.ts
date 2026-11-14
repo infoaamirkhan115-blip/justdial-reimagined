@@ -19,55 +19,30 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FreeListingRouteImport } from './routes/free-listing'
-import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RechargeRouteImport } from './routes/recharge'
 import { Route as SearchRouteImport } from './routes/search'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
-import { Route as ClaimIdRouteImport } from './routes/claim.$id'
-import { Route as LocalKeyRouteImport } from './routes/local.$key'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
-import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
-import { Route as AuthenticatedAdminChangesRouteImport } from './routes/_authenticated/admin.changes'
-import { Route as AuthenticatedAdminClaimsRouteImport } from './routes/_authenticated/admin.claims'
-import { Route as AuthenticatedAdminCommerceRouteImport } from './routes/_authenticated/admin.commerce'
-import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin.content'
-import { Route as AuthenticatedAdminImportsRouteImport } from './routes/_authenticated/admin.imports'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
-import { Route as AuthenticatedAdminLocationsRouteImport } from './routes/_authenticated/admin.locations'
-import { Route as AuthenticatedAdminNotificationsRouteImport } from './routes/_authenticated/admin.notifications'
-import { Route as AuthenticatedAdminOperationsRouteImport } from './routes/_authenticated/admin.operations'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
-import { Route as AuthenticatedAdminQualityRouteImport } from './routes/_authenticated/admin.quality'
-import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
-import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin.support'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
-import { Route as AuthenticatedAdminVerificationRouteImport } from './routes/_authenticated/admin.verification'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBusinessesRouteImport } from './routes/_authenticated/dashboard.businesses'
-import { Route as AuthenticatedDashboardClaimsRouteImport } from './routes/_authenticated/dashboard.claims'
 import { Route as AuthenticatedDashboardLeadsRouteImport } from './routes/_authenticated/dashboard.leads'
-import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated/dashboard.notifications'
-import { Route as AuthenticatedDashboardOperationsRouteImport } from './routes/_authenticated/dashboard.operations'
 import { Route as AuthenticatedDashboardPlanRouteImport } from './routes/_authenticated/dashboard.plan'
 import { Route as AuthenticatedDashboardProductsRouteImport } from './routes/_authenticated/dashboard.products'
-import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
-import { Route as AuthenticatedDashboardSupportRouteImport } from './routes/_authenticated/dashboard.support'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -118,11 +93,6 @@ const FreeListingRoute = FreeListingRouteImport.update({
   path: '/free-listing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MoviesRoute = MoviesRouteImport.update({
   id: '/movies',
   path: '/movies',
@@ -148,11 +118,6 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -168,12 +133,6 @@ const WriteReviewRoute = WriteReviewRouteImport.update({
   path: '/write-review',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -194,29 +153,9 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ClaimIdRoute = ClaimIdRouteImport.update({
-  id: '/claim/$id',
-  path: '/claim/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LocalKeyRoute = LocalKeyRouteImport.update({
-  id: '/local/$key',
-  path: '/local/$key',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
-  id: '/audit',
-  path: '/audit',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedAdminBusinessesRoute =
@@ -225,81 +164,15 @@ const AuthenticatedAdminBusinessesRoute =
     path: '/businesses',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminCategoriesRoute =
-  AuthenticatedAdminCategoriesRouteImport.update({
-    id: '/categories',
-    path: '/categories',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminChangesRoute =
-  AuthenticatedAdminChangesRouteImport.update({
-    id: '/changes',
-    path: '/changes',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminClaimsRoute =
-  AuthenticatedAdminClaimsRouteImport.update({
-    id: '/claims',
-    path: '/claims',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminCommerceRoute =
-  AuthenticatedAdminCommerceRouteImport.update({
-    id: '/commerce',
-    path: '/commerce',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminContentRoute =
-  AuthenticatedAdminContentRouteImport.update({
-    id: '/content',
-    path: '/content',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminImportsRoute =
-  AuthenticatedAdminImportsRouteImport.update({
-    id: '/imports',
-    path: '/imports',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedAdminLeadsRoute = AuthenticatedAdminLeadsRouteImport.update({
   id: '/leads',
   path: '/leads',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const AuthenticatedAdminLocationsRoute =
-  AuthenticatedAdminLocationsRouteImport.update({
-    id: '/locations',
-    path: '/locations',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminNotificationsRoute =
-  AuthenticatedAdminNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminOperationsRoute =
-  AuthenticatedAdminOperationsRouteImport.update({
-    id: '/operations',
-    path: '/operations',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedAdminProductsRoute =
   AuthenticatedAdminProductsRouteImport.update({
     id: '/products',
     path: '/products',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminQualityRoute =
-  AuthenticatedAdminQualityRouteImport.update({
-    id: '/quality',
-    path: '/quality',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminReportsRoute =
-  AuthenticatedAdminReportsRouteImport.update({
-    id: '/reports',
-    path: '/reports',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminReviewsRoute =
@@ -308,23 +181,11 @@ const AuthenticatedAdminReviewsRoute =
     path: '/reviews',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminSupportRoute =
-  AuthenticatedAdminSupportRouteImport.update({
-    id: '/support',
-    path: '/support',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const AuthenticatedAdminVerificationRoute =
-  AuthenticatedAdminVerificationRouteImport.update({
-    id: '/verification',
-    path: '/verification',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/',
@@ -337,28 +198,10 @@ const AuthenticatedDashboardBusinessesRoute =
     path: '/businesses',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardClaimsRoute =
-  AuthenticatedDashboardClaimsRouteImport.update({
-    id: '/claims',
-    path: '/claims',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
 const AuthenticatedDashboardLeadsRoute =
   AuthenticatedDashboardLeadsRouteImport.update({
     id: '/leads',
     path: '/leads',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardNotificationsRoute =
-  AuthenticatedDashboardNotificationsRouteImport.update({
-    id: '/notifications',
-    path: '/notifications',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardOperationsRoute =
-  AuthenticatedDashboardOperationsRouteImport.update({
-    id: '/operations',
-    path: '/operations',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardPlanRoute =
@@ -373,22 +216,10 @@ const AuthenticatedDashboardProductsRoute =
     path: '/products',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedDashboardReportsRoute =
-  AuthenticatedDashboardReportsRouteImport.update({
-    id: '/reports',
-    path: '/reports',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
 const AuthenticatedDashboardReviewsRoute =
   AuthenticatedDashboardReviewsRouteImport.update({
     id: '/reviews',
     path: '/reviews',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardSupportRoute =
-  AuthenticatedDashboardSupportRouteImport.update({
-    id: '/support',
-    path: '/support',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
@@ -402,53 +233,28 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/claim/$id': typeof ClaimIdRoute
-  '/local/$key': typeof LocalKeyRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
-  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
-  '/admin/changes': typeof AuthenticatedAdminChangesRoute
-  '/admin/claims': typeof AuthenticatedAdminClaimsRoute
-  '/admin/commerce': typeof AuthenticatedAdminCommerceRoute
-  '/admin/content': typeof AuthenticatedAdminContentRoute
-  '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
-  '/admin/locations': typeof AuthenticatedAdminLocationsRoute
-  '/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
-  '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
-  '/admin/quality': typeof AuthenticatedAdminQualityRoute
-  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
-  '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
-  '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
-  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
-  '/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
-  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
-  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
@@ -462,51 +268,26 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/claim/$id': typeof ClaimIdRoute
-  '/local/$key': typeof LocalKeyRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
-  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
-  '/admin/changes': typeof AuthenticatedAdminChangesRoute
-  '/admin/claims': typeof AuthenticatedAdminClaimsRoute
-  '/admin/commerce': typeof AuthenticatedAdminCommerceRoute
-  '/admin/content': typeof AuthenticatedAdminContentRoute
-  '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
-  '/admin/locations': typeof AuthenticatedAdminLocationsRoute
-  '/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
-  '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
-  '/admin/quality': typeof AuthenticatedAdminQualityRoute
-  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
-  '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
-  '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
-  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
-  '/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
-  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
-  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
@@ -522,53 +303,28 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
-  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/claim/$id': typeof ClaimIdRoute
-  '/local/$key': typeof LocalKeyRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
-  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
-  '/_authenticated/admin/changes': typeof AuthenticatedAdminChangesRoute
-  '/_authenticated/admin/claims': typeof AuthenticatedAdminClaimsRoute
-  '/_authenticated/admin/commerce': typeof AuthenticatedAdminCommerceRoute
-  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
-  '/_authenticated/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
-  '/_authenticated/admin/locations': typeof AuthenticatedAdminLocationsRoute
-  '/_authenticated/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
-  '/_authenticated/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
-  '/_authenticated/admin/quality': typeof AuthenticatedAdminQualityRoute
-  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
-  '/_authenticated/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/_authenticated/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
-  '/_authenticated/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/_authenticated/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
-  '/_authenticated/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
-  '/_authenticated/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/_authenticated/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRoute
-  '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
-  '/_authenticated/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
@@ -584,53 +340,28 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
     | '/recharge'
     | '/search'
-    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
-    | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
-    | '/claim/$id'
-    | '/local/$key'
-    | '/.lovable/oauth/consent'
-    | '/admin/audit'
     | '/admin/businesses'
-    | '/admin/categories'
-    | '/admin/changes'
-    | '/admin/claims'
-    | '/admin/commerce'
-    | '/admin/content'
-    | '/admin/imports'
     | '/admin/leads'
-    | '/admin/locations'
-    | '/admin/notifications'
-    | '/admin/operations'
     | '/admin/products'
-    | '/admin/quality'
-    | '/admin/reports'
     | '/admin/reviews'
-    | '/admin/support'
     | '/admin/users'
-    | '/admin/verification'
     | '/dashboard/businesses'
-    | '/dashboard/claims'
     | '/dashboard/leads'
-    | '/dashboard/notifications'
-    | '/dashboard/operations'
     | '/dashboard/plan'
     | '/dashboard/products'
-    | '/dashboard/reports'
     | '/dashboard/reviews'
-    | '/dashboard/support'
     | '/admin/'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -644,51 +375,26 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
     | '/recharge'
     | '/search'
-    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
-    | '/.well-known/oauth-protected-resource'
     | '/business/$id'
     | '/category/$slug'
-    | '/claim/$id'
-    | '/local/$key'
-    | '/.lovable/oauth/consent'
-    | '/admin/audit'
     | '/admin/businesses'
-    | '/admin/categories'
-    | '/admin/changes'
-    | '/admin/claims'
-    | '/admin/commerce'
-    | '/admin/content'
-    | '/admin/imports'
     | '/admin/leads'
-    | '/admin/locations'
-    | '/admin/notifications'
-    | '/admin/operations'
     | '/admin/products'
-    | '/admin/quality'
-    | '/admin/reports'
     | '/admin/reviews'
-    | '/admin/support'
     | '/admin/users'
-    | '/admin/verification'
     | '/dashboard/businesses'
-    | '/dashboard/claims'
     | '/dashboard/leads'
-    | '/dashboard/notifications'
-    | '/dashboard/operations'
     | '/dashboard/plan'
     | '/dashboard/products'
-    | '/dashboard/reports'
     | '/dashboard/reviews'
-    | '/dashboard/support'
     | '/admin'
     | '/dashboard'
   id:
@@ -703,53 +409,28 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
-    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
     | '/recharge'
     | '/search'
-    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
-    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
-    | '/claim/$id'
-    | '/local/$key'
-    | '/.lovable/oauth/consent'
-    | '/_authenticated/admin/audit'
     | '/_authenticated/admin/businesses'
-    | '/_authenticated/admin/categories'
-    | '/_authenticated/admin/changes'
-    | '/_authenticated/admin/claims'
-    | '/_authenticated/admin/commerce'
-    | '/_authenticated/admin/content'
-    | '/_authenticated/admin/imports'
     | '/_authenticated/admin/leads'
-    | '/_authenticated/admin/locations'
-    | '/_authenticated/admin/notifications'
-    | '/_authenticated/admin/operations'
     | '/_authenticated/admin/products'
-    | '/_authenticated/admin/quality'
-    | '/_authenticated/admin/reports'
     | '/_authenticated/admin/reviews'
-    | '/_authenticated/admin/support'
     | '/_authenticated/admin/users'
-    | '/_authenticated/admin/verification'
     | '/_authenticated/dashboard/businesses'
-    | '/_authenticated/dashboard/claims'
     | '/_authenticated/dashboard/leads'
-    | '/_authenticated/dashboard/notifications'
-    | '/_authenticated/dashboard/operations'
     | '/_authenticated/dashboard/plan'
     | '/_authenticated/dashboard/products'
-    | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/reviews'
-    | '/_authenticated/dashboard/support'
     | '/_authenticated/admin/'
     | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
@@ -765,22 +446,16 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   FreeListingRoute: typeof FreeListingRoute
-  McpRoute: typeof McpRoute
   MoviesRoute: typeof MoviesRoute
   OffersRoute: typeof OffersRoute
   PrivacyRoute: typeof PrivacyRoute
   RechargeRoute: typeof RechargeRoute
   SearchRoute: typeof SearchRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TravelRoute: typeof TravelRoute
   WriteReviewRoute: typeof WriteReviewRoute
-  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
-  ClaimIdRoute: typeof ClaimIdRoute
-  LocalKeyRoute: typeof LocalKeyRoute
-  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -855,13 +530,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FreeListingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/movies': {
       id: '/movies'
       path: '/movies'
@@ -897,13 +565,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -923,13 +584,6 @@ declare module '@tanstack/react-router' {
       path: '/write-review'
       fullPath: '/write-review'
       preLoaderRoute: typeof WriteReviewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -960,39 +614,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/claim/$id': {
-      id: '/claim/$id'
-      path: '/claim/$id'
-      fullPath: '/claim/$id'
-      preLoaderRoute: typeof ClaimIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/local/$key': {
-      id: '/local/$key'
-      path: '/local/$key'
-      fullPath: '/local/$key'
-      preLoaderRoute: typeof LocalKeyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/audit': {
-      id: '/_authenticated/admin/audit'
-      path: '/audit'
-      fullPath: '/admin/audit'
-      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/businesses': {
@@ -1002,74 +628,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBusinessesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/categories': {
-      id: '/_authenticated/admin/categories'
-      path: '/categories'
-      fullPath: '/admin/categories'
-      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/changes': {
-      id: '/_authenticated/admin/changes'
-      path: '/changes'
-      fullPath: '/admin/changes'
-      preLoaderRoute: typeof AuthenticatedAdminChangesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/claims': {
-      id: '/_authenticated/admin/claims'
-      path: '/claims'
-      fullPath: '/admin/claims'
-      preLoaderRoute: typeof AuthenticatedAdminClaimsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/commerce': {
-      id: '/_authenticated/admin/commerce'
-      path: '/commerce'
-      fullPath: '/admin/commerce'
-      preLoaderRoute: typeof AuthenticatedAdminCommerceRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/content': {
-      id: '/_authenticated/admin/content'
-      path: '/content'
-      fullPath: '/admin/content'
-      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/imports': {
-      id: '/_authenticated/admin/imports'
-      path: '/imports'
-      fullPath: '/admin/imports'
-      preLoaderRoute: typeof AuthenticatedAdminImportsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/leads': {
       id: '/_authenticated/admin/leads'
       path: '/leads'
       fullPath: '/admin/leads'
       preLoaderRoute: typeof AuthenticatedAdminLeadsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/locations': {
-      id: '/_authenticated/admin/locations'
-      path: '/locations'
-      fullPath: '/admin/locations'
-      preLoaderRoute: typeof AuthenticatedAdminLocationsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/notifications': {
-      id: '/_authenticated/admin/notifications'
-      path: '/notifications'
-      fullPath: '/admin/notifications'
-      preLoaderRoute: typeof AuthenticatedAdminNotificationsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/operations': {
-      id: '/_authenticated/admin/operations'
-      path: '/operations'
-      fullPath: '/admin/operations'
-      preLoaderRoute: typeof AuthenticatedAdminOperationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/products': {
@@ -1079,20 +642,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/quality': {
-      id: '/_authenticated/admin/quality'
-      path: '/quality'
-      fullPath: '/admin/quality'
-      preLoaderRoute: typeof AuthenticatedAdminQualityRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/reports': {
-      id: '/_authenticated/admin/reports'
-      path: '/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/reviews': {
       id: '/_authenticated/admin/reviews'
       path: '/reviews'
@@ -1100,25 +649,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/support': {
-      id: '/_authenticated/admin/support'
-      path: '/support'
-      fullPath: '/admin/support'
-      preLoaderRoute: typeof AuthenticatedAdminSupportRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
       path: '/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin/verification': {
-      id: '/_authenticated/admin/verification'
-      path: '/verification'
-      fullPath: '/admin/verification'
-      preLoaderRoute: typeof AuthenticatedAdminVerificationRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/dashboard/': {
@@ -1135,32 +670,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardBusinessesRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/dashboard/claims': {
-      id: '/_authenticated/dashboard/claims'
-      path: '/claims'
-      fullPath: '/dashboard/claims'
-      preLoaderRoute: typeof AuthenticatedDashboardClaimsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
     '/_authenticated/dashboard/leads': {
       id: '/_authenticated/dashboard/leads'
       path: '/leads'
       fullPath: '/dashboard/leads'
       preLoaderRoute: typeof AuthenticatedDashboardLeadsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/notifications': {
-      id: '/_authenticated/dashboard/notifications'
-      path: '/notifications'
-      fullPath: '/dashboard/notifications'
-      preLoaderRoute: typeof AuthenticatedDashboardNotificationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/operations': {
-      id: '/_authenticated/dashboard/operations'
-      path: '/operations'
-      fullPath: '/dashboard/operations'
-      preLoaderRoute: typeof AuthenticatedDashboardOperationsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
     '/_authenticated/dashboard/plan': {
@@ -1177,13 +691,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProductsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/dashboard/reports': {
-      id: '/_authenticated/dashboard/reports'
-      path: '/reports'
-      fullPath: '/dashboard/reports'
-      preLoaderRoute: typeof AuthenticatedDashboardReportsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
     '/_authenticated/dashboard/reviews': {
       id: '/_authenticated/dashboard/reviews'
       path: '/reviews'
@@ -1191,59 +698,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardReviewsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/dashboard/support': {
-      id: '/_authenticated/dashboard/support'
-      path: '/support'
-      fullPath: '/dashboard/support'
-      preLoaderRoute: typeof AuthenticatedDashboardSupportRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminBusinessesRoute: typeof AuthenticatedAdminBusinessesRoute
-  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
-  AuthenticatedAdminChangesRoute: typeof AuthenticatedAdminChangesRoute
-  AuthenticatedAdminClaimsRoute: typeof AuthenticatedAdminClaimsRoute
-  AuthenticatedAdminCommerceRoute: typeof AuthenticatedAdminCommerceRoute
-  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
-  AuthenticatedAdminImportsRoute: typeof AuthenticatedAdminImportsRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
-  AuthenticatedAdminLocationsRoute: typeof AuthenticatedAdminLocationsRoute
-  AuthenticatedAdminNotificationsRoute: typeof AuthenticatedAdminNotificationsRoute
-  AuthenticatedAdminOperationsRoute: typeof AuthenticatedAdminOperationsRoute
   AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
-  AuthenticatedAdminQualityRoute: typeof AuthenticatedAdminQualityRoute
-  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
-  AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
-  AuthenticatedAdminVerificationRoute: typeof AuthenticatedAdminVerificationRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminBusinessesRoute: AuthenticatedAdminBusinessesRoute,
-  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
-  AuthenticatedAdminChangesRoute: AuthenticatedAdminChangesRoute,
-  AuthenticatedAdminClaimsRoute: AuthenticatedAdminClaimsRoute,
-  AuthenticatedAdminCommerceRoute: AuthenticatedAdminCommerceRoute,
-  AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
-  AuthenticatedAdminImportsRoute: AuthenticatedAdminImportsRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
-  AuthenticatedAdminLocationsRoute: AuthenticatedAdminLocationsRoute,
-  AuthenticatedAdminNotificationsRoute: AuthenticatedAdminNotificationsRoute,
-  AuthenticatedAdminOperationsRoute: AuthenticatedAdminOperationsRoute,
   AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
-  AuthenticatedAdminQualityRoute: AuthenticatedAdminQualityRoute,
-  AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
-  AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
-  AuthenticatedAdminVerificationRoute: AuthenticatedAdminVerificationRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
@@ -1252,15 +724,10 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardBusinessesRoute: typeof AuthenticatedDashboardBusinessesRoute
-  AuthenticatedDashboardClaimsRoute: typeof AuthenticatedDashboardClaimsRoute
   AuthenticatedDashboardLeadsRoute: typeof AuthenticatedDashboardLeadsRoute
-  AuthenticatedDashboardNotificationsRoute: typeof AuthenticatedDashboardNotificationsRoute
-  AuthenticatedDashboardOperationsRoute: typeof AuthenticatedDashboardOperationsRoute
   AuthenticatedDashboardPlanRoute: typeof AuthenticatedDashboardPlanRoute
   AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRoute
-  AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
-  AuthenticatedDashboardSupportRoute: typeof AuthenticatedDashboardSupportRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
@@ -1268,17 +735,10 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardBusinessesRoute:
       AuthenticatedDashboardBusinessesRoute,
-    AuthenticatedDashboardClaimsRoute: AuthenticatedDashboardClaimsRoute,
     AuthenticatedDashboardLeadsRoute: AuthenticatedDashboardLeadsRoute,
-    AuthenticatedDashboardNotificationsRoute:
-      AuthenticatedDashboardNotificationsRoute,
-    AuthenticatedDashboardOperationsRoute:
-      AuthenticatedDashboardOperationsRoute,
     AuthenticatedDashboardPlanRoute: AuthenticatedDashboardPlanRoute,
     AuthenticatedDashboardProductsRoute: AuthenticatedDashboardProductsRoute,
-    AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
-    AuthenticatedDashboardSupportRoute: AuthenticatedDashboardSupportRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }
 
@@ -1311,23 +771,16 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   FreeListingRoute: FreeListingRoute,
-  McpRoute: McpRoute,
   MoviesRoute: MoviesRoute,
   OffersRoute: OffersRoute,
   PrivacyRoute: PrivacyRoute,
   RechargeRoute: RechargeRoute,
   SearchRoute: SearchRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TravelRoute: TravelRoute,
   WriteReviewRoute: WriteReviewRoute,
-  Char91DotwellKnownChar93OauthProtectedResourceRoute:
-    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
-  ClaimIdRoute: ClaimIdRoute,
-  LocalKeyRoute: LocalKeyRoute,
-  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

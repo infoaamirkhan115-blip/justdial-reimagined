@@ -1,67 +1,22 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import {
-  Building2,
-  Inbox,
-  LayoutDashboard,
-  Package,
-  Star,
-  Users,
-  Tags,
-  MapPin,
-  ShieldCheck,
-  Upload,
-  ClipboardCheck,
-  BadgeCheck,
-  LifeBuoy,
-  Bell,
-} from "lucide-react";
+import { Building2, Inbox, LayoutDashboard, Package, Star, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/shell";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  staticData: { sitemap: false },
   beforeLoad: async ({ context }) => {
-    const { data } = await supabase.rpc("is_staff");
+    const { data } = await supabase.rpc("has_role", { _user_id: context.user.id, _role: "admin" });
     if (!data) throw redirect({ to: "/dashboard" });
   },
-  head: () => ({
-    meta: [
-      { title: "Directory administration \u2014 Justdial" },
-      { name: "description", content: "Manage your Justdial directory administration." },
-      { property: "og:title", content: "Directory administration \u2014 Justdial" },
-      { property: "og:description", content: "Manage your Justdial directory administration." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
+  head: () => ({ meta: [{ title: "Admin — Justdial" }, { name: "robots", content: "noindex" }] }),
   component: () => (
-    <DashShell
-      label="Admin"
-      nav={[
-        { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-        { to: "/admin/content", label: "Content studio", icon: ClipboardCheck },
-        { to: "/admin/commerce", label: "Commercial centre", icon: Tags },
-        { to: "/admin/operations", label: "Requirements & outcomes", icon: Inbox },
-        { to: "/admin/support", label: "Support tickets", icon: LifeBuoy },
-        { to: "/admin/notifications", label: "Notifications", icon: Bell },
-        { to: "/admin/businesses", label: "Businesses", icon: Building2 },
-        { to: "/admin/products", label: "Products & services", icon: Package },
-        { to: "/admin/categories", label: "Categories & attributes", icon: Tags },
-        { to: "/admin/locations", label: "Locations & branches", icon: MapPin },
-        { to: "/admin/quality", label: "Quality centre", icon: ShieldCheck },
-        { to: "/admin/imports", label: "Imports & duplicates", icon: Upload },
-        { to: "/admin/changes", label: "Change review", icon: ClipboardCheck },
-        { to: "/admin/claims", label: "Ownership claims", icon: ShieldCheck },
-        { to: "/admin/verification", label: "Information checks", icon: BadgeCheck },
-        { to: "/admin/reports", label: "Review reports", icon: ClipboardCheck },
-        { to: "/admin/audit", label: "Trust audit", icon: ClipboardCheck },
-        { to: "/admin/leads", label: "Leads", icon: Inbox },
-        { to: "/admin/reviews", label: "Reviews", icon: Star },
-        { to: "/admin/users", label: "Users", icon: Users },
-      ]}
-    >
-      <Outlet />
-    </DashShell>
+    <DashShell label="Admin" nav={[
+      { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+      { to: "/admin/businesses", label: "Businesses", icon: Building2 },
+      { to: "/admin/products", label: "Products & services", icon: Package },
+      { to: "/admin/leads", label: "Leads", icon: Inbox },
+      { to: "/admin/reviews", label: "Reviews", icon: Star },
+      { to: "/admin/users", label: "Users", icon: Users },
+    ]}><Outlet /></DashShell>
   ),
 });
