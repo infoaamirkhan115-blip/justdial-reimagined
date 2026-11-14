@@ -3,7 +3,7 @@ import { MapPin, Send } from "lucide-react";
 import { Btn, EnquiryForm } from "./ui";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-type EnquiryContext = { businessId: string; businessName: string; title: string; image?: string; location?: string; price?: string; description?: string };
+type EnquiryContext = { businessId: string; businessName: string; title: string; image?: string | undefined; location?: string | undefined; price?: string | undefined; description?: string | undefined };
 
 export function EnquiryPopup({ context, label = "Get best price" }: { context: EnquiryContext; label?: string }) {
   const [open, setOpen] = useState(false);
