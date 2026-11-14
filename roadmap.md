@@ -21,3 +21,8 @@
 - [x] Source and save official venue photos for 10 listings, retaining source notes and owner listings.
 - [ ] Replace Lemon Tree Hotel's remaining placeholder: official photo downloads time out and its page capture has no usable photo; needs an accessible official image or owner-provided photo.
 - [x] Verify the 10 saved photos load for visitors and updated contacts read back on public pages.
+
+# Complete Noida category coverage
+- [x] Research and verify at least one real Noida business for each empty main category.
+- [x] Import 28 verified listings with official source notes and no fabricated facts.
+- [x] Verify all 32 main Noida category pages have approved public results (39 listings total).
