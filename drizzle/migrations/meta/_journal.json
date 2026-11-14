@@ -64,6 +64,13 @@
       "when": 1794642072497,
       "tag": "0008_transactional_directory_import",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794642520401,
+      "tag": "0009_strengthen_directory_review_validation",
+      "breakpoints": true
     }
   ]
 }
