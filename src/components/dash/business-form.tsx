@@ -102,14 +102,35 @@ export function BusinessForm({
   const { categories: CATEGORIES, cities: CITIES, locations } = useDirectoryDefinitions();
   const saveListing = useServerFn(saveManagedBusiness);
   const organizationCreate = useServerFn(createOrganization);
-  const organizations = useQuery({ queryKey: ["organizations", ownerId], queryFn: async () => { const r = await supabase.from("business_organizations").select("*").eq("owner_id", ownerId); if(r.error) throw r.error; return r.data; } });
-  const [attributes, setAttributes] = useState<Record<string,string|number|boolean>>((initial?.attributes ?? {}) as Record<string,string|number|boolean>);
-  const [coverage, setCoverage] = useState(Array.isArray(initial?.service_areas) ? (initial.service_areas as string[]).join(", ") : "");
+  const organizations = useQuery({
+    queryKey: ["organizations", ownerId],
+    queryFn: async () => {
+      const r = await supabase.from("business_organizations").select("*").eq("owner_id", ownerId);
+      if (r.error) throw r.error;
+      return r.data;
+    },
+  });
+  const [attributes, setAttributes] = useState<Record<string, string | number | boolean>>(
+    (initial?.attributes ?? {}) as Record<string, string | number | boolean>,
+  );
+  const [coverage, setCoverage] = useState(
+    Array.isArray(initial?.service_areas) ? (initial.service_areas as string[]).join(", ") : "",
+  );
   const [organization, setOrganization] = useState(initial?.organization_id ?? "");
   const [organizationName, setOrganizationName] = useState("");
-  const coord = (initial?.coordinates ?? {}) as Record<string,unknown>;
-  const [coordinates, setCoordinates] = useState({ latitude: typeof coord["latitude"] === "number" ? coord["latitude"] : null, longitude: typeof coord["longitude"] === "number" ? coord["longitude"] : null, source: String(coord["source"] ?? ""), status: coord["status"] === "verified" ? "verified" as const : "unverified" as const, checked_at: String(coord["checked_at"] ?? "") });
-  const [schedule, setSchedule] = useState<{day:string;opens:string;closes:string}[]>(Array.isArray(initial?.structured_hours) ? initial.structured_hours as {day:string;opens:string;closes:string}[] : []);
+  const coord = (initial?.coordinates ?? {}) as Record<string, unknown>;
+  const [coordinates, setCoordinates] = useState({
+    latitude: typeof coord["latitude"] === "number" ? coord["latitude"] : null,
+    longitude: typeof coord["longitude"] === "number" ? coord["longitude"] : null,
+    source: String(coord["source"] ?? ""),
+    status: coord["status"] === "verified" ? ("verified" as const) : ("unverified" as const),
+    checked_at: String(coord["checked_at"] ?? ""),
+  });
+  const [schedule, setSchedule] = useState<{ day: string; opens: string; closes: string }[]>(
+    Array.isArray(initial?.structured_hours)
+      ? (initial.structured_hours as { day: string; opens: string; closes: string }[])
+      : [],
+  );
   const [f, setF] = useState({
     name: initial?.name ?? "",
     category: initial?.category ?? "restaurants",
@@ -219,7 +240,14 @@ export function BusinessForm({
         : f.website.trim();
     const payload = {
       ...rest,
-      attributes, service_areas: coverage.split(",").map(s => s.trim()).filter(Boolean), organization_id: organization || null, coordinates, structured_hours: schedule,
+      attributes,
+      service_areas: coverage
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+      organization_id: organization || null,
+      coordinates,
+      structured_hours: schedule,
       name: f.name.trim(),
       website,
       email: f.email.trim(),
@@ -239,10 +267,22 @@ export function BusinessForm({
         .slice(0, 30),
     };
     try {
-      const result = await saveListing({ data: { ...(initial ? { id: initial.id } : {}), ownerId, payload } });
+      const result = await saveListing({
+        data: { ...(initial ? { id: initial.id } : {}), ownerId, payload },
+      });
       if (!initial) clearListingDraft();
-      toast.success(result.review ? "Changes submitted; approved details stay public until review" : initial ? "Changes saved" : "Business submitted for review");
-    } catch (error) { toast.error(error instanceof Error ? error.message : "Could not save listing"); setBusy(false); return; }
+      toast.success(
+        result.review
+          ? "Changes submitted; approved details stay public until review"
+          : initial
+            ? "Changes saved"
+            : "Business submitted for review",
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not save listing");
+      setBusy(false);
+      return;
+    }
     setBusy(false);
     qc.invalidateQueries();
     onDone();
@@ -252,10 +292,57 @@ export function BusinessForm({
 
   return (
     <form onSubmit={save} className="grid gap-5">
-      {initial && <div className="border-b pb-4"><h3 className="font-bold">Profile completeness: {completeness(initial, cat?.fields)}%</h3><p className="text-xs text-muted-foreground">Completeness does not mean verified ownership.</p>{qualityIssues(initial, cat?.fields, CITIES).filter(i => ["missing_contact","missing_photos","missing_attributes","placeholder","location_conflict","unknown_hours"].includes(i.kind)).map(i => <p key={i.kind} className="mt-1 text-sm text-coral">{i.summary}</p>)}</div>}
+      {initial && (
+        <div className="border-b pb-4">
+          <h3 className="font-bold">Profile completeness: {completeness(initial, cat?.fields)}%</h3>
+          <p className="text-xs text-muted-foreground">
+            Completeness does not mean verified ownership.
+          </p>
+          {qualityIssues(initial, cat?.fields, CITIES)
+            .filter((i) =>
+              [
+                "missing_contact",
+                "missing_photos",
+                "missing_attributes",
+                "placeholder",
+                "location_conflict",
+                "unknown_hours",
+              ].includes(i.kind),
+            )
+            .map((i) => (
+              <p key={i.kind} className="mt-1 text-sm text-coral">
+                {i.summary}
+              </p>
+            ))}
+        </div>
+      )}
       <Section title="Category details">
-        {cat?.fields.map(field => <L key={field.key} label={field.label}>{field.type === "select" ? <select value={String(attributes[field.key] ?? "")} onChange={e => setAttributes({ ...attributes, [field.key]: e.target.value })} className={inputCls}><option value="">Not provided</option>{field.options?.map(v => <option key={v}>{v}</option>)}</select> : <input type={field.type === "url" ? "url" : field.type === "number" ? "number" : "text"} value={String(attributes[field.key] ?? "")} onChange={e => setAttributes({ ...attributes, [field.key]: e.target.value })} className={inputCls} />}</L>)}
-        {!cat?.fields.length && <p className="text-sm text-muted-foreground">No category-specific fields configured.</p>}
+        {cat?.fields.map((field) => (
+          <L key={field.key} label={field.label}>
+            {field.type === "select" ? (
+              <select
+                value={String(attributes[field.key] ?? "")}
+                onChange={(e) => setAttributes({ ...attributes, [field.key]: e.target.value })}
+                className={inputCls}
+              >
+                <option value="">Not provided</option>
+                {field.options?.map((v) => (
+                  <option key={v}>{v}</option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type={field.type === "url" ? "url" : field.type === "number" ? "number" : "text"}
+                value={String(attributes[field.key] ?? "")}
+                onChange={(e) => setAttributes({ ...attributes, [field.key]: e.target.value })}
+                className={inputCls}
+              />
+            )}
+          </L>
+        ))}
+        {!cat?.fields.length && (
+          <p className="text-sm text-muted-foreground">No category-specific fields configured.</p>
+        )}
       </Section>
       <Section title="Basic details">
         <L label="Business name" wide>
@@ -460,18 +547,154 @@ export function BusinessForm({
       </Section>
 
       <Section title="Organization & service coverage">
-        <L label="Organization"><select value={organization} onChange={e => setOrganization(e.target.value)} className={inputCls}><option value="">Independent business</option>{organizations.data?.map(o => <option value={o.id} key={o.id}>{o.name}</option>)}</select></L>
-        <L label="New organization name"><div className="flex gap-2"><input value={organizationName} onChange={e => setOrganizationName(e.target.value)} className={inputCls} /><Btn type="button" variant="outline" disabled={organizationName.trim().length<2} onClick={async () => { try { const r = await organizationCreate({ data: { name: organizationName, ownerId } }); setOrganization(r.id); setOrganizationName(""); qc.invalidateQueries({ queryKey: ["organizations"] }); } catch(e) { toast.error(e instanceof Error ? e.message : "Could not save organization"); } }}>Add</Btn></div></L>
-        <L label="Service areas (separate from physical address)" wide><input value={coverage} onChange={e => setCoverage(e.target.value)} placeholder="Confirmed coverage, separated by commas" className={inputCls} /></L>
+        <L label="Organization">
+          <select
+            value={organization}
+            onChange={(e) => setOrganization(e.target.value)}
+            className={inputCls}
+          >
+            <option value="">Independent business</option>
+            {organizations.data?.map((o) => (
+              <option value={o.id} key={o.id}>
+                {o.name}
+              </option>
+            ))}
+          </select>
+        </L>
+        <L label="New organization name">
+          <div className="flex gap-2">
+            <input
+              value={organizationName}
+              onChange={(e) => setOrganizationName(e.target.value)}
+              className={inputCls}
+            />
+            <Btn
+              type="button"
+              variant="outline"
+              disabled={organizationName.trim().length < 2}
+              onClick={async () => {
+                try {
+                  const r = await organizationCreate({ data: { name: organizationName, ownerId } });
+                  setOrganization(r.id);
+                  setOrganizationName("");
+                  qc.invalidateQueries({ queryKey: ["organizations"] });
+                } catch (e) {
+                  toast.error(e instanceof Error ? e.message : "Could not save organization");
+                }
+              }}
+            >
+              Add
+            </Btn>
+          </div>
+        </L>
+        <L label="Service areas (separate from physical address)" wide>
+          <input
+            value={coverage}
+            onChange={(e) => setCoverage(e.target.value)}
+            placeholder="Confirmed coverage, separated by commas"
+            className={inputCls}
+          />
+        </L>
       </Section>
       <Section title="Coordinates & source">
-        <L label="Latitude"><input type="number" step="any" min={-90} max={90} value={coordinates.latitude ?? ""} onChange={e => setCoordinates({ ...coordinates, latitude: e.target.value ? Number(e.target.value) : null })} className={inputCls} /></L>
-        <L label="Longitude"><input type="number" step="any" min={-180} max={180} value={coordinates.longitude ?? ""} onChange={e => setCoordinates({ ...coordinates, longitude: e.target.value ? Number(e.target.value) : null })} className={inputCls} /></L>
-        <L label="Coordinate source"><input value={coordinates.source} onChange={e => setCoordinates({ ...coordinates, source: e.target.value })} className={inputCls} /></L>
-        <L label="Verification status"><select value={coordinates.status} onChange={e => setCoordinates({ ...coordinates, status: e.target.value === "verified" ? "verified" : "unverified", checked_at: new Date().toISOString() })} className={inputCls}><option value="unverified">Unverified</option><option value="verified">Verified by admin with evidence</option></select></L>
+        <L label="Latitude">
+          <input
+            type="number"
+            step="any"
+            min={-90}
+            max={90}
+            value={coordinates.latitude ?? ""}
+            onChange={(e) =>
+              setCoordinates({
+                ...coordinates,
+                latitude: e.target.value ? Number(e.target.value) : null,
+              })
+            }
+            className={inputCls}
+          />
+        </L>
+        <L label="Longitude">
+          <input
+            type="number"
+            step="any"
+            min={-180}
+            max={180}
+            value={coordinates.longitude ?? ""}
+            onChange={(e) =>
+              setCoordinates({
+                ...coordinates,
+                longitude: e.target.value ? Number(e.target.value) : null,
+              })
+            }
+            className={inputCls}
+          />
+        </L>
+        <L label="Coordinate source">
+          <input
+            value={coordinates.source}
+            onChange={(e) => setCoordinates({ ...coordinates, source: e.target.value })}
+            className={inputCls}
+          />
+        </L>
+        <L label="Verification status">
+          <select
+            value={coordinates.status}
+            onChange={(e) =>
+              setCoordinates({
+                ...coordinates,
+                status: e.target.value === "verified" ? "verified" : "unverified",
+                checked_at: new Date().toISOString(),
+              })
+            }
+            className={inputCls}
+          >
+            <option value="unverified">Unverified</option>
+            <option value="verified">Verified by admin with evidence</option>
+          </select>
+        </L>
       </Section>
       <Section title="Confirmed schedule">
-        {DAYS.map(day => { const current=schedule.find(s=>s.day===day); return <L key={day} label={day}><div className="flex gap-2"><input aria-label={`${day} opens`} type="time" value={current?.opens ?? ""} onChange={e => setSchedule([...schedule.filter(s=>s.day!==day),{ day, opens:e.target.value, closes:current?.closes ?? e.target.value }])} className={inputCls} /><input aria-label={`${day} closes`} type="time" value={current?.closes ?? ""} onChange={e => setSchedule([...schedule.filter(s=>s.day!==day),{ day, opens:current?.opens ?? e.target.value, closes:e.target.value }])} className={inputCls} /><Btn type="button" variant="ghost" aria-label={`Clear ${day} schedule`} onClick={()=>setSchedule(schedule.filter(s=>s.day!==day))}><X className="size-4" /></Btn></div></L>; })}
+        {DAYS.map((day) => {
+          const current = schedule.find((s) => s.day === day);
+          return (
+            <L key={day} label={day}>
+              <div className="flex gap-2">
+                <input
+                  aria-label={`${day} opens`}
+                  type="time"
+                  value={current?.opens ?? ""}
+                  onChange={(e) =>
+                    setSchedule([
+                      ...schedule.filter((s) => s.day !== day),
+                      { day, opens: e.target.value, closes: current?.closes ?? e.target.value },
+                    ])
+                  }
+                  className={inputCls}
+                />
+                <input
+                  aria-label={`${day} closes`}
+                  type="time"
+                  value={current?.closes ?? ""}
+                  onChange={(e) =>
+                    setSchedule([
+                      ...schedule.filter((s) => s.day !== day),
+                      { day, opens: current?.opens ?? e.target.value, closes: e.target.value },
+                    ])
+                  }
+                  className={inputCls}
+                />
+                <Btn
+                  type="button"
+                  variant="ghost"
+                  aria-label={`Clear ${day} schedule`}
+                  onClick={() => setSchedule(schedule.filter((s) => s.day !== day))}
+                >
+                  <X className="size-4" />
+                </Btn>
+              </div>
+            </L>
+          );
+        })}
       </Section>
       <Section title="Location">
         <L label="City">
@@ -491,7 +714,17 @@ export function BusinessForm({
             className={inputCls}
           />
         </L>
-<datalist id="managed-localities">{locations.filter(l=>l.kind==="locality"&&locations.find(c=>c.id===l.parent_id)?.name===f.city).map(l=><option key={l.id} value={l.name}/>)}</datalist>
+        <datalist id="managed-localities">
+          {locations
+            .filter(
+              (l) =>
+                l.kind === "locality" &&
+                locations.find((c) => c.id === l.parent_id)?.name === f.city,
+            )
+            .map((l) => (
+              <option key={l.id} value={l.name} />
+            ))}
+        </datalist>
         <L label="Full address" wide>
           <input
             maxLength={200}

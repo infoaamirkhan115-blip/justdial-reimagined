@@ -23,7 +23,7 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
     name: r.name,
     category: r.category,
     attributes: r.attributes as Record<string, unknown>,
-    serviceAreas: Array.isArray(r.service_areas) ? r.service_areas as string[] : [],
+    serviceAreas: Array.isArray(r.service_areas) ? (r.service_areas as string[]) : [],
     sub: r.sub,
     city: r.city as City,
     area: r.area,
@@ -88,7 +88,11 @@ export const liveBusinessesQ = queryOptions({
     const urls = await photoUrls(allPaths(rows, false));
     const definitions = await fetchDirectoryDefinitions();
     const categories = mapCategories(definitions.categories);
-    return rows.map((r) => { const b = rowToBusiness(r, urls); const c = categories.find(c => c.id === r.category_id || c.slug === r.category); return { ...b, categoryName: c?.name, searchAliases: c?.aliases }; });
+    return rows.map((r) => {
+      const b = rowToBusiness(r, urls);
+      const c = categories.find((c) => c.id === r.category_id || c.slug === r.category);
+      return { ...b, categoryName: c?.name, searchAliases: c?.aliases };
+    });
   },
   staleTime: 30_000,
 });

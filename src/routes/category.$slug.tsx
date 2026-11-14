@@ -1,6 +1,10 @@
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { directoryDefinitionsQ, mapCategories, useDirectoryDefinitions } from "@/lib/managed-directory";
+import {
+  directoryDefinitionsQ,
+  mapCategories,
+  useDirectoryDefinitions,
+} from "@/lib/managed-directory";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { BusinessCard, CategoryTile, DirectoryState } from "@/components/site/ui";
@@ -19,9 +23,26 @@ import { EnquiryPopup } from "@/components/site/enquiry-popup";
 export const Route = createFileRoute("/category/$slug")({
   loader: async ({ params, context }) => {
     const definitions = await context.queryClient.ensureQueryData(directoryDefinitionsQ);
-    const cat = mapCategories(definitions.categories).find(c => c.slug === params.slug || c.canonicalSlug === params.slug);
-    if (cat && cat.canonicalSlug !== params.slug) throw redirect({ to: "/category/$slug", params: { slug: cat.canonicalSlug }, statusCode: 301 });
-    if (!cat) { const r = await supabase.from("directory_redirects").select("to_key").eq("kind", "category").eq("from_key", params.slug).maybeSingle(); if(r.error) throw r.error; if(r.data) throw redirect({ to: "/category/$slug", params: { slug: r.data.to_key }, statusCode: 301 }); }
+    const cat = mapCategories(definitions.categories).find(
+      (c) => c.slug === params.slug || c.canonicalSlug === params.slug,
+    );
+    if (cat && cat.canonicalSlug !== params.slug)
+      throw redirect({
+        to: "/category/$slug",
+        params: { slug: cat.canonicalSlug },
+        statusCode: 301,
+      });
+    if (!cat) {
+      const r = await supabase
+        .from("directory_redirects")
+        .select("to_key")
+        .eq("kind", "category")
+        .eq("from_key", params.slug)
+        .maybeSingle();
+      if (r.error) throw r.error;
+      if (r.data)
+        throw redirect({ to: "/category/$slug", params: { slug: r.data.to_key }, statusCode: 301 });
+    }
     if (!cat) throw notFound();
     return { cat };
   },
@@ -49,12 +70,23 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryPage() {
   const { categories: CATEGORIES } = useDirectoryDefinitions();
-  const [filters, setFilters] = useState<Record<string,string>>({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
   const { cat } = Route.useLoaderData();
   const { city } = useCity();
   const query = useQuery(liveBusinessesQ);
   const live = query.data ?? [];
-  const list = live.filter((b) => b.category === cat.slug && b.city === city && Object.entries(filters).every(([k,v]) => !v || String(b.attributes?.[k] ?? "").toLowerCase().includes(v.toLowerCase())));
+  const list = live.filter(
+    (b) =>
+      b.category === cat.slug &&
+      b.city === city &&
+      Object.entries(filters).every(
+        ([k, v]) =>
+          !v ||
+          String(b.attributes?.[k] ?? "")
+            .toLowerCase()
+            .includes(v.toLowerCase()),
+      ),
+  );
   const related = CATEGORIES.filter((c) => c.group === cat.group && c.slug !== cat.slug).slice(
     0,
     6,
@@ -89,7 +121,33 @@ function CategoryPage() {
           </p>
         </div>
       </header>
-      <div className="mt-5 flex flex-wrap gap-3">{cat.fields.filter(f => f.filter).map(f => <label key={f.key} className="text-sm font-bold">{f.label}<select aria-label={`Filter ${f.label}`} className="ml-2 h-10 rounded-xl border bg-card px-3" value={filters[f.key] ?? ""} onChange={e => setFilters({ ...filters, [f.key]: e.target.value })}><option value="">All</option>{[...new Set(live.filter(b => b.category===cat.slug && b.city===city).map(b => String(b.attributes?.[f.key] ?? "")).filter(Boolean))].map(v => <option key={v}>{v}</option>)}</select></label>)}</div>
+      <div className="mt-5 flex flex-wrap gap-3">
+        {cat.fields
+          .filter((f) => f.filter)
+          .map((f) => (
+            <label key={f.key} className="text-sm font-bold">
+              {f.label}
+              <select
+                aria-label={`Filter ${f.label}`}
+                className="ml-2 h-10 rounded-xl border bg-card px-3"
+                value={filters[f.key] ?? ""}
+                onChange={(e) => setFilters({ ...filters, [f.key]: e.target.value })}
+              >
+                <option value="">All</option>
+                {[
+                  ...new Set(
+                    live
+                      .filter((b) => b.category === cat.slug && b.city === city)
+                      .map((b) => String(b.attributes?.[f.key] ?? ""))
+                      .filter(Boolean),
+                  ),
+                ].map((v) => (
+                  <option key={v}>{v}</option>
+                ))}
+              </select>
+            </label>
+          ))}
+      </div>
       <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">
         {cat.subs.map((s) => (
           <Link

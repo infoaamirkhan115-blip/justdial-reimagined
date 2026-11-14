@@ -37,13 +37,19 @@ import { useDirectoryDefinitions } from "@/lib/managed-directory";
 
 export const Route = createFileRoute("/business/$id")({
   loader: async ({ params, context }) => {
-    const r = await supabase.from("directory_redirects").select("to_key").eq("kind", "business").eq("from_key", params.id).maybeSingle();
-    if(r.error) throw r.error;
-    if(r.data) throw redirect({ to: "/business/$id", params: { id: r.data.to_key }, statusCode: 301 });
+    const r = await supabase
+      .from("directory_redirects")
+      .select("to_key")
+      .eq("kind", "business")
+      .eq("from_key", params.id)
+      .maybeSingle();
+    if (r.error) throw r.error;
+    if (r.data)
+      throw redirect({ to: "/business/$id", params: { id: r.data.to_key }, statusCode: 301 });
     return {
-    b: /^[0-9a-f-]{36}$/.test(params.id)
-      ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id))
-      : null,
+      b: /^[0-9a-f-]{36}$/.test(params.id)
+        ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id))
+        : null,
     };
   },
   pendingComponent: () => (
@@ -103,7 +109,7 @@ function BusinessPage() {
 
 function BusinessView({ b }: { b: Business }) {
   const { categories } = useDirectoryDefinitions();
-  const cat = categories.find(c => c.slug === b.category) ?? getCategory(b.category);
+  const cat = categories.find((c) => c.slug === b.category) ?? getCategory(b.category);
   const { data: all = [] } = useQuery(liveBusinessesQ);
   const similar = similarBusinesses(all, b);
   const pics = b.gallery?.length ? b.gallery : b.image ? [b.image] : [];
@@ -394,7 +400,17 @@ function BusinessView({ b }: { b: Business }) {
                     ["Hours", b.hours],
                     ["Payments", b.payments?.join(", ")],
                     ["Service coverage", b.serviceAreas?.join(", ")],
-                    ...Object.entries(b.attributes ?? {}).filter(([,v]) => v !== "" && v !== null).map(([k,v]) => [categories.find(c => c.slug === b.category)?.fields.find(f => f.key===k)?.label ?? k, String(v)] as [string,string]),
+                    ...Object.entries(b.attributes ?? {})
+                      .filter(([, v]) => v !== "" && v !== null)
+                      .map(
+                        ([k, v]) =>
+                          [
+                            categories
+                              .find((c) => c.slug === b.category)
+                              ?.fields.find((f) => f.key === k)?.label ?? k,
+                            String(v),
+                          ] as [string, string],
+                      ),
                     ["In business", b.years > 0 ? `${b.years} years` : ""],
                   ] as [string, string | undefined][]
                 )

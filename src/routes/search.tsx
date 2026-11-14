@@ -18,10 +18,7 @@ type S = {
 export const Route = createFileRoute("/search")({
   validateSearch: (s: Record<string, unknown>): S => ({
     q: typeof s["q"] === "string" ? s["q"] : undefined,
-    city:
-      typeof s["city"] === "string"
-        ? s["city"]
-        : undefined,
+    city: typeof s["city"] === "string" ? s["city"] : undefined,
     locality: typeof s["locality"] === "string" ? s["locality"] : undefined,
     sort: ["Relevance", "Rating", "Popular"].includes(String(s["sort"]))
       ? String(s["sort"])
