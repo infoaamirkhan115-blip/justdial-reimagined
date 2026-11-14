@@ -29,7 +29,7 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- Site content (businesses, categories, cities) lives as sample data in src/data/catalog.ts; shared site chrome and building blocks live in src/components/site/. Why: no backend yet, so one data module keeps pages consistent and easy to swap for Lovable Cloud later.
+- Category and location definitions are managed in directory tables and shared through directoryDefinitionsQ; legacy slugs stay linked to stable category identifiers. Why: admins can maintain taxonomy without breaking existing associations or public URLs.
 - Real listings, leads and reviews live in Lovable Cloud tables guarded by RLS plus guard triggers; public results show only approved records and strictly filter by selected city. Why: keep results local and prevent owner changes to approval or paid-placement flags.
 - Publicly researched listings retain their official source link in website and an import note; do not fabricate photos, ratings, prices, opening status, distance, or establishment dates. Why: published directory facts must remain distinguishable from unverified information.
 - Owner dashboard lives under /dashboard and admin panel under /admin (both inside the _authenticated gate; admin also checks has_role). Why: one sign-in, two role-based workspaces.
@@ -41,3 +41,6 @@ use the editor.
 - Public directory search uses published offering titles with client-safe matching rules, strict city/locality selection, and URL-backed pagination; database failures remain errors and unknown hours/distances remain null. Why: avoid false empty results and unrelated-city matches without guessing facts.
 - Favourites use authenticated server mutations and owner-only database policies; pending save intent and short-lived onboarding details survive authentication. Why: persist real customer actions without granting access to another user's saved businesses.
 - Public enquiry inserts are validated and rate-limited by phone in a database trigger. Why: direct API submissions must obey the same safety rules as the form.
+
+- Directory quality issues, import staging, staff evidence and audit records are admin-only; owner feedback and change requests have separate access paths. Why: internal notes must never leak through public listings or owner profiles.
+- Approved owner edits are staged by database triggers; catalogue publication, imports, merges and recoverable archives are validated transactionally. Why: direct API calls must obey the same review and preservation rules as the dashboards.

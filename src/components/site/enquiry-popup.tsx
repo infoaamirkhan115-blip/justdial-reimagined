@@ -1,3 +1,6 @@
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
+import { useQuery } from "@tanstack/react-query";
+import { liveBusinessQ } from "@/lib/public-data";
 import { useState } from "react";
 import { MapPin, Send } from "lucide-react";
 import { Btn, EnquiryForm } from "./ui";
@@ -20,21 +23,19 @@ type EnquiryContext = {
   description?: string | undefined;
 };
 
-export function EnquiryPopup({
-  context,
-  label = "Get best price",
-}: {
-  context: EnquiryContext;
-  label?: string;
-}) {
+export function EnquiryPopup({ context, label }: { context: EnquiryContext; label?: string }) {
   const [open, setOpen] = useState(false);
+  const { categories } = useDirectoryDefinitions();
+  const business = useQuery(liveBusinessQ(context.businessId));
+  const enquiryLabel =
+    categories.find((c) => c.slug === business.data?.category)?.cta_label ?? "Send enquiry";
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Btn type="button">
             <Send className="size-4" />
-            {label}
+            {label ?? enquiryLabel}
           </Btn>
         </DialogTrigger>
         <DialogContent className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-4xl">

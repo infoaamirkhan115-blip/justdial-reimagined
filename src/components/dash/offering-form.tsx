@@ -18,7 +18,7 @@ import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { useAuth } from "@/lib/auth";
 import { placeholderContent } from "@/lib/directory-quality";
 
-type Choice = { id: string; name: string };
+type Choice = { id: string; name: string; category?: string };
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="grid gap-1.5 text-sm font-semibold">
@@ -448,6 +448,29 @@ export function OfferingForm({
           </div>
         </Section>
       )}
+      <Section title="Category specifications">
+        {(
+          CATEGORIES.find(
+            (c) => c.slug === businesses.find((b) => b.id === f.business_id)?.category,
+          )?.fields ?? []
+        ).map((field) => (
+          <Field label={field.label} key={field.key}>
+            <input
+              value={f.specifications.find((s) => s.name === field.label)?.value ?? ""}
+              onChange={(e) =>
+                update(
+                  "specifications",
+                  [
+                    ...f.specifications.filter((s) => s.name !== field.label),
+                    { name: field.label, value: e.target.value },
+                  ].filter((s) => s.value),
+                )
+              }
+              className={inputCls}
+            />
+          </Field>
+        ))}
+      </Section>
       <Section title="Specifications">
         <div className="space-y-3">
           {f.specifications.map((s, i) => (

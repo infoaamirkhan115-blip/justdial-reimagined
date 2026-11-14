@@ -181,6 +181,13 @@ export function BusinessOfferings({
                 {[
                   ["Category", selected.category],
                   ["Business type", selected.business_type],
+                  ["Inclusions", selected.inclusions],
+                  ["Exclusions", selected.exclusions],
+                  [
+                    "Minimum quantity",
+                    selected.minimum_quantity ? String(selected.minimum_quantity) : "",
+                  ],
+                  ["Minimum area", selected.minimum_area ? `${selected.minimum_area} sq ft` : ""],
                   ...(selected.kind === "product"
                     ? [
                         ["Brand", selected.product_details.brand],

@@ -221,7 +221,17 @@ export function DirectoryManager({ mode }: { mode: Mode }) {
       </div>
       {mode === "categories" && (
         <div className="space-y-3">
-          {data.categories
+          {[...data.categories]
+            .sort((a, b) => {
+              const ap = data.categories.find((c) => c.id === a.parent_id) ?? a;
+              const bp = data.categories.find((c) => c.id === b.parent_id) ?? b;
+              return (
+                ap.position - bp.position ||
+                ap.name.localeCompare(bp.name) ||
+                Number(Boolean(a.parent_id)) - Number(Boolean(b.parent_id)) ||
+                a.position - b.position
+              );
+            })
             .filter((c) =>
               `${c.name} ${c.slug} ${c.aliases.join(" ")}`.toLowerCase().includes(q.toLowerCase()),
             )
