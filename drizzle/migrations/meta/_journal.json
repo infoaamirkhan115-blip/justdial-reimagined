@@ -155,6 +155,13 @@
       "when": 1794650852303,
       "tag": "0021_phase6_content_and_commercial_foundations",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1794650896619,
+      "tag": "0022_phase6_validated_commerce_actions",
+      "breakpoints": true
     }
   ]
 }

@@ -1771,6 +1771,10 @@ export type Database = {
         Args: { bid: string; decision_reason: string; patch: Json }
         Returns: undefined
       }
+      commerce_action: {
+        Args: { decision_reason: string; kind: string; payload: Json }
+        Returns: string
+      }
       content_permission: { Args: never; Returns: boolean }
       create_buy_requirement: { Args: { payload: Json }; Returns: string }
       create_support_ticket: { Args: { payload: Json }; Returns: Json }
@@ -1884,6 +1888,11 @@ export type Database = {
         Returns: undefined
       }
       record_directory_event: { Args: { payload: Json }; Returns: undefined }
+      record_placement_event: {
+        Args: { ek: string; event_kind: string; pid: string }
+        Returns: undefined
+      }
+      resolve_site_redirect: { Args: { path: string }; Returns: string }
       review_listing_change: {
         Args: { approve: boolean; feedback_text: string; request_id: string }
         Returns: undefined
