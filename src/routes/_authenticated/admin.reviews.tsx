@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/reviews")({
 });
 
 function Page() {
-  const moderate=useServerFn(moderateReview);
+  const moderate = useServerFn(moderateReview);
   const qc = useQueryClient();
   const { data } = useSuspenseQuery(allReviewsQ);
   const [f, setF] = useState("all");
@@ -46,7 +46,10 @@ function Page() {
   };
   return (
     <>
-      <PageTitle title="Review moderation" sub="Review evidence before acting. A negative rating alone is not abuse." />
+      <PageTitle
+        title="Review moderation"
+        sub="Review evidence before acting. A negative rating alone is not abuse."
+      />
       <div className="mb-4 flex gap-2">
         {[
           ["all", "All"],
@@ -89,7 +92,19 @@ function Page() {
                   <Btn
                     variant="outline"
                     className="min-h-9"
-                    onClick={async()=>{const reason=prompt("Decision reason (negative ratings alone are not abuse)");if(!reason)return;try{await moderate({data:{id:r.id,hide:r.status!=="hidden",reason}});toast.success("Moderation decision saved");qc.invalidateQueries();}catch(e){toast.error(e instanceof Error?e.message:"Decision failed");}}}
+                    onClick={async () => {
+                      const reason = prompt(
+                        "Decision reason (negative ratings alone are not abuse)",
+                      );
+                      if (!reason) return;
+                      try {
+                        await moderate({ data: { id: r.id, hide: r.status !== "hidden", reason } });
+                        toast.success("Moderation decision saved");
+                        qc.invalidateQueries();
+                      } catch (e) {
+                        toast.error(e instanceof Error ? e.message : "Decision failed");
+                      }
+                    }}
                   >
                     {r.status === "hidden" ? (
                       <>

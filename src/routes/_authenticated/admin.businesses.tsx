@@ -46,7 +46,7 @@ function Page() {
   const nav = useNavigate({ from: Route.fullPath });
   const qc = useQueryClient();
   const archive = useServerFn(archiveBusiness);
-  const changeTrust=useServerFn(changeListingTrust);
+  const changeTrust = useServerFn(changeListingTrust);
   const { data } = useSuspenseQuery(allBusinessesQ);
   const [q, setQ] = useState("");
   const [editing, setEditing] = useState<Tables<"businesses"> | undefined>();
@@ -57,11 +57,15 @@ function Page() {
   );
 
   const set = async (id: string, patch: Partial<Tables<"businesses">>, msg: string) => {
-    const reason=prompt("Reason for this listing or entitlement change");if(!reason)return;
-    try {await changeTrust({data:{id,patch:JSON.parse(JSON.stringify(patch)),reason}});
+    const reason = prompt("Reason for this listing or entitlement change");
+    if (!reason) return;
+    try {
+      await changeTrust({ data: { id, patch: JSON.parse(JSON.stringify(patch)), reason } });
       toast.success(msg);
       qc.invalidateQueries();
-    }catch(e){toast.error(e instanceof Error?e.message:"Change denied");}
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Change denied");
+    }
   };
   const remove = async (b: Tables<"businesses">) => {
     if (
