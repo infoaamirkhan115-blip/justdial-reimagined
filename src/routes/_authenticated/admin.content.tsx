@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ContentManager } from "@/components/dash/content-manager";
+export const Route=createFileRoute("/_authenticated/admin/content")({head:()=>({meta:[{title:"Content studio — Justdial Admin"},{name:"description",content:"Manage drafts, publication and revisions."},{property:"og:title",content:"Content studio — Justdial Admin"},{property:"og:description",content:"Manage site content and editorial history."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"},{name:"robots",content:"noindex"}]}),component:ContentManager});
