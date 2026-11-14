@@ -179,3 +179,4 @@ export const evidenceLink = createServerFn({ method: "POST" })
     if (r.error) throw new Error("Evidence access denied");
     return r.data.signedUrl;
   });
+export const moderateReview = createServerFn({method:"POST"}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),hide:z.boolean(),reason:z.string().trim().min(5).max(2000)})).handler(async({data,context})=>{const r=await context.supabase.rpc("moderate_review",{review_id:data.id,hide:data.hide,decision_reason:data.reason});if(r.error)throw new Error(r.error.message);return {saved:true};});
