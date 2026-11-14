@@ -1,6 +1,27 @@
-import {it,expect,vi} from "vitest";
-import {telephone,whatsappUrl,directionsUrl,shareBusiness} from "./directory-actions";
-it("normalizes mobile and landline call links",()=>{expect(telephone("98765 43210")).toBe("+919876543210");expect(telephone("0120 4567890")).toBe("+911204567890");expect(telephone("invalid")).toBeUndefined();});
-it("WhatsApp requires an explicitly supplied mobile number",()=>{expect(whatsappUrl()).toBeUndefined();expect(whatsappUrl("01204567890")).toBeUndefined();expect(whatsappUrl("+91 9876543210")).toBe("https://wa.me/919876543210");});
-it("directions encode a useful actual address",()=>{const url=new URL(directionsUrl({name:"A & B",address:"Plot 2",area:"Sector 50",city:"Noida"}));expect(url.searchParams.get("query")).toBe("A & B, Plot 2, Sector 50, Noida");});
-it("sharing falls back to clipboard and propagates failure",async()=>{const writeText=vi.fn().mockResolvedValue(undefined);vi.stubGlobal("navigator",{clipboard:{writeText}});expect(await shareBusiness("A","https://example.com/business/a")).toBe("copied");expect(writeText).toHaveBeenCalledWith("https://example.com/business/a");writeText.mockRejectedValue(new Error("denied"));await expect(shareBusiness("A","x")).rejects.toThrow("denied");vi.unstubAllGlobals();});
+import { it, expect, vi } from "vitest";
+import { telephone, whatsappUrl, directionsUrl, shareBusiness } from "./directory-actions";
+it("normalizes mobile and landline call links", () => {
+  expect(telephone("98765 43210")).toBe("+919876543210");
+  expect(telephone("0120 4567890")).toBe("+911204567890");
+  expect(telephone("invalid")).toBeUndefined();
+});
+it("WhatsApp requires an explicitly supplied mobile number", () => {
+  expect(whatsappUrl()).toBeUndefined();
+  expect(whatsappUrl("01204567890")).toBeUndefined();
+  expect(whatsappUrl("+91 9876543210")).toBe("https://wa.me/919876543210");
+});
+it("directions encode a useful actual address", () => {
+  const url = new URL(
+    directionsUrl({ name: "A & B", address: "Plot 2", area: "Sector 50", city: "Noida" }),
+  );
+  expect(url.searchParams.get("query")).toBe("A & B, Plot 2, Sector 50, Noida");
+});
+it("sharing falls back to clipboard and propagates failure", async () => {
+  const writeText = vi.fn().mockResolvedValue(undefined);
+  vi.stubGlobal("navigator", { clipboard: { writeText } });
+  expect(await shareBusiness("A", "https://example.com/business/a")).toBe("copied");
+  expect(writeText).toHaveBeenCalledWith("https://example.com/business/a");
+  writeText.mockRejectedValue(new Error("denied"));
+  await expect(shareBusiness("A", "x")).rejects.toThrow("denied");
+  vi.unstubAllGlobals();
+});
