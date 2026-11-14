@@ -134,6 +134,13 @@
       "when": 1794644291537,
       "tag": "0018_phase5_privacy_events_and_filtered_operations_aggregates",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1794644574102,
+      "tag": "0019_protect_operational_lead_fields_and_assignment_content",
+      "breakpoints": true
     }
   ]
 }
