@@ -26,3 +26,8 @@
 - [x] Research and verify at least one real Noida business for each empty main category.
 - [x] Import 28 verified listings with official source notes and no fabricated facts.
 - [x] Verify all 32 main Noida category pages have approved public results (39 listings total).
+
+# Real photos for newly added Noida listings
+- [ ] Find and visually verify official business photos for the 28 newly added listings.
+- [ ] Save verified photos privately, link them to listings, and retain official source notes.
+- [ ] Verify the saved photos display on public listing pages; identify any unavailable official photos.
