@@ -395,6 +395,45 @@ export type Database = {
           },
         ]
       }
+      buy_requirements: {
+        Row: {
+          category: string
+          city: string
+          created_at: string
+          description: string
+          id: string
+          name: string
+          phone: string
+          requester_id: string
+          status: string
+          topic: string
+        }
+        Insert: {
+          category: string
+          city: string
+          created_at?: string
+          description: string
+          id?: string
+          name: string
+          phone: string
+          requester_id: string
+          status?: string
+          topic: string
+        }
+        Update: {
+          category?: string
+          city?: string
+          created_at?: string
+          description?: string
+          id?: string
+          name?: string
+          phone?: string
+          requester_id?: string
+          status?: string
+          topic?: string
+        }
+        Relationships: []
+      }
       directory_audit: {
         Row: {
           action: string
@@ -494,6 +533,69 @@ export type Database = {
             columns: ["parent_id"]
             isOneToOne: false
             referencedRelation: "directory_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_events: {
+        Row: {
+          business_id: string | null
+          campaign: string
+          category: string
+          city: string
+          created_at: string
+          dedupe_key: string
+          event: string
+          id: string
+          medium: string
+          offering_id: string | null
+          outcome: string
+          source: string
+          term: string
+        }
+        Insert: {
+          business_id?: string | null
+          campaign?: string
+          category?: string
+          city?: string
+          created_at?: string
+          dedupe_key: string
+          event: string
+          id?: string
+          medium?: string
+          offering_id?: string | null
+          outcome?: string
+          source?: string
+          term?: string
+        }
+        Update: {
+          business_id?: string | null
+          campaign?: string
+          category?: string
+          city?: string
+          created_at?: string
+          dedupe_key?: string
+          event?: string
+          id?: string
+          medium?: string
+          offering_id?: string | null
+          outcome?: string
+          source?: string
+          term?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_events_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "directory_events_offering_id_fkey"
+            columns: ["offering_id"]
+            isOneToOne: false
+            referencedRelation: "business_offerings"
             referencedColumns: ["id"]
           },
         ]
@@ -718,32 +820,112 @@ export type Database = {
           },
         ]
       }
+      in_app_notifications: {
+        Row: {
+          attempted_at: string | null
+          attempts: number
+          business_id: string | null
+          created_at: string
+          delivered_at: string | null
+          entity_id: string
+          event_key: string
+          failure_reason: string
+          id: string
+          recipient_id: string
+          sent_at: string | null
+          status: string
+          template: string
+          title: string
+        }
+        Insert: {
+          attempted_at?: string | null
+          attempts?: number
+          business_id?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          entity_id: string
+          event_key: string
+          failure_reason?: string
+          id?: string
+          recipient_id: string
+          sent_at?: string | null
+          status?: string
+          template: string
+          title: string
+        }
+        Update: {
+          attempted_at?: string | null
+          attempts?: number
+          business_id?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          entity_id?: string
+          event_key?: string
+          failure_reason?: string
+          id?: string
+          recipient_id?: string
+          sent_at?: string | null
+          status?: string
+          template?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "in_app_notifications_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
+          assignee: string | null
           business_id: string
           created_at: string
+          first_response_at: string | null
           id: string
           message: string
           name: string
+          outcome_reason: string
           phone: string
+          quotation_sent_at: string | null
+          quotation_text: string
+          requirement_id: string | null
+          response_due_at: string | null
           status: string
         }
         Insert: {
+          assignee?: string | null
           business_id: string
           created_at?: string
+          first_response_at?: string | null
           id?: string
           message?: string
           name: string
+          outcome_reason?: string
           phone: string
+          quotation_sent_at?: string | null
+          quotation_text?: string
+          requirement_id?: string | null
+          response_due_at?: string | null
           status?: string
         }
         Update: {
+          assignee?: string | null
           business_id?: string
           created_at?: string
+          first_response_at?: string | null
           id?: string
           message?: string
           name?: string
+          outcome_reason?: string
           phone?: string
+          quotation_sent_at?: string | null
+          quotation_text?: string
+          requirement_id?: string | null
+          response_due_at?: string | null
           status?: string
         }
         Relationships: [
@@ -752,6 +934,13 @@ export type Database = {
             columns: ["business_id"]
             isOneToOne: false
             referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "leads_requirement_id_fkey"
+            columns: ["requirement_id"]
+            isOneToOne: false
+            referencedRelation: "buy_requirements"
             referencedColumns: ["id"]
           },
         ]
@@ -799,6 +988,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      notification_preferences: {
+        Row: {
+          email_consent: boolean
+          in_app: boolean
+          sms_consent: boolean
+          updated_at: string
+          user_id: string
+          whatsapp_consent: boolean
+        }
+        Insert: {
+          email_consent?: boolean
+          in_app?: boolean
+          sms_consent?: boolean
+          updated_at?: string
+          user_id: string
+          whatsapp_consent?: boolean
+        }
+        Update: {
+          email_consent?: boolean
+          in_app?: boolean
+          sms_consent?: boolean
+          updated_at?: string
+          user_id?: string
+          whatsapp_consent?: boolean
+        }
+        Relationships: []
       }
       offering_revisions: {
         Row: {
@@ -986,6 +1202,129 @@ export type Database = {
         }
         Relationships: []
       }
+      support_messages: {
+        Row: {
+          actor_id: string | null
+          body: string
+          created_at: string
+          id: string
+          kind: string
+          ticket_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          kind: string
+          ticket_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          assignee: string | null
+          business_id: string | null
+          claim_id: string | null
+          created_at: string
+          description: string
+          escalated_at: string | null
+          id: string
+          lead_id: string | null
+          payment_reference: string
+          priority: string
+          reference: string
+          requester_email: string
+          requester_id: string | null
+          requester_name: string
+          resolution_reason: string
+          response_due_at: string | null
+          status: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          assignee?: string | null
+          business_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          description: string
+          escalated_at?: string | null
+          id?: string
+          lead_id?: string | null
+          payment_reference?: string
+          priority?: string
+          reference?: string
+          requester_email: string
+          requester_id?: string | null
+          requester_name: string
+          resolution_reason?: string
+          response_due_at?: string | null
+          status?: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          assignee?: string | null
+          business_id?: string | null
+          claim_id?: string | null
+          created_at?: string
+          description?: string
+          escalated_at?: string | null
+          id?: string
+          lead_id?: string | null
+          payment_reference?: string
+          priority?: string
+          reference?: string
+          requester_email?: string
+          requester_id?: string | null
+          requester_name?: string
+          resolution_reason?: string
+          response_due_at?: string | null
+          status?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_claim_id_fkey"
+            columns: ["claim_id"]
+            isOneToOne: false
+            referencedRelation: "business_claims"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -1021,10 +1360,16 @@ export type Database = {
         Args: { batch_id: string; reverse_batch: boolean }
         Returns: undefined
       }
+      assign_requirement: {
+        Args: { bid: string; deadline: string; rid: string; staff_id: string }
+        Returns: string
+      }
       change_listing_trust: {
         Args: { bid: string; decision_reason: string; patch: Json }
         Returns: undefined
       }
+      create_buy_requirement: { Args: { payload: Json }; Returns: string }
+      create_support_ticket: { Args: { payload: Json }; Returns: Json }
       decide_claim: {
         Args: {
           claim_id: string
@@ -1051,6 +1396,10 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: never; Returns: boolean }
+      lead_operations_action: {
+        Args: { lid: string; payload: Json }
+        Returns: undefined
+      }
       merge_directory_businesses: {
         Args: { reason: string; source_id: string; target_id: string }
         Returns: undefined
@@ -1060,6 +1409,22 @@ export type Database = {
         Returns: undefined
       }
       obvious_placeholder: { Args: { t: string }; Returns: boolean }
+      operations_records: {
+        Args: { filters: Json; page_number?: number; queue_key: string }
+        Returns: Json
+      }
+      operations_summary: {
+        Args: { filters: Json; owner_only?: boolean }
+        Returns: Json
+      }
+      ops_permission: {
+        Args: { bid?: string; permission: string }
+        Returns: boolean
+      }
+      process_in_app_notification: {
+        Args: { mark_read?: boolean; nid: string }
+        Returns: string
+      }
       public_verification: {
         Args: { bid: string }
         Returns: {
@@ -1068,6 +1433,17 @@ export type Database = {
           scope: string
           summary: string
         }[]
+      }
+      queue_in_app: {
+        Args: {
+          bid: string
+          entity: string
+          event_key_value: string
+          recipient: string
+          template_value: string
+          title_value: string
+        }
+        Returns: undefined
       }
       record_business_verification: {
         Args: {
@@ -1081,6 +1457,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      record_directory_event: { Args: { payload: Json }; Returns: undefined }
       review_listing_change: {
         Args: { approve: boolean; feedback_text: string; request_id: string }
         Returns: undefined
@@ -1094,6 +1471,10 @@ export type Database = {
           staff_role: string
           target_user: string
         }
+        Returns: undefined
+      }
+      support_ticket_action: {
+        Args: { action_payload: Json; ticket: string }
         Returns: undefined
       }
     }

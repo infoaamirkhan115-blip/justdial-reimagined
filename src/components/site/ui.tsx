@@ -17,6 +17,7 @@ import { DynIcon } from "./icon";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { telephone, whatsappUrl } from "@/lib/directory-actions";
+import { trackDirectory } from "@/lib/directory-analytics";
 
 export function DirectoryState({
   query,
@@ -179,6 +180,7 @@ export function MiniBusinessCard({ b }: { b: Business }) {
     <Link
       to="/business/$id"
       params={{ id: b.id }}
+      onClick={() => trackDirectory("result_click", { business_id: b.id })}
       className="block w-72 shrink-0 overflow-hidden rounded-2xl border bg-card lift"
     >
       <div className="relative aspect-[4/3]">
@@ -212,6 +214,7 @@ export function BusinessCard({ b }: { b: Business }) {
       <Link
         to="/business/$id"
         params={{ id: b.id }}
+        onClick={() => trackDirectory("result_click", { business_id: b.id })}
         className="relative shrink-0 overflow-hidden rounded-2xl sm:w-56"
       >
         <div className="aspect-[4/3]">
@@ -228,6 +231,7 @@ export function BusinessCard({ b }: { b: Business }) {
           <Link
             to="/business/$id"
             params={{ id: b.id }}
+            onClick={() => trackDirectory("result_click", { business_id: b.id })}
             className="text-lg font-bold hover:underline"
           >
             {b.name}
@@ -282,7 +286,7 @@ export function BusinessCard({ b }: { b: Business }) {
         <p className="mt-2 line-clamp-1 text-sm italic text-muted-foreground">“{b.highlight}”</p>
         <div className="mt-auto flex flex-wrap gap-2 pt-3">
           {phone && (
-            <a href={`tel:${phone}`} className={btnClass("ink")}>
+            <a href={`tel:${phone}`} onClick={() => trackDirectory("call_click", { business_id: b.id })} className={btnClass("ink")}>
               <Phone className="size-4" />
               Call
             </a>
@@ -290,6 +294,7 @@ export function BusinessCard({ b }: { b: Business }) {
           {wa && (
             <a
               href={wa}
+              onClick={() => trackDirectory("whatsapp_click", { business_id: b.id })}
               target="_blank"
               rel="noreferrer"
               className={cn(btnClass("outline"), "text-success")}
@@ -380,7 +385,7 @@ export function EnquiryForm({
             );
             return;
           }
-          toast.success("Enquiry sent! The business will call you shortly.");
+          toast.success("Enquiry saved for this business.");
         }
         setPhone("");
         setName("");

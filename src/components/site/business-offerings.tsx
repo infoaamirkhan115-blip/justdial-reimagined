@@ -12,6 +12,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { EnquiryPopup } from "./enquiry-popup";
+import { trackDirectory } from "@/lib/directory-analytics";
 
 export function BusinessOfferings({
   businessId,
@@ -104,6 +105,7 @@ export function BusinessOfferings({
               <Btn
                 variant="outline"
                 onClick={() => {
+                  trackDirectory("offering_view", { business_id: businessId, offering_id: item.id });
                   setSelectedId(item.id);
                   setPhoto(0);
                 }}

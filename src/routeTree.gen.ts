@@ -41,20 +41,26 @@ import { Route as AuthenticatedAdminClaimsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminImportsRouteImport } from './routes/_authenticated/admin.imports'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminLocationsRouteImport } from './routes/_authenticated/admin.locations'
+import { Route as AuthenticatedAdminNotificationsRouteImport } from './routes/_authenticated/admin.notifications'
+import { Route as AuthenticatedAdminOperationsRouteImport } from './routes/_authenticated/admin.operations'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
 import { Route as AuthenticatedAdminQualityRouteImport } from './routes/_authenticated/admin.quality'
 import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
+import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin.support'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
 import { Route as AuthenticatedAdminVerificationRouteImport } from './routes/_authenticated/admin.verification'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBusinessesRouteImport } from './routes/_authenticated/dashboard.businesses'
 import { Route as AuthenticatedDashboardClaimsRouteImport } from './routes/_authenticated/dashboard.claims'
 import { Route as AuthenticatedDashboardLeadsRouteImport } from './routes/_authenticated/dashboard.leads'
+import { Route as AuthenticatedDashboardNotificationsRouteImport } from './routes/_authenticated/dashboard.notifications'
+import { Route as AuthenticatedDashboardOperationsRouteImport } from './routes/_authenticated/dashboard.operations'
 import { Route as AuthenticatedDashboardPlanRouteImport } from './routes/_authenticated/dashboard.plan'
 import { Route as AuthenticatedDashboardProductsRouteImport } from './routes/_authenticated/dashboard.products'
 import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
+import { Route as AuthenticatedDashboardSupportRouteImport } from './routes/_authenticated/dashboard.support'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -221,6 +227,18 @@ const AuthenticatedAdminLocationsRoute =
     path: '/locations',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminNotificationsRoute =
+  AuthenticatedAdminNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminOperationsRoute =
+  AuthenticatedAdminOperationsRouteImport.update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminProductsRoute =
   AuthenticatedAdminProductsRouteImport.update({
     id: '/products',
@@ -243,6 +261,12 @@ const AuthenticatedAdminReviewsRoute =
   AuthenticatedAdminReviewsRouteImport.update({
     id: '/reviews',
     path: '/reviews',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSupportRoute =
+  AuthenticatedAdminSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
@@ -280,6 +304,18 @@ const AuthenticatedDashboardLeadsRoute =
     path: '/leads',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardNotificationsRoute =
+  AuthenticatedDashboardNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardOperationsRoute =
+  AuthenticatedDashboardOperationsRouteImport.update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardPlanRoute =
   AuthenticatedDashboardPlanRouteImport.update({
     id: '/plan',
@@ -302,6 +338,12 @@ const AuthenticatedDashboardReviewsRoute =
   AuthenticatedDashboardReviewsRouteImport.update({
     id: '/reviews',
     path: '/reviews',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSupportRoute =
+  AuthenticatedDashboardSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
@@ -336,19 +378,25 @@ export interface FileRoutesByFullPath {
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
+  '/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
+  '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/quality': typeof AuthenticatedAdminQualityRoute
   '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
@@ -381,19 +429,25 @@ export interface FileRoutesByTo {
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
+  '/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
+  '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/quality': typeof AuthenticatedAdminQualityRoute
   '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
@@ -430,19 +484,25 @@ export interface FileRoutesById {
   '/_authenticated/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/_authenticated/admin/locations': typeof AuthenticatedAdminLocationsRoute
+  '/_authenticated/admin/notifications': typeof AuthenticatedAdminNotificationsRoute
+  '/_authenticated/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/admin/quality': typeof AuthenticatedAdminQualityRoute
   '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
+  '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/_authenticated/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
   '/_authenticated/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/_authenticated/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
+  '/_authenticated/dashboard/notifications': typeof AuthenticatedDashboardNotificationsRoute
+  '/_authenticated/dashboard/operations': typeof AuthenticatedDashboardOperationsRoute
   '/_authenticated/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRoute
   '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/_authenticated/dashboard/support': typeof AuthenticatedDashboardSupportRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
@@ -479,19 +539,25 @@ export interface FileRouteTypes {
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
+    | '/admin/notifications'
+    | '/admin/operations'
     | '/admin/products'
     | '/admin/quality'
     | '/admin/reports'
     | '/admin/reviews'
+    | '/admin/support'
     | '/admin/users'
     | '/admin/verification'
     | '/dashboard/businesses'
     | '/dashboard/claims'
     | '/dashboard/leads'
+    | '/dashboard/notifications'
+    | '/dashboard/operations'
     | '/dashboard/plan'
     | '/dashboard/products'
     | '/dashboard/reports'
     | '/dashboard/reviews'
+    | '/dashboard/support'
     | '/admin/'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -524,19 +590,25 @@ export interface FileRouteTypes {
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
+    | '/admin/notifications'
+    | '/admin/operations'
     | '/admin/products'
     | '/admin/quality'
     | '/admin/reports'
     | '/admin/reviews'
+    | '/admin/support'
     | '/admin/users'
     | '/admin/verification'
     | '/dashboard/businesses'
     | '/dashboard/claims'
     | '/dashboard/leads'
+    | '/dashboard/notifications'
+    | '/dashboard/operations'
     | '/dashboard/plan'
     | '/dashboard/products'
     | '/dashboard/reports'
     | '/dashboard/reviews'
+    | '/dashboard/support'
     | '/admin'
     | '/dashboard'
   id:
@@ -572,19 +644,25 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/imports'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/locations'
+    | '/_authenticated/admin/notifications'
+    | '/_authenticated/admin/operations'
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/quality'
     | '/_authenticated/admin/reports'
     | '/_authenticated/admin/reviews'
+    | '/_authenticated/admin/support'
     | '/_authenticated/admin/users'
     | '/_authenticated/admin/verification'
     | '/_authenticated/dashboard/businesses'
     | '/_authenticated/dashboard/claims'
     | '/_authenticated/dashboard/leads'
+    | '/_authenticated/dashboard/notifications'
+    | '/_authenticated/dashboard/operations'
     | '/_authenticated/dashboard/plan'
     | '/_authenticated/dashboard/products'
     | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/reviews'
+    | '/_authenticated/dashboard/support'
     | '/_authenticated/admin/'
     | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
@@ -839,6 +917,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminLocationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/notifications': {
+      id: '/_authenticated/admin/notifications'
+      path: '/notifications'
+      fullPath: '/admin/notifications'
+      preLoaderRoute: typeof AuthenticatedAdminNotificationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/operations': {
+      id: '/_authenticated/admin/operations'
+      path: '/operations'
+      fullPath: '/admin/operations'
+      preLoaderRoute: typeof AuthenticatedAdminOperationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/products': {
       id: '/_authenticated/admin/products'
       path: '/products'
@@ -865,6 +957,13 @@ declare module '@tanstack/react-router' {
       path: '/reviews'
       fullPath: '/admin/reviews'
       preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/support': {
+      id: '/_authenticated/admin/support'
+      path: '/support'
+      fullPath: '/admin/support'
+      preLoaderRoute: typeof AuthenticatedAdminSupportRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/users': {
@@ -909,6 +1008,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardLeadsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/notifications': {
+      id: '/_authenticated/dashboard/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/notifications'
+      preLoaderRoute: typeof AuthenticatedDashboardNotificationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/operations': {
+      id: '/_authenticated/dashboard/operations'
+      path: '/operations'
+      fullPath: '/dashboard/operations'
+      preLoaderRoute: typeof AuthenticatedDashboardOperationsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/plan': {
       id: '/_authenticated/dashboard/plan'
       path: '/plan'
@@ -937,6 +1050,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardReviewsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/support': {
+      id: '/_authenticated/dashboard/support'
+      path: '/support'
+      fullPath: '/dashboard/support'
+      preLoaderRoute: typeof AuthenticatedDashboardSupportRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
@@ -949,10 +1069,13 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminImportsRoute: typeof AuthenticatedAdminImportsRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
   AuthenticatedAdminLocationsRoute: typeof AuthenticatedAdminLocationsRoute
+  AuthenticatedAdminNotificationsRoute: typeof AuthenticatedAdminNotificationsRoute
+  AuthenticatedAdminOperationsRoute: typeof AuthenticatedAdminOperationsRoute
   AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
   AuthenticatedAdminQualityRoute: typeof AuthenticatedAdminQualityRoute
   AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
+  AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminVerificationRoute: typeof AuthenticatedAdminVerificationRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -967,10 +1090,13 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminImportsRoute: AuthenticatedAdminImportsRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
   AuthenticatedAdminLocationsRoute: AuthenticatedAdminLocationsRoute,
+  AuthenticatedAdminNotificationsRoute: AuthenticatedAdminNotificationsRoute,
+  AuthenticatedAdminOperationsRoute: AuthenticatedAdminOperationsRoute,
   AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
   AuthenticatedAdminQualityRoute: AuthenticatedAdminQualityRoute,
   AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
+  AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedAdminVerificationRoute: AuthenticatedAdminVerificationRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
@@ -983,10 +1109,13 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardBusinessesRoute: typeof AuthenticatedDashboardBusinessesRoute
   AuthenticatedDashboardClaimsRoute: typeof AuthenticatedDashboardClaimsRoute
   AuthenticatedDashboardLeadsRoute: typeof AuthenticatedDashboardLeadsRoute
+  AuthenticatedDashboardNotificationsRoute: typeof AuthenticatedDashboardNotificationsRoute
+  AuthenticatedDashboardOperationsRoute: typeof AuthenticatedDashboardOperationsRoute
   AuthenticatedDashboardPlanRoute: typeof AuthenticatedDashboardPlanRoute
   AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRoute
   AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
+  AuthenticatedDashboardSupportRoute: typeof AuthenticatedDashboardSupportRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
@@ -996,10 +1125,15 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
       AuthenticatedDashboardBusinessesRoute,
     AuthenticatedDashboardClaimsRoute: AuthenticatedDashboardClaimsRoute,
     AuthenticatedDashboardLeadsRoute: AuthenticatedDashboardLeadsRoute,
+    AuthenticatedDashboardNotificationsRoute:
+      AuthenticatedDashboardNotificationsRoute,
+    AuthenticatedDashboardOperationsRoute:
+      AuthenticatedDashboardOperationsRoute,
     AuthenticatedDashboardPlanRoute: AuthenticatedDashboardPlanRoute,
     AuthenticatedDashboardProductsRoute: AuthenticatedDashboardProductsRoute,
     AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
+    AuthenticatedDashboardSupportRoute: AuthenticatedDashboardSupportRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }
 
