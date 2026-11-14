@@ -43,7 +43,8 @@ export function directoryResults(
       const text = [
         b.name,
         b.category,
-        getCategory(b.category)?.name ?? "",
+        b.categoryName ?? getCategory(b.category)?.name ?? "",
+        ...(b.searchAliases ?? []),
         b.sub,
         b.area,
         ...b.tags,

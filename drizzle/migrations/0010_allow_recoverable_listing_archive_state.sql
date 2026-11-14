@@ -1,0 +1,2 @@
+ALTER TABLE public.businesses DROP CONSTRAINT businesses_status_check;
+ALTER TABLE public.businesses ADD CONSTRAINT businesses_status_check CHECK(status IN ('pending','approved','rejected','suspended','archived'));

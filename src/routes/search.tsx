@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronRight, SlidersHorizontal } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
-import { CITIES } from "@/data/catalog";
 import { directoryResults } from "@/lib/directory-search";
 import { BusinessCard, Btn, DirectoryState } from "@/components/site/ui";
 import { SearchBar } from "@/components/site/search-bar";
@@ -19,10 +18,7 @@ type S = {
 export const Route = createFileRoute("/search")({
   validateSearch: (s: Record<string, unknown>): S => ({
     q: typeof s["q"] === "string" ? s["q"] : undefined,
-    city:
-      typeof s["city"] === "string" && (CITIES as readonly string[]).includes(s["city"])
-        ? s["city"]
-        : undefined,
+    city: typeof s["city"] === "string" ? s["city"] : undefined,
     locality: typeof s["locality"] === "string" ? s["locality"] : undefined,
     sort: ["Relevance", "Rating", "Popular"].includes(String(s["sort"]))
       ? String(s["sort"])

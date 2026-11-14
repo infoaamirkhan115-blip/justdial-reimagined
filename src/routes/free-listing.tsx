@@ -1,8 +1,9 @@
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, PhoneCall, Store, TrendingUp, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { CATEGORIES, CITIES, STATS } from "@/data/catalog";
+import { STATS } from "@/data/catalog";
 import { Btn, SectionHeader } from "@/components/site/ui";
 import {
   Accordion,
@@ -72,6 +73,7 @@ const FEATURES = [
 ];
 
 function Page() {
+  const { categories: CATEGORIES, cities: CITIES } = useDirectoryDefinitions();
   const [form, setForm] = useState({ name: "", phone: "", city: "Noida", cat: "restaurants" });
   const nav = useNavigate();
   useEffect(() => {

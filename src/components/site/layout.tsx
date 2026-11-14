@@ -1,3 +1,4 @@
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Bell,
@@ -13,7 +14,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import { useState } from "react";
-import { CATEGORIES, CITIES } from "@/data/catalog";
+
 import { SearchBar } from "./search-bar";
 import { btnClass } from "./ui";
 import { useCity } from "./city";
@@ -61,6 +62,7 @@ export function Logo({ light }: { light?: boolean }) {
 }
 
 export function Header() {
+  const { categories: CATEGORIES, cities: CITIES } = useDirectoryDefinitions();
   const path = useRouterState({ select: (s) => s.location.pathname });
   const [lang, setLang] = useState<"EN" | "हिं">("EN");
   const showSearch = path !== "/";
@@ -142,6 +144,7 @@ export function MobileNav() {
 }
 
 export function Footer() {
+  const { categories: CATEGORIES, cities: CITIES } = useDirectoryDefinitions();
   const { setCity } = useCity();
   return (
     <footer className="mt-24 bg-gradient-ink pb-24 text-ink-foreground md:pb-0">

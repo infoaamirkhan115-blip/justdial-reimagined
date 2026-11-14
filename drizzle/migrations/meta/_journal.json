@@ -43,6 +43,41 @@
       "when": 1794640174348,
       "tag": "0005_directory_favourites_and_enquiry_validation",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794641913057,
+      "tag": "0006_directory_management_and_review",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794641977052,
+      "tag": "0007_directory_guard_privileged_backfill",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794642072497,
+      "tag": "0008_transactional_directory_import",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794642520401,
+      "tag": "0009_strengthen_directory_review_validation",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794642770920,
+      "tag": "0010_allow_recoverable_listing_archive_state",
+      "breakpoints": true
     }
   ]
 }
