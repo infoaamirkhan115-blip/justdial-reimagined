@@ -171,6 +171,60 @@ export type Database = {
         }
         Relationships: []
       }
+      business_subscriptions: {
+        Row: {
+          actor_id: string
+          business_id: string
+          cancel_at_end: boolean
+          created_at: string
+          ends_at: string
+          id: string
+          plan_id: string
+          reason: string
+          starts_at: string
+          status: string
+        }
+        Insert: {
+          actor_id: string
+          business_id: string
+          cancel_at_end?: boolean
+          created_at?: string
+          ends_at: string
+          id?: string
+          plan_id: string
+          reason: string
+          starts_at: string
+          status?: string
+        }
+        Update: {
+          actor_id?: string
+          business_id?: string
+          cancel_at_end?: boolean
+          created_at?: string
+          ends_at?: string
+          id?: string
+          plan_id?: string
+          reason?: string
+          starts_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_subscriptions_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "business_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plan_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_verifications: {
         Row: {
           business_id: string
@@ -251,6 +305,7 @@ export type Database = {
           pincode_id: string | null
           plan: string
           price: string
+          public_slug: string | null
           requested_plan: string | null
           service_areas: Json
           services: Json
@@ -297,6 +352,7 @@ export type Database = {
           pincode_id?: string | null
           plan?: string
           price?: string
+          public_slug?: string | null
           requested_plan?: string | null
           service_areas?: Json
           services?: Json
@@ -343,6 +399,7 @@ export type Database = {
           pincode_id?: string | null
           plan?: string
           price?: string
+          public_slug?: string | null
           requested_plan?: string | null
           service_areas?: Json
           services?: Json
@@ -433,6 +490,97 @@ export type Database = {
           topic?: string
         }
         Relationships: []
+      }
+      commercial_records: {
+        Row: {
+          amount_minor: number
+          created_at: string
+          currency: string
+          external_reference: string
+          id: string
+          method: string
+          reason: string
+          recorded_by: string
+          reference: string
+          status: string
+          subscription_id: string
+        }
+        Insert: {
+          amount_minor: number
+          created_at?: string
+          currency?: string
+          external_reference?: string
+          id?: string
+          method: string
+          reason: string
+          recorded_by: string
+          reference: string
+          status: string
+          subscription_id: string
+        }
+        Update: {
+          amount_minor?: number
+          created_at?: string
+          currency?: string
+          external_reference?: string
+          id?: string
+          method?: string
+          reason?: string
+          recorded_by?: string
+          reference?: string
+          status?: string
+          subscription_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commercial_records_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "business_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_revisions: {
+        Row: {
+          action: string
+          actor_id: string
+          content_id: string
+          created_at: string
+          id: string
+          payload: Json
+          reason: string
+          revision: number
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          content_id: string
+          created_at?: string
+          id?: string
+          payload: Json
+          reason: string
+          revision: number
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          content_id?: string
+          created_at?: string
+          id?: string
+          payload?: Json
+          reason?: string
+          revision?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_revisions_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "site_content"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       directory_audit: {
         Row: {
@@ -989,6 +1137,62 @@ export type Database = {
           },
         ]
       }
+      merchant_offers: {
+        Row: {
+          approved: boolean
+          business_id: string
+          city: string
+          eligibility: string
+          ends_at: string
+          id: string
+          locality: string
+          redemption_mode: string
+          starts_at: string
+          status: string
+          terms: string
+          title: string
+          usage_limit: number
+        }
+        Insert: {
+          approved?: boolean
+          business_id: string
+          city: string
+          eligibility: string
+          ends_at: string
+          id?: string
+          locality?: string
+          redemption_mode?: string
+          starts_at: string
+          status?: string
+          terms: string
+          title: string
+          usage_limit?: number
+        }
+        Update: {
+          approved?: boolean
+          business_id?: string
+          city?: string
+          eligibility?: string
+          ends_at?: string
+          id?: string
+          locality?: string
+          redemption_mode?: string
+          starts_at?: string
+          status?: string
+          terms?: string
+          title?: string
+          usage_limit?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "merchant_offers_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_preferences: {
         Row: {
           email_consent: boolean
@@ -1015,6 +1219,41 @@ export type Database = {
           whatsapp_consent?: boolean
         }
         Relationships: []
+      }
+      offer_redemptions: {
+        Row: {
+          created_at: string
+          id: string
+          offer_id: string
+          reason: string
+          recorded_by: string
+          reference: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          offer_id: string
+          reason: string
+          recorded_by: string
+          reference: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          offer_id?: string
+          reason?: string
+          recorded_by?: string
+          reference?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offer_redemptions_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "merchant_offers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       offering_revisions: {
         Row: {
@@ -1050,6 +1289,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      placement_events: {
+        Row: {
+          created_at: string
+          event_key: string
+          id: string
+          kind: string
+          lead_id: string | null
+          placement_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_key: string
+          id?: string
+          kind: string
+          lead_id?: string | null
+          placement_id: string
+        }
+        Update: {
+          created_at?: string
+          event_key?: string
+          id?: string
+          kind?: string
+          lead_id?: string | null
+          placement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "placement_events_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "placement_events_placement_id_fkey"
+            columns: ["placement_id"]
+            isOneToOne: false
+            referencedRelation: "sponsored_placements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plan_definitions: {
+        Row: {
+          active: boolean
+          currency: string
+          entitlements: Json
+          id: string
+          key: string
+          name: string
+          period_days: number
+          price_minor: number
+        }
+        Insert: {
+          active?: boolean
+          currency?: string
+          entitlements?: Json
+          id?: string
+          key: string
+          name: string
+          period_days?: number
+          price_minor?: number
+        }
+        Update: {
+          active?: boolean
+          currency?: string
+          entitlements?: Json
+          id?: string
+          key?: string
+          name?: string
+          period_days?: number
+          price_minor?: number
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -1165,6 +1479,95 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "reviews_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      site_content: {
+        Row: {
+          draft: Json
+          id: string
+          key: string
+          kind: string
+          published: Json | null
+          published_at: string | null
+          revision: number
+          updated_at: string
+        }
+        Insert: {
+          draft?: Json
+          id?: string
+          key: string
+          kind: string
+          published?: Json | null
+          published_at?: string | null
+          revision?: number
+          updated_at?: string
+        }
+        Update: {
+          draft?: Json
+          id?: string
+          key?: string
+          kind?: string
+          published?: Json | null
+          published_at?: string | null
+          revision?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sponsored_placements: {
+        Row: {
+          approved: boolean
+          budget_minor: number
+          business_id: string
+          category: string
+          city: string
+          created_at: string
+          creative: string
+          ends_at: string
+          id: string
+          placement: string
+          starts_at: string
+          status: string
+          terms: string
+        }
+        Insert: {
+          approved?: boolean
+          budget_minor?: number
+          business_id: string
+          category?: string
+          city: string
+          created_at?: string
+          creative: string
+          ends_at: string
+          id?: string
+          placement: string
+          starts_at: string
+          status: string
+          terms: string
+        }
+        Update: {
+          approved?: boolean
+          budget_minor?: number
+          business_id?: string
+          category?: string
+          city?: string
+          created_at?: string
+          creative?: string
+          ends_at?: string
+          id?: string
+          placement?: string
+          starts_at?: string
+          status?: string
+          terms?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sponsored_placements_business_id_fkey"
             columns: ["business_id"]
             isOneToOne: false
             referencedRelation: "businesses"
@@ -1368,6 +1771,7 @@ export type Database = {
         Args: { bid: string; decision_reason: string; patch: Json }
         Returns: undefined
       }
+      content_permission: { Args: never; Returns: boolean }
       create_buy_requirement: { Args: { payload: Json }; Returns: string }
       create_support_ticket: { Args: { payload: Json }; Returns: Json }
       decide_claim: {
@@ -1384,6 +1788,7 @@ export type Database = {
         Args: { decision_reason: string; report_id: string; uphold: boolean }
         Returns: undefined
       }
+      effective_business_plan: { Args: { bid: string }; Returns: Json }
       has_permission: {
         Args: { bid?: string; permission: string }
         Returns: boolean
@@ -1425,6 +1830,27 @@ export type Database = {
         Args: { mark_read?: boolean; nid: string }
         Returns: string
       }
+      public_content: {
+        Args: never
+        Returns: {
+          key: string
+          kind: string
+          payload: Json
+          updated_at: string
+        }[]
+      }
+      public_placements: {
+        Args: {
+          selected_category?: string
+          selected_city: string
+          selected_placement?: string
+        }
+        Returns: {
+          business_id: string
+          creative: string
+          id: string
+        }[]
+      }
       public_verification: {
         Args: { bid: string }
         Returns: {
@@ -1462,6 +1888,14 @@ export type Database = {
         Args: { approve: boolean; feedback_text: string; request_id: string }
         Returns: undefined
       }
+      save_site_content: {
+        Args: {
+          decision_reason?: string
+          payload: Json
+          publish_content?: boolean
+        }
+        Returns: string
+      }
       set_staff_assignment: {
         Args: {
           decision_reason: string
@@ -1475,6 +1909,10 @@ export type Database = {
       }
       support_ticket_action: {
         Args: { action_payload: Json; ticket: string }
+        Returns: undefined
+      }
+      unpublish_site_content: {
+        Args: { cid: string; decision_reason: string }
         Returns: undefined
       }
     }
