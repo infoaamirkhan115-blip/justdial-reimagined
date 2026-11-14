@@ -11,6 +11,7 @@ import type { Service } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
 import { inputCls } from "./shell";
 import { ListingAiAssistant } from "./listing-ai-assistant";
+import { isBusinessPhone } from "@/lib/business-phone";
 
 type Row = Tables<"businesses">;
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -86,7 +87,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!/^[6-9]\d{9}$/.test(f.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; }
+    if (!isBusinessPhone(f.phone)) { toast.error("Enter a valid mobile number or landline with its area code"); return; }
     if (f.whatsapp && !/^[6-9]\d{9}$/.test(f.whatsapp)) { toast.error("Enter a valid WhatsApp number"); return; }
     if (f.pincode && !/^\d{6}$/.test(f.pincode)) { toast.error("Pincode must be 6 digits"); return; }
     const year = f.year ? Number(f.year) : null;
@@ -173,7 +174,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
       </Section>
 
       <Section title="Contact">
-        <L label="Mobile number"><input required inputMode="numeric" value={f.phone} onChange={digits("phone", 10)} className={inputCls} /></L>
+        <L label="Business phone (mobile or landline)"><input required inputMode="numeric" value={f.phone} onChange={digits("phone", 11)} className={inputCls} /></L>
         <L label="WhatsApp number"><input inputMode="numeric" value={f.whatsapp} onChange={digits("whatsapp", 10)} placeholder="Optional" className={inputCls} /></L>
         <L label="Email"><input type="email" maxLength={120} value={f.email} onChange={set("email")} placeholder="Optional" className={inputCls} /></L>
         <L label="Website"><input maxLength={200} value={f.website} onChange={set("website")} placeholder="www.example.com" className={inputCls} /></L>

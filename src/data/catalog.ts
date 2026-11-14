@@ -2,7 +2,7 @@ import restaurant from "@/assets/biz-restaurant.jpg";
 import clinic from "@/assets/biz-clinic.jpg";
 import repair from "@/assets/biz-repair.jpg";
 
-export const CITIES = ["Mumbai", "Delhi", "Bengaluru", "Chennai", "Hyderabad", "Pune", "Kolkata", "Ahmedabad"] as const;
+export const CITIES = ["Noida", "Mumbai", "Delhi", "Bengaluru", "Chennai", "Hyderabad", "Pune", "Kolkata", "Ahmedabad"] as const;
 export type City = (typeof CITIES)[number];
 
 export type Category = { slug: string; name: string; icon: string; group: string; subs: string[] };
@@ -60,6 +60,7 @@ const CAT_IMG: Record<string, string> = { restaurants: restaurant, hotels: resta
 export const categoryImage = (slug: string) => CAT_IMG[slug] ?? repair;
 
 const AREAS: Record<City, string[]> = {
+  Noida: ["Sector 27", "Sector 50", "Sector 62", "Sector 90", "Sector 128"],
   Mumbai: ["Andheri West", "Bandra", "Powai", "Dadar", "Colaba"],
   Delhi: ["Connaught Place", "Saket", "Karol Bagh", "Dwarka", "Lajpat Nagar"],
   Bengaluru: ["Indiranagar", "Koramangala", "HSR Layout", "Whitefield", "Jayanagar"],
@@ -141,6 +142,7 @@ export const getBusiness = (id: string) => BUSINESSES.find((b) => b.id === id);
 export function searchBusinesses(q = "", city?: string, list: Business[] = BUSINESSES) {
   const t = q.trim().toLowerCase();
   return list.filter((b) => {
+    if (city && b.city !== city) return false;
     if (!t) return true;
     const cat = getCategory(b.category);
     return [b.name, b.sub, cat?.name, b.area, ...b.tags].some((f) => f?.toLowerCase().includes(t)) ||

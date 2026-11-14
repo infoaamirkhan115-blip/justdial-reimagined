@@ -49,7 +49,7 @@ function SearchPage() {
     <div className="container-page pt-6">
       <nav className="flex items-center gap-1 text-sm text-muted-foreground"><Link to="/" className="hover:underline">Home</Link><ChevronRight className="size-4" />{city ?? "All cities"}<ChevronRight className="size-4" /><span className="text-foreground">{q || "All businesses"}</span></nav>
       <h1 className="mt-3 text-3xl font-extrabold md:text-4xl">{q ? `${q}` : "Popular businesses"}{city && <span className="text-muted-foreground"> in {city}</span>}</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{results.length} results · Showing verified & top-rated first</p>
+      <p className="mt-1 text-sm text-muted-foreground">{results.length} results</p>
 
       <div className="sticky top-16 z-30 -mx-4 mt-6 border-b bg-background/90 px-4 py-3 backdrop-blur md:-mx-8 md:px-8">
         <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">

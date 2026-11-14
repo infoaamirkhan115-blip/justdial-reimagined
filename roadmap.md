@@ -9,3 +9,9 @@
 - [x] Add description preview, apply/undo, and tailored suggestions in the listing form.
 - [x] Test validation and signed-in generation, saving, and public display.
 - [x] Add a contextual enquiry popup with current business/service details and photo, following the uploaded reference.
+
+# Real Noida listings
+- [x] Verify real Noida businesses against public official sources.
+- [x] Replace only original imported samples; preserve owner-created listings.
+- [x] Add Noida and correct public city filtering without invented listing facts.
+- [x] Verify search, category results, and admin records.

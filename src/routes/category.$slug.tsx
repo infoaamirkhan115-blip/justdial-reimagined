@@ -33,7 +33,7 @@ function CategoryPage() {
   const { cat } = Route.useLoaderData();
   const { city } = useCity();
   const { data: live = [] } = useQuery(liveBusinessesQ);
-  const list = live.filter((b) => b.category === cat.slug);
+  const list = live.filter((b) => b.category === cat.slug && b.city === city);
   const related = CATEGORIES.filter((c) => c.group === cat.group && c.slug !== cat.slug).slice(0, 6);
   return (
     <div className="container-page pt-6">
@@ -42,7 +42,7 @@ function CategoryPage() {
         <span className="grid size-16 place-items-center rounded-2xl bg-card shadow-soft"><DynIcon name={cat.icon} className="size-8" /></span>
         <div>
           <h1 className="text-3xl font-extrabold md:text-5xl">{cat.name} in {city}</h1>
-          <p className="mt-1 text-muted-foreground">{(list.length * 1240 + 380).toLocaleString("en-IN")}+ listings · ratings from real customers</p>
+          <p className="mt-1 text-muted-foreground">{list.length} listings</p>
         </div>
       </header>
       <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">

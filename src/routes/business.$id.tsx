@@ -73,11 +73,11 @@ function BusinessView({ b }: { b: Business }) {
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-3 text-sm">
             <RatingBadge rating={b.rating} /><span className="font-semibold">{b.reviews.toLocaleString("en-IN")} ratings</span>
-            <span className="text-muted-foreground">{cat?.name} · {b.sub} · {b.years} yrs in business</span>
+            <span className="text-muted-foreground">{cat?.name} · {b.sub}{b.years > 0 && ` · ${b.years} yrs in business`}</span>
           </div>
           <div className="mt-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
             <span className="flex items-center gap-2"><MapPin className="size-4" />{b.address || `${b.area}, ${b.city}`}{b.landmark ? ` · ${b.landmark}` : ""}</span>
-            <span className="flex items-center gap-2"><Clock className="size-4" /><span className={b.open ? "font-bold text-success" : "font-bold text-destructive"}>{b.open ? "Open now" : "Closed"}</span> · {b.hours}{b.days?.length ? ` · ${b.days.length === 7 ? "All days" : b.days.join(", ")}` : ""}</span>
+            <span className="flex items-center gap-2"><Clock className="size-4" />{b.hours || "Contact business for opening hours"}{b.days?.length ? ` · ${b.days.length === 7 ? "All days" : b.days.join(", ")}` : ""}</span>
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
             {b.live && <EnquiryPopup context={{ businessId: b.id, businessName: b.name, title: b.sub || b.name, image: b.image, location: `${b.area}, ${b.city}`, price: b.price, description: b.description }} />}
@@ -121,13 +121,13 @@ function BusinessView({ b }: { b: Business }) {
               <dl className="divide-y rounded-3xl border bg-card">{([
                 ["Address", [b.address || `${b.area}, ${b.city}`, b.pincode].filter(Boolean).join(" – ")], ["Landmark", b.landmark], ["Phone", b.phone],
                 ["WhatsApp", b.whatsapp ? `+91 ${b.whatsapp}` : ""], ["Email", b.email], ["Website", b.website],
-                ["Open days", b.days?.join(", ")], ["Hours", b.hours], ["Payments", b.payments?.join(", ")], ["In business", `${b.years} years`],
+                ["Open days", b.days?.join(", ")], ["Hours", b.hours], ["Payments", b.payments?.join(", ")], ["In business", b.years > 0 ? `${b.years} years` : ""],
               ] as [string, string | undefined][]).filter(([, v]) => v).map(([k, v]) => <div key={k} className="grid grid-cols-[120px_1fr] gap-3 p-4 text-sm"><dt className="font-bold">{k}</dt><dd className="break-words text-muted-foreground">{v}</dd></div>)}</dl>
             </TabsContent>
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">Is this your business? <Link to="/free-listing" className="font-bold text-foreground underline">Claim it for free</Link></p>
         </div>
-        <aside id="enquire" className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"><EnquiryForm businessId={b.live ? b.id : undefined} subtitle={`${b.name} usually replies in under 10 minutes.`} /></aside>
+        <aside id="enquire" className="scroll-mt-24 lg:sticky lg:top-24 lg:self-start"><EnquiryForm businessId={b.live ? b.id : undefined} subtitle={`Send your requirement to ${b.name}.`} /></aside>
       </div>
 
       {similar.length > 0 && (
