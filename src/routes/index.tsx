@@ -42,8 +42,9 @@ const REVIEWS = [
 ];
 
 function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: string[] }) {
+  const { city } = useCity();
   const { data: live = [] } = useQuery(liveBusinessesQ);
-  const items = live.filter((b) => cat.includes(b.category));
+  const items = live.filter((b) => cat.includes(b.category) && b.city === city);
   return (
     <section className="container-page mt-20">
       <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0]! }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />
@@ -101,7 +102,7 @@ function Home() {
       </section>
 
       <Row eyebrow="Near you" title={`Top restaurants in ${city}`} cat={["restaurants", "hotels"]} />
-      <Row eyebrow="Health" title="Highly rated doctors & clinics" cat={["doctors", "beauty-spa", "gyms"]} />
+      <Row eyebrow="Health" title="Hospitals & clinics" cat={["doctors", "hospitals"]} />
       <Row eyebrow="At your doorstep" title="Home services you can trust" cat={["ac-repair", "plumbers", "packers-movers"]} />
 
       {/* Bills */}
