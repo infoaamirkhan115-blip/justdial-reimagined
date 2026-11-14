@@ -99,6 +99,13 @@
       "when": 1794643582395,
       "tag": "0013_trust_integrity_and_report_abuse_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1794643611988,
+      "tag": "0014_staff_scope_nullable_defaults",
+      "breakpoints": true
     }
   ]
 }
