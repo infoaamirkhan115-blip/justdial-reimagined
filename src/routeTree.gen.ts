@@ -34,6 +34,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ClaimIdRouteImport } from './routes/claim.$id'
+import { Route as LocalKeyRouteImport } from './routes/local.$key'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
@@ -190,6 +191,11 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
 const ClaimIdRoute = ClaimIdRouteImport.update({
   id: '/claim/$id',
   path: '/claim/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocalKeyRoute = LocalKeyRouteImport.update({
+  id: '/local/$key',
+  path: '/local/$key',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
@@ -405,6 +411,7 @@ export interface FileRoutesByFullPath {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
@@ -461,6 +468,7 @@ export interface FileRoutesByTo {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
@@ -521,6 +529,7 @@ export interface FileRoutesById {
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/local/$key': typeof LocalKeyRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
@@ -581,6 +590,7 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
@@ -637,6 +647,7 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
@@ -696,6 +707,7 @@ export interface FileRouteTypes {
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/local/$key'
     | '/.lovable/oauth/consent'
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/businesses'
@@ -754,6 +766,7 @@ export interface RootRouteChildren {
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ClaimIdRoute: typeof ClaimIdRoute
+  LocalKeyRoute: typeof LocalKeyRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -932,6 +945,13 @@ declare module '@tanstack/react-router' {
       path: '/claim/$id'
       fullPath: '/claim/$id'
       preLoaderRoute: typeof ClaimIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/local/$key': {
+      id: '/local/$key'
+      path: '/local/$key'
+      fullPath: '/local/$key'
+      preLoaderRoute: typeof LocalKeyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.lovable/oauth/consent': {
@@ -1285,6 +1305,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
   ClaimIdRoute: ClaimIdRoute,
+  LocalKeyRoute: LocalKeyRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
