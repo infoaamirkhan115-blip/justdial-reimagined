@@ -71,6 +71,13 @@
       "when": 1794642520401,
       "tag": "0009_strengthen_directory_review_validation",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794642770920,
+      "tag": "0010_allow_recoverable_listing_archive_state",
+      "breakpoints": true
     }
   ]
 }
