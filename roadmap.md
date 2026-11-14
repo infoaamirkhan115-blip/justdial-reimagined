@@ -11,7 +11,7 @@
 - [x] Add a contextual enquiry popup with current business/service details and photo, following the uploaded reference.
 
 # Real Noida listings
-- [ ] Verify real Noida businesses against public official sources.
-- [ ] Replace only original imported samples; preserve owner-created listings.
-- [ ] Add Noida and correct public city filtering without invented listing facts.
-- [ ] Verify search, category results, and admin records.
+- [x] Verify real Noida businesses against public official sources.
+- [x] Replace only original imported samples; preserve owner-created listings.
+- [x] Add Noida and correct public city filtering without invented listing facts.
+- [x] Verify search, category results, and admin records.
