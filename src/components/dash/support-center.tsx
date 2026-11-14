@@ -23,7 +23,7 @@ export function SupportForm({onSaved}:{onSaved?:(id:string)=>void}){
  {!user&&<p className="text-sm text-muted-foreground"><Link to="/auth" className="underline">Sign in</Link> to keep requests in your account and follow the conversation.</p>}
  </form>;
 }
-export function SupportCenter({staff=false,initialTicket}:{staff?:boolean;initialTicket?:string}){
+export function SupportCenter({staff=false,initialTicket}:{staff?:boolean;initialTicket?:string|undefined}){
  const [page,setPage]=useState(1);const [status,setStatus]=useState('');const [ticket,setTicket]=useState(initialTicket);const [kind,setKind]=useState<'reply'|'internal'>('reply');const qc=useQueryClient();const action=useServerFn(ticketAction);const q=useQuery(supportQ(staff,page,status,ticket));const selected=q.data?.selected;const [busy,setBusy]=useState(false);
  const save=async(payload:Parameters<typeof action>[0]['data']['payload'])=>{if(!ticket)return;setBusy(true);try{await action({data:{id:ticket,payload}});await qc.invalidateQueries({queryKey:['support']});toast.success('Saved');}catch(e){toast.error(e instanceof Error?e.message:'Could not save');}finally{setBusy(false);}};
  return <><PageTitle title={staff?'Support queue':'My support tickets'} sub={q.data?`${q.data.total} matching requests`:'Support requests'}/>
