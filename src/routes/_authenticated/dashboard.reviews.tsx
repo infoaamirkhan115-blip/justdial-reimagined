@@ -8,6 +8,7 @@ import { Empty, PageTitle, Pill, timeAgo } from "@/components/dash/shell";
 import { Btn, RatingBadge } from "@/components/site/ui";
 
 export const Route = createFileRoute("/_authenticated/dashboard/reviews")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "My business reviews \u2014 Justdial" },

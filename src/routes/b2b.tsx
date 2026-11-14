@@ -4,6 +4,7 @@ import { EnquiryForm, SectionHeader, RatingBadge } from "@/components/site/ui";
 import { RequirementForm } from "@/components/dash/lead-operations";
 
 export const Route = createFileRoute("/b2b")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "B2B Marketplace — Buy wholesale from verified suppliers | Justdial" }, { name: "description", content: "Post your buying requirement and get quotes from verified manufacturers, wholesalers and exporters across India." },
     { property: "og:title", content: "B2B Marketplace — Buy wholesale from verified suppliers | Justdial" }, { property: "og:description", content: "Post your buying requirement and get quotes from verified manufacturers, wholesalers and exporters across India." },

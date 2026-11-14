@@ -4,6 +4,7 @@ import { Crown, LayoutPanelTop, ListOrdered } from "lucide-react";
 import { EnquiryForm, SectionHeader } from "@/components/site/ui";
 
 export const Route = createFileRoute("/advertise")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "Advertise with Justdial — Reach customers ready to buy" }, { name: "description", content: "Sponsored listings, banners and category ownership that put your business in front of high-intent local searchers." },
     { property: "og:title", content: "Advertise with Justdial — Reach customers ready to buy" }, { property: "og:description", content: "Sponsored listings, banners and category ownership that put your business in front of high-intent local searchers." },

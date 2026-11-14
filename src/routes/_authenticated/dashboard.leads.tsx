@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LeadOperations } from "@/components/dash/lead-operations";
 export const Route = createFileRoute("/_authenticated/dashboard/leads")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Customer enquiries — Justdial dashboard" },

@@ -7,6 +7,7 @@ import { Btn, SectionHeader } from "@/components/site/ui";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/recharge")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "Bills & Recharge — Pay mobile, electricity, DTH bills | Justdial" }, { name: "description", content: "Recharge mobile and DTH, pay electricity, gas, water and broadband bills in seconds with cashback." },
     { property: "og:title", content: "Bills & Recharge — Pay mobile, electricity, DTH bills | Justdial" }, { property: "og:description", content: "Recharge mobile and DTH, pay electricity, gas, water and broadband bills in seconds with cashback." },

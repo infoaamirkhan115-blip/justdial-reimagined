@@ -39,6 +39,7 @@ import { SponsoredResults } from "@/components/site/sponsored-results";
 import { useCity } from "@/components/site/city";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Justdial — Find anything near you, in seconds" },

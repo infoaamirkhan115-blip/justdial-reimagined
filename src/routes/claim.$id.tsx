@@ -3,6 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { liveBusinessQ } from "@/lib/public-data";
 import { ClaimForm } from "@/components/site/claim-form";
 export const Route = createFileRoute("/claim/$id")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Claim an existing business — Justdial" },

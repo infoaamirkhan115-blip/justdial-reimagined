@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 const STATUSES = ["all", "pending", "approved", "rejected", "suspended", "archived"] as const;
 type S = { status?: string | undefined };
 export const Route = createFileRoute("/_authenticated/admin/businesses")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Business management — Justdial Admin" },

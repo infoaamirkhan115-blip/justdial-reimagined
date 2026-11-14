@@ -5,6 +5,7 @@ import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { CategoryTile } from "@/components/site/ui";
 
 export const Route = createFileRoute("/categories")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "All categories — Justdial" },

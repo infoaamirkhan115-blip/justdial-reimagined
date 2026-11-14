@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/shell";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  staticData: { sitemap: false },
   beforeLoad: async ({ context }) => {
     const { data } = await supabase.rpc("is_staff");
     if (!data) throw redirect({ to: "/dashboard" });

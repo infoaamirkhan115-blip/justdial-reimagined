@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { saveListingDraft, readListingDraft, clearListingDraft } from "@/lib/listing-draft";
 
 export const Route = createFileRoute("/free-listing")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "List your business free — Get customers who are already searching | Justdial" },

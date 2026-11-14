@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CommerceManager } from "@/components/dash/commerce-manager";
 export const Route = createFileRoute("/_authenticated/dashboard/plan")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Business subscriptions \u2014 Justdial" },

@@ -21,6 +21,7 @@ type S = {
   rated?: boolean | undefined;
 };
 export const Route = createFileRoute("/search")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): S => ({
     q: typeof s["q"] === "string" ? s["q"] : undefined,
     city: typeof s["city"] === "string" ? s["city"] : undefined,

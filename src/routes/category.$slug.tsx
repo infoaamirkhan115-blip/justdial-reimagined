@@ -22,6 +22,7 @@ import { EnquiryPopup } from "@/components/site/enquiry-popup";
 import { SponsoredResults } from "@/components/site/sponsored-results";
 
 export const Route = createFileRoute("/category/$slug")({
+  staticData: { sitemap: true },
   loader: async ({ params, context }) => {
     const definitions = await context.queryClient.ensureQueryData(directoryDefinitionsQ);
     const cat = mapCategories(definitions.categories).find(

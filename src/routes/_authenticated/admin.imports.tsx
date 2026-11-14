@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DirectoryManager, managementQ } from "@/components/dash/directory-manager";
 export const Route = createFileRoute("/_authenticated/admin/imports")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Imports and duplicate review — Justdial Admin" },

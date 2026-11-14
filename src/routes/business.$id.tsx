@@ -40,6 +40,7 @@ import { useEffect } from "react";
 import { trackDirectory } from "@/lib/directory-analytics";
 
 export const Route = createFileRoute("/business/$id")({
+  staticData: { sitemap: true },
   loader: async ({ params, context }) => {
     const r = await supabase
       .from("directory_redirects")

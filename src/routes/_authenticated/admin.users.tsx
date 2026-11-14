@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { TrustCenter, trustQ } from "@/components/dash/trust-center";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "User management \u2014 Justdial" },

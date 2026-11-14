@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SupportForm } from "@/components/dash/support-center";
 import { ManagedLinks } from "@/components/site/managed-content";
 export const Route = createFileRoute("/contact")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Support & customer care — Justdial" },

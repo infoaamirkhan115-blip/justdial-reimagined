@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LeadOperations, leadOpsQ } from "@/components/dash/lead-operations";
 export const Route = createFileRoute("/_authenticated/dashboard/operations")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>) => ({
     requirement: typeof s["requirement"] === "string" ? s["requirement"] : undefined,
     lead: typeof s["lead"] === "string" ? s["lead"] : undefined,

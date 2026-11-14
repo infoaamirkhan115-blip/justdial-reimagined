@@ -12,6 +12,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { moderateReview } from "@/lib/trust.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/reviews")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Review moderation \u2014 Justdial" },

@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/page-hero";
 import { SectionHeader } from "@/components/site/ui";
 
 export const Route = createFileRoute("/careers")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "Careers at Justdial — Build local search for India" }, { name: "description", content: "Join the team helping crores of people find local businesses. Open roles in tech, sales, product and design." },
     { property: "og:title", content: "Careers at Justdial — Build local search for India" }, { property: "og:description", content: "Join the team helping crores of people find local businesses. Open roles in tech, sales, product and design." },

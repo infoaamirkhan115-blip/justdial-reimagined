@@ -10,6 +10,7 @@ import { liveBusinessesQ } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/travel")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "Travel — Book flights, hotels, buses & trains | Justdial" }, { name: "description", content: "Compare and book flights, hotels, buses and trains across India at the best prices." },
     { property: "og:title", content: "Travel — Book flights, hotels, buses & trains | Justdial" }, { property: "og:description", content: "Compare and book flights, hotels, buses and trains across India at the best prices." },

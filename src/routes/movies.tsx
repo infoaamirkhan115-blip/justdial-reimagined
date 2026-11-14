@@ -8,6 +8,7 @@ import { useCity } from "@/components/site/city";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/movies")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [
     { title: "Movies near you — Showtimes & tickets | Justdial" }, { name: "description", content: "Find movie showtimes at cinemas near you and book tickets in a few taps." },
     { property: "og:title", content: "Movies near you — Showtimes & tickets | Justdial" }, { property: "og:description", content: "Find movie showtimes at cinemas near you and book tickets in a few taps." },

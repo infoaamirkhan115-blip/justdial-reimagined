@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DirectoryManager, managementQ } from "@/components/dash/directory-manager";
 export const Route = createFileRoute("/_authenticated/admin/locations")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Locations and branches — Justdial Admin" },
