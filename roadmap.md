@@ -23,6 +23,6 @@
 - [x] Verify the 10 saved photos load for visitors and updated contacts read back on public pages.
 
 # Complete Noida category coverage
-- [ ] Research and verify at least one real Noida business for each empty main category.
-- [ ] Import verified listings with official source notes and no fabricated facts.
-- [ ] Verify every main Noida category has approved public results.
+- [x] Research and verify at least one real Noida business for each empty main category.
+- [x] Import 28 verified listings with official source notes and no fabricated facts.
+- [x] Verify all 32 main Noida category pages have approved public results (39 listings total).
