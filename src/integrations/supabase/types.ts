@@ -21,13 +21,19 @@ export type Database = {
           category: string
           created_at: string
           description: string
+          exclusions: string
           id: string
+          inclusions: string
           kind: string
+          minimum_area: number | null
+          minimum_quantity: number | null
           name: string
           photos: string[]
           pricing: Json
           product_details: Json
           published: boolean
+          review_feedback: string
+          review_state: string
           specifications: Json
           updated_at: string
         }
@@ -37,13 +43,19 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string
+          exclusions?: string
           id?: string
+          inclusions?: string
           kind?: string
+          minimum_area?: number | null
+          minimum_quantity?: number | null
           name: string
           photos?: string[]
           pricing?: Json
           product_details?: Json
           published?: boolean
+          review_feedback?: string
+          review_state?: string
           specifications?: Json
           updated_at?: string
         }
@@ -53,13 +65,19 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string
+          exclusions?: string
           id?: string
+          inclusions?: string
           kind?: string
+          minimum_area?: number | null
+          minimum_quantity?: number | null
           name?: string
           photos?: string[]
           pricing?: Json
           product_details?: Json
           published?: boolean
+          review_feedback?: string
+          review_state?: string
           specifications?: Json
           updated_at?: string
         }
@@ -73,13 +91,37 @@ export type Database = {
           },
         ]
       }
+      business_organizations: {
+        Row: {
+          id: string
+          name: string
+          owner_id: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          owner_id: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          owner_id?: string
+        }
+        Relationships: []
+      }
       businesses: {
         Row: {
           address: string
           admin_note: string | null
+          archive_status: string | null
+          archived_at: string | null
           area: string
+          attributes: Json
           category: string
+          category_id: string | null
           city: string
+          city_id: string | null
+          coordinates: Json
           created_at: string
           days_open: string[]
           description: string
@@ -87,19 +129,25 @@ export type Database = {
           hours: string
           id: string
           landmark: string
+          locality_id: string | null
           logo: string | null
           name: string
+          organization_id: string | null
+          owner_feedback: string
           owner_id: string
           payment_methods: string[]
           phone: string
           photos: string[]
           pincode: string
+          pincode_id: string | null
           plan: string
           price: string
           requested_plan: string | null
+          service_areas: Json
           services: Json
           sponsored: boolean
           status: string
+          structured_hours: Json
           sub: string
           tags: string[]
           updated_at: string
@@ -111,9 +159,15 @@ export type Database = {
         Insert: {
           address?: string
           admin_note?: string | null
+          archive_status?: string | null
+          archived_at?: string | null
           area?: string
+          attributes?: Json
           category: string
+          category_id?: string | null
           city: string
+          city_id?: string | null
+          coordinates?: Json
           created_at?: string
           days_open?: string[]
           description?: string
@@ -121,19 +175,25 @@ export type Database = {
           hours?: string
           id?: string
           landmark?: string
+          locality_id?: string | null
           logo?: string | null
           name: string
+          organization_id?: string | null
+          owner_feedback?: string
           owner_id: string
           payment_methods?: string[]
           phone?: string
           photos?: string[]
           pincode?: string
+          pincode_id?: string | null
           plan?: string
           price?: string
           requested_plan?: string | null
+          service_areas?: Json
           services?: Json
           sponsored?: boolean
           status?: string
+          structured_hours?: Json
           sub?: string
           tags?: string[]
           updated_at?: string
@@ -145,9 +205,15 @@ export type Database = {
         Update: {
           address?: string
           admin_note?: string | null
+          archive_status?: string | null
+          archived_at?: string | null
           area?: string
+          attributes?: Json
           category?: string
+          category_id?: string | null
           city?: string
+          city_id?: string | null
+          coordinates?: Json
           created_at?: string
           days_open?: string[]
           description?: string
@@ -155,19 +221,25 @@ export type Database = {
           hours?: string
           id?: string
           landmark?: string
+          locality_id?: string | null
           logo?: string | null
           name?: string
+          organization_id?: string | null
+          owner_feedback?: string
           owner_id?: string
           payment_methods?: string[]
           phone?: string
           photos?: string[]
           pincode?: string
+          pincode_id?: string | null
           plan?: string
           price?: string
           requested_plan?: string | null
+          service_areas?: Json
           services?: Json
           sponsored?: boolean
           status?: string
+          structured_hours?: Json
           sub?: string
           tags?: string[]
           updated_at?: string
@@ -176,7 +248,340 @@ export type Database = {
           whatsapp?: string
           year_established?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "businesses_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "directory_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "businesses_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "directory_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "businesses_locality_id_fkey"
+            columns: ["locality_id"]
+            isOneToOne: false
+            referencedRelation: "directory_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "businesses_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "business_organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "businesses_pincode_id_fkey"
+            columns: ["pincode_id"]
+            isOneToOne: false
+            referencedRelation: "directory_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_audit: {
+        Row: {
+          action: string
+          actor_id: string | null
+          after_data: Json | null
+          before_data: Json | null
+          business_id: string | null
+          created_at: string
+          entity_id: string | null
+          id: string
+          note: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          business_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          note?: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          business_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          note?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_audit_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_categories: {
+        Row: {
+          active: boolean
+          aliases: string[]
+          cta_label: string
+          description: string
+          fields: Json
+          group_name: string
+          icon: string
+          id: string
+          legacy_slug: string
+          name: string
+          parent_id: string | null
+          position: number
+          public_visible: boolean
+          slug: string
+        }
+        Insert: {
+          active?: boolean
+          aliases?: string[]
+          cta_label?: string
+          description?: string
+          fields?: Json
+          group_name?: string
+          icon?: string
+          id?: string
+          legacy_slug?: string
+          name: string
+          parent_id?: string | null
+          position?: number
+          public_visible?: boolean
+          slug: string
+        }
+        Update: {
+          active?: boolean
+          aliases?: string[]
+          cta_label?: string
+          description?: string
+          fields?: Json
+          group_name?: string
+          icon?: string
+          id?: string
+          legacy_slug?: string
+          name?: string
+          parent_id?: string | null
+          position?: number
+          public_visible?: boolean
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "directory_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_import_batches: {
+        Row: {
+          applied_at: string | null
+          applied_ids: string[]
+          created_at: string
+          created_by: string
+          filename: string
+          id: string
+          mapping: Json
+          rows: Json
+          status: string
+        }
+        Insert: {
+          applied_at?: string | null
+          applied_ids?: string[]
+          created_at?: string
+          created_by: string
+          filename: string
+          id?: string
+          mapping?: Json
+          rows: Json
+          status?: string
+        }
+        Update: {
+          applied_at?: string | null
+          applied_ids?: string[]
+          created_at?: string
+          created_by?: string
+          filename?: string
+          id?: string
+          mapping?: Json
+          rows?: Json
+          status?: string
+        }
         Relationships: []
+      }
+      directory_locations: {
+        Row: {
+          active: boolean
+          id: string
+          kind: string
+          name: string
+          parent_id: string | null
+          source_url: string
+          verified: boolean
+        }
+        Insert: {
+          active?: boolean
+          id?: string
+          kind: string
+          name: string
+          parent_id?: string | null
+          source_url?: string
+          verified?: boolean
+        }
+        Update: {
+          active?: boolean
+          id?: string
+          kind?: string
+          name?: string
+          parent_id?: string | null
+          source_url?: string
+          verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_locations_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "directory_locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_quality_issues: {
+        Row: {
+          assignee: string | null
+          business_id: string
+          created_at: string
+          fields: string[]
+          fingerprint: string
+          id: string
+          kind: string
+          notes: string
+          offering_id: string | null
+          severity: string
+          status: string
+          summary: string
+          updated_at: string
+        }
+        Insert: {
+          assignee?: string | null
+          business_id: string
+          created_at?: string
+          fields?: string[]
+          fingerprint: string
+          id?: string
+          kind: string
+          notes?: string
+          offering_id?: string | null
+          severity: string
+          status?: string
+          summary: string
+          updated_at?: string
+        }
+        Update: {
+          assignee?: string | null
+          business_id?: string
+          created_at?: string
+          fields?: string[]
+          fingerprint?: string
+          id?: string
+          kind?: string
+          notes?: string
+          offering_id?: string | null
+          severity?: string
+          status?: string
+          summary?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_quality_issues_assignee_fkey"
+            columns: ["assignee"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "directory_quality_issues_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "directory_quality_issues_offering_id_fkey"
+            columns: ["offering_id"]
+            isOneToOne: false
+            referencedRelation: "business_offerings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      directory_redirects: {
+        Row: {
+          from_key: string
+          id: string
+          kind: string
+          to_key: string
+        }
+        Insert: {
+          from_key: string
+          id?: string
+          kind: string
+          to_key: string
+        }
+        Update: {
+          from_key?: string
+          id?: string
+          kind?: string
+          to_key?: string
+        }
+        Relationships: []
+      }
+      directory_staff_notes: {
+        Row: {
+          business_id: string
+          note: string
+          ownership_evidence: string
+          ownership_status: string
+        }
+        Insert: {
+          business_id: string
+          note?: string
+          ownership_evidence?: string
+          ownership_status?: string
+        }
+        Update: {
+          business_id?: string
+          note?: string
+          ownership_evidence?: string
+          ownership_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_staff_notes_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: true
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       favourites: {
         Row: {
@@ -238,6 +643,85 @@ export type Database = {
             columns: ["business_id"]
             isOneToOne: false
             referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_change_requests: {
+        Row: {
+          before_data: Json
+          business_id: string
+          created_at: string
+          feedback: string
+          id: string
+          proposed_data: Json
+          requester_id: string
+          reviewed_at: string | null
+          status: string
+        }
+        Insert: {
+          before_data: Json
+          business_id: string
+          created_at?: string
+          feedback?: string
+          id?: string
+          proposed_data: Json
+          requester_id: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Update: {
+          before_data?: Json
+          business_id?: string
+          created_at?: string
+          feedback?: string
+          id?: string
+          proposed_data?: Json
+          requester_id?: string
+          reviewed_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_change_requests_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      offering_revisions: {
+        Row: {
+          actor_id: string | null
+          after_data: Json
+          before_data: Json | null
+          created_at: string
+          id: string
+          offering_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          after_data: Json
+          before_data?: Json | null
+          created_at?: string
+          id?: string
+          offering_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          after_data?: Json
+          before_data?: Json | null
+          created_at?: string
+          id?: string
+          offering_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offering_revisions_offering_id_fkey"
+            columns: ["offering_id"]
+            isOneToOne: false
+            referencedRelation: "business_offerings"
             referencedColumns: ["id"]
           },
         ]
@@ -339,6 +823,15 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      merge_directory_businesses: {
+        Args: { reason: string; source_id: string; target_id: string }
+        Returns: undefined
+      }
+      obvious_placeholder: { Args: { t: string }; Returns: boolean }
+      review_listing_change: {
+        Args: { approve: boolean; feedback_text: string; request_id: string }
+        Returns: undefined
       }
     }
     Enums: {

@@ -43,6 +43,13 @@
       "when": 1794640174348,
       "tag": "0005_directory_favourites_and_enquiry_validation",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794641913057,
+      "tag": "0006_directory_management_and_review",
+      "breakpoints": true
     }
   ]
 }
