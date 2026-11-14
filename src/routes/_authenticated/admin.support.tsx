@@ -18,5 +18,6 @@ export const Route = createFileRoute("/_authenticated/admin/support")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => <SupportCenter staff={true} initialTicket={Route.useSearch().ticket} />,
+  component: Page,
 });
+function Page() { const search=Route.useSearch(); return <SupportCenter staff={true} initialTicket={search.ticket}/>; }

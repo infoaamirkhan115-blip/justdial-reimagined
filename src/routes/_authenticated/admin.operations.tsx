@@ -19,11 +19,6 @@ export const Route = createFileRoute("/_authenticated/admin/operations")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: () => (
-    <LeadOperations
-      owner={false}
-      initialRequirement={Route.useSearch().requirement}
-      initialLead={Route.useSearch().lead}
-    />
-  ),
+  component: Page,
 });
+function Page() { const search=Route.useSearch(); return <LeadOperations owner={false} initialRequirement={search.requirement} initialLead={search.lead}/>; }
