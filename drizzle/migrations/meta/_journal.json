@@ -50,6 +50,13 @@
       "when": 1794641913057,
       "tag": "0006_directory_management_and_review",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794641977052,
+      "tag": "0007_directory_guard_privileged_backfill",
+      "breakpoints": true
     }
   ]
 }
