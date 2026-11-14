@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, notFound } from "@tanstack/react-router";
 import {
   Globe,
   BadgeCheck,
@@ -50,11 +50,11 @@ export const Route = createFileRoute("/business/$id")({
     if (r.error) throw r.error;
     if (r.data)
       throw redirect({ to: "/business/$id", params: { id: r.data.to_key }, statusCode: 301 });
-    return {
-      b: /^[0-9a-f-]{36}$/.test(params.id)
-        ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id))
-        : null,
-    };
+    const b = await context.queryClient.ensureQueryData(liveBusinessQ(params.id));
+    if (!b) throw notFound();
+    const slug = await supabase.from("businesses").select("public_slug").eq(/^[0-9a-f-]{36}$/.test(params.id) ? "id" : "public_slug", params.id).eq("status","approved").is("archived_at",null).maybeSingle();
+    if(slug.error) throw new Error("Could not load canonical business address");
+    return { b, slug: slug.data?.public_slug ?? b.id };
   },
   pendingComponent: () => (
     <div role="status" className="container-page py-24">
@@ -76,12 +76,15 @@ export const Route = createFileRoute("/business/$id")({
       ? `${b.name} in ${b.area}, ${b.city}. ${b.reviews ? `Rated ${b.rating}/5 by ${b.reviews} customers.` : "No reviews yet."} View contact details and published products and services.`
       : "Business details on Justdial.";
     return {
+      links: b ? [{ rel: "canonical", href: `https://justdial-neighborhood-navigator.lovable.app/business/${loaderData?.slug}` }] : [],
+      scripts: b ? [{ type: "application/ld+json", children: JSON.stringify({"@context":"https://schema.org","@type":"LocalBusiness",name:b.name,url:`https://justdial-neighborhood-navigator.lovable.app/business/${loaderData?.slug}`,telephone:b.phone||undefined,address:{"@type":"PostalAddress",streetAddress:b.address||undefined,addressLocality:b.city,postalCode:b.pincode||undefined},...(b.reviews>0?{aggregateRating:{"@type":"AggregateRating",ratingValue:b.rating,reviewCount:b.reviews}}:{})}) }] : [],
       meta: [
         { title: t },
         { name: "description", content: d },
         { property: "og:title", content: t },
         { property: "og:description", content: d },
         { property: "og:type", content: "business.business" },
+        ...(b ? [{property:"og:url",content:`https://justdial-neighborhood-navigator.lovable.app/business/${loaderData?.slug}`}] : []),
         { name: "twitter:card", content: "summary" },
       ],
     };
