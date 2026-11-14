@@ -1,9 +1,10 @@
 # Phase 4 ownership, trust and staff controls
-- [ ] Add existing-business claims, private evidence, competing-claim review and controlled transfer/revocation.
-- [ ] Separate evidence-backed verification from paid plans and audit legacy badges.
-- [ ] Replace signup administrator bootstrap with controlled provisioning, least-privilege staff permissions and last-admin safeguards.
-- [ ] Audit sensitive actions and add review reports, moderation reasons, appeals and history.
-- [ ] Verify permission rules, claims, trust controls and populated desktop/mobile workflows without changing real business facts.
+- [x] Add existing-business claims, private evidence updates, competing-claim review and controlled transfer/revocation; isolated browser submission persisted without ownership transfer.
+- [x] Separate evidence-backed verification from paid plans; retain historical flags in staff audit and show public badges only for recorded active checks.
+- [x] Replace signup administrator bootstrap with controlled provisioning, eight least-privilege roles, scope checks, self-escalation denial and last-admin safeguards; existing admin preserved.
+- [x] Audit sensitive actions; add customer reports, moderation reasons, appeals and activity history. Isolated browser report/decision and authenticated appeal/restore passed.
+- [x] Verify 54 tests, preview type/build checks, targeted lint, signed-in trust pages, mobile layout, isolated claims/moderation, guest denial and direct role/self-review denial; test businesses archived.
+- [ ] Verify cross-owner evidence isolation, competing-claim approval/transfer/revocation and last-admin removal under multiple accounts. Blocker: only one existing admin account; no second-account session is available.
 
 # Phase 2 directory data administration
 - [x] Add managed categories, hierarchy, fields, aliases, visibility and legacy URL compatibility; admin create/edit and public category route checked.
