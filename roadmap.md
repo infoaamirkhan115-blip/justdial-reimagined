@@ -1,3 +1,10 @@
+# Phase 4 ownership, trust and staff controls
+- [ ] Add existing-business claims, private evidence, competing-claim review and controlled transfer/revocation.
+- [ ] Separate evidence-backed verification from paid plans and audit legacy badges.
+- [ ] Replace signup administrator bootstrap with controlled provisioning, least-privilege staff permissions and last-admin safeguards.
+- [ ] Audit sensitive actions and add review reports, moderation reasons, appeals and history.
+- [ ] Verify permission rules, claims, trust controls and populated desktop/mobile workflows without changing real business facts.
+
 # Phase 2 directory data administration
 - [x] Add managed categories, hierarchy, fields, aliases, visibility and legacy URL compatibility; admin create/edit and public category route checked.
 - [x] Add managed cities/localities/pincodes, organization/branch links, separate service areas and coordinate evidence fields.
