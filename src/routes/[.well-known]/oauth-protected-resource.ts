@@ -10,6 +10,7 @@ import { createTanStackOAuthProtectedResourceMetadataHandler } from "@lovable.de
 const loadMcp = () => import("../../lib/mcp/index");
 
 export const Route = createFileRoute("/.well-known/oauth-protected-resource")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       ANY: createTanStackOAuthProtectedResourceMetadataHandler(loadMcp, {

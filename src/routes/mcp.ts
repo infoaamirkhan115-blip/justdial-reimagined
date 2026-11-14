@@ -10,6 +10,7 @@ import { createTanStackMcpHandler } from "@lovable.dev/mcp-js/stacks/tanstack";
 const loadMcp = () => import("../lib/mcp/index");
 
 export const Route = createFileRoute("/mcp")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       ANY: createTanStackMcpHandler(loadMcp, {
