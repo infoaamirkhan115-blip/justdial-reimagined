@@ -35,6 +35,7 @@ import {
   DirectoryState,
 } from "@/components/site/ui";
 import { ManagedHome } from "@/components/site/managed-content";
+import { SponsoredResults } from "@/components/site/sponsored-results";
 import { useCity } from "@/components/site/city";
 
 export const Route = createFileRoute("/")({
@@ -283,6 +284,7 @@ function Home() {
       </section>
 
       <ManagedHome />
+      <div className="container-page mt-8"><SponsoredResults city={city} placement="home" /></div>
 
       {/* Grow business */}
       <section className="container-page mt-20">
