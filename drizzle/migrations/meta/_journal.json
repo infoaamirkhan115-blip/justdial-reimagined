@@ -78,6 +78,13 @@
       "when": 1794642770920,
       "tag": "0010_allow_recoverable_listing_archive_state",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1794642981460,
+      "tag": "0011_guard_new_catalogue_publication",
+      "breakpoints": true
     }
   ]
 }

@@ -1,12 +1,14 @@
 # Phase 2 directory data administration
-- [ ] Move categories, hierarchy, attributes, aliases and public visibility into managed records with legacy URL compatibility.
-- [ ] Add managed locations, organizations, branches and separate service coverage with reviewable location conflicts.
-- [ ] Build persistent listing-quality queue, assignments, notes, history and owner completeness guidance.
-- [ ] Add catalogue review states, category specifications, publication validation, preview and revisions.
-- [ ] Build staged CSV import, validation, provenance, batch history and explicit publication approval.
-- [ ] Add duplicate previews and audited relationship-preserving merges with redirects.
-- [ ] Replace routine listing deletion with recoverable archive; review sensitive edits with field differences and separate owner feedback/staff notes.
-- [ ] Verify isolated customer/owner/admin journeys, permission denial, existing URLs, and desktop/mobile layouts.
+- [x] Add managed categories, hierarchy, fields, aliases, visibility and legacy URL compatibility; admin create/edit and public category route checked.
+- [x] Add managed cities/localities/pincodes, organization/branch links, separate service areas and coordinate evidence fields.
+- [x] Add persistent quality queue, severity/status/assignment, private notes, ownership evidence, history and owner completeness; 111 real issues recorded.
+- [x] Add catalogue review states, specifications, scope/minimums, draft preview, publication guards and revisions.
+- [x] Add staged CSV mapping, validation, provenance, batch history and transactional approval/reversal; isolated batch approval and reversal persisted, with its test listing archived.
+- [x] Add explicit duplicate merge preview, audited transactional relationship preservation and redirects; isolated offering move and redirect checked.
+- [x] Replace listing deletion with archive/restore and stage sensitive owner edits; staff notes separated from owner feedback.
+- [x] Verify 46 automated tests, targeted lint (zero errors), automatic preview checks, populated desktop/mobile admin pages, all 40 public records, hidden category edits, archive persistence, isolated merge preservation and guest private-data denial.
+- [ ] Verify cross-owner denial and nonadmin review journeys. Blocker: only one existing admin account is available; no second owner session supplied.
+- [ ] Complete browser form journey for CSV publication/reversal and owner sensitive-edit approval with isolated fixtures. Import approval/reversal passed direct authenticated checks; owner approval still needs a nonadmin session.
 
 # Phase 1 public directory repair
 - [x] Reproduce current issues and inspect existing data, routes, permissions and integrations.
