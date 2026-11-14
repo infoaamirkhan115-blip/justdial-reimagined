@@ -14,6 +14,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 type S = { new?: boolean | undefined };
 export const Route = createFileRoute("/_authenticated/dashboard/businesses")({
+  head: () => ({ meta: [
+    { title: "My listings & AI profile assistant — Justdial" },
+    { name: "description", content: "Manage your Justdial business listings and prepare polished descriptions with tailored AI profile suggestions." },
+    { property: "og:title", content: "My listings & AI profile assistant — Justdial" },
+    { property: "og:description", content: "Manage business details and review AI-written listing descriptions." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex" },
+  ] }),
   validateSearch: (s: Record<string, unknown>): S => ({ new: s["new"] === true || s["new"] === "true" ? true : undefined }),
   loader: ({ context }) => context.queryClient.ensureQueryData(myBusinessesQ(context.user.id)),
   component: Page,
