@@ -1,3 +1,11 @@
+# Phase 6 content operations and honest monetization
+- [ ] Add draft/preview/publish/revision CMS with validated selection labels and public content integration.
+- [ ] Add stable business slugs, useful location pages, canonical metadata, structured data, public sitemap and redirect controls.
+- [ ] Add configurable plans, dated subscriptions, invoices/payment records, reasoned manual activation/cancellation and expiry-safe entitlements; keep unconfigured payments explicit.
+- [ ] Add approved targeted dated sponsored placements and measurable activity, separate from verification.
+- [ ] Replace hard-coded offers with merchant-linked managed records and honest redemption states.
+- [ ] Verify authenticated editing/public readback, permissions, date limits, current preview and regression tests.
+
 # Agent integrations
 - [x] Enable managed OAuth; existing database, sign-in providers and asymmetric signing preserved; hosted redirect allow-list confirmed.
 - [x] Add read-only MCP business search, business/catalogue details and caller-owned listings, with consent and safe sign-in return paths.
