@@ -92,9 +92,10 @@ export function BusinessCard({ b }: { b: Business }) {
         <div className="mt-1.5 flex flex-wrap items-center gap-2 text-sm">
           <RatingBadge rating={b.rating} />
           <span className="font-semibold">{b.reviews.toLocaleString("en-IN")} ratings</span>
-          <span className="text-muted-foreground">· {b.years} yrs in business</span>
+          {b.years > 0 && <span className="text-muted-foreground">· {b.years} yrs in business</span>}
         </div>
-        <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="size-4" />{b.area}, {b.city} · {b.distance} km</p>
+        <p className="mt-2 flex items-center gap-1 text-sm text-muted-foreground"><MapPin className="size-4" />{b.area}, {b.city}{Number.isFinite(b.distance) && ` · ${b.distance} km`}</p>
+        {!b.gallery?.length && <p className="text-xs text-muted-foreground">Category image · Business photo not provided</p>}
         <div className="mt-2 flex flex-wrap gap-1.5">
           <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-medium">{cat?.name} · {b.sub}</span>
           {b.tags.map((t) => <span key={t} className="rounded-md bg-muted px-2 py-0.5 text-xs font-medium">{t}</span>)}

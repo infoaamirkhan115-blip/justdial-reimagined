@@ -11,12 +11,12 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
   const revs = r.reviews ?? [];
   const rating = revs.length ? Math.round((revs.reduce((a, x) => a + x.rating, 0) / revs.length) * 10) / 10 : 0;
   const gallery = r.photos.map((p) => urls[p]).filter(Boolean) as string[];
-  const years = r.year_established ? Math.max(1, new Date().getFullYear() - r.year_established) : Math.max(1, new Date().getFullYear() - new Date(r.created_at).getFullYear());
+  const years = r.year_established ? Math.max(0, new Date().getFullYear() - r.year_established) : 0;
   return {
     id: r.id, name: r.name, category: r.category, sub: r.sub || "General", city: r.city as City, area: r.area,
     rating, reviews: revs.length, years,
-    verified: r.verified, trust: r.plan !== "free", sponsored: r.sponsored, open: true, hours: r.hours,
-    distance: 1.2, phone: r.phone ? `+91 ${r.phone}` : "", image: gallery[0] ?? categoryImage(r.category), gallery, logo: r.logo ? urls[r.logo] : undefined,
+    verified: r.verified, trust: r.plan !== "free", sponsored: r.sponsored, open: false, hours: r.hours,
+    distance: Infinity, phone: r.phone ? `+91 ${r.phone.replace(/^0/, "")}` : "", image: gallery[0] ?? categoryImage(r.category), gallery, logo: r.logo ? urls[r.logo] : undefined,
     tags: r.tags,
     highlight: r.description ? r.description.split(".")[0] + "." : "Newly listed on Justdial.", price: r.price,
     services: Array.isArray(r.services) ? (r.services as Service[]).filter((s) => s?.name) : [], live: true, description: r.description, address: r.address,
