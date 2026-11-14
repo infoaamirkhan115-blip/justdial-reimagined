@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getPublishedPhotoUrls } from "./photos.functions";
 
 export const PHOTO_BUCKET = "business-photos";
 export const MAX_PHOTOS = 10;
@@ -19,6 +20,12 @@ export async function uploadPhoto(file: File, ownerId: string) {
 export async function photoUrls(paths: string[]): Promise<Record<string, string>> {
   const uniq = [...new Set(paths.filter(Boolean))];
   if (!uniq.length) return {};
-  const { data } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(uniq, 60 * 60 * 24 * 7);
-  return Object.fromEntries((data ?? []).filter((d) => d.signedUrl && d.path).map((d) => [d.path!, d.signedUrl as string]));
+  const { data } = await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(uniq, 3600);
+  const urls: Record<string, string> = Object.fromEntries((data ?? []).filter((d) => d.signedUrl && d.path).map((d) => [d.path!, d.signedUrl as string]));
+  // Owners/admins keep their private read path; guests use checked public delivery.
+  const missing = uniq.filter(path => !urls[path]);
+  for (let offset = 0; offset < missing.length; offset += 100) {
+    Object.assign(urls, await getPublishedPhotoUrls({ data: { paths: missing.slice(offset, offset + 100) } }));
+  }
+  return urls;
 }

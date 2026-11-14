@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "read published listing photos" ON storage.objects;
+COMMENT ON POLICY "read business photos" ON storage.objects IS 'Direct reads are limited to uploader folders and authenticated admins. Public listing photos are delivered through a server function that verifies approved listing or published offering references before signing short-lived links.';

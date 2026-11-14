@@ -29,6 +29,13 @@
       "when": 1794606113154,
       "tag": "0003_scope_business_photo_reads",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794637239391,
+      "tag": "0004_replace_public_photo_storage_access",
+      "breakpoints": true
     }
   ]
 }
