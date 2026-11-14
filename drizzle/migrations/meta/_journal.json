@@ -57,6 +57,13 @@
       "when": 1794641977052,
       "tag": "0007_directory_guard_privileged_backfill",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794642072497,
+      "tag": "0008_transactional_directory_import",
+      "breakpoints": true
     }
   ]
 }

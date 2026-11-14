@@ -817,6 +817,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      apply_directory_import: {
+        Args: { batch_id: string; reverse_batch: boolean }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
