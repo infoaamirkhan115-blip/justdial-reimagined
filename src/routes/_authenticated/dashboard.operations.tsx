@@ -24,4 +24,13 @@ export const Route = createFileRoute("/_authenticated/dashboard/operations")({
   }),
   component: Page,
 });
-function Page() { const search=Route.useSearch(); return <LeadOperations owner={true} initialRequirement={search.requirement} initialLead={search.lead}/>; }
+function Page() {
+  const search = Route.useSearch();
+  return (
+    <LeadOperations
+      owner={true}
+      initialRequirement={search.requirement}
+      initialLead={search.lead}
+    />
+  );
+}

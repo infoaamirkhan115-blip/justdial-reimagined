@@ -20,4 +20,7 @@ export const Route = createFileRoute("/_authenticated/admin/support")({
   }),
   component: Page,
 });
-function Page() { const search=Route.useSearch(); return <SupportCenter staff={true} initialTicket={search.ticket}/>; }
+function Page() {
+  const search = Route.useSearch();
+  return <SupportCenter staff={true} initialTicket={search.ticket} />;
+}
