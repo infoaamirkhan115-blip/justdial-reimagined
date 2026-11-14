@@ -5,13 +5,14 @@ import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 export type Role = "admin" | "business_owner" | "user";
-type AuthCtx = { user: User | null; roles: Role[]; loading: boolean; isAdmin: boolean; signOut: () => Promise<void> };
-const Ctx = createContext<AuthCtx>({ user: null, roles: [], loading: true, isAdmin: false, signOut: async () => {} });
+type AuthCtx = { user: User | null; roles: Role[]; loading: boolean; isAdmin: boolean; isStaff: boolean; signOut: () => Promise<void> };
+const Ctx = createContext<AuthCtx>({ user: null, roles: [], loading: true, isAdmin: false, isStaff:false, signOut: async () => {} });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isStaff,setIsStaff]=useState(false);
   const router = useRouter();
   const qc = useQueryClient();
 
@@ -27,7 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [router, qc]);
 
   useEffect(() => {
-    if (!user) { setRoles([]); return; }
+    if (!user) { setRoles([]); setIsStaff(false); return; }
+    supabase.rpc("is_staff").then(({data})=>setIsStaff(Boolean(data)));
     supabase.from("user_roles").select("role").eq("user_id", user.id).then(({ data }) => setRoles((data ?? []).map((r) => r.role as Role)));
   }, [user]);
 
@@ -38,6 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.navigate({ to: "/auth", replace: true });
   };
 
-  return <Ctx.Provider value={{ user, roles, loading, isAdmin: roles.includes("admin"), signOut }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ user, roles, loading, isAdmin: roles.includes("admin"), isStaff, signOut }}>{children}</Ctx.Provider>;
 }
 export const useAuth = () => useContext(Ctx);

@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 
 function AccountButton() {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isStaff } = useAuth();
   if (!user)
     return (
       <Link to="/auth" className={btnClass("ink")}>
@@ -31,9 +31,9 @@ function AccountButton() {
     );
   return (
     <>
-      {isAdmin && (
+      {isStaff && (
         <Link to="/admin" className={cn(btnClass("outline"), "hidden md:inline-flex")}>
-          Admin
+          {isAdmin ? "Admin" : "Staff"}
         </Link>
       )}
       <Link to="/dashboard" className={btnClass("ink")}>

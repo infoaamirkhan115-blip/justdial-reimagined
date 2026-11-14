@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export type NavItem = { to: string; label: string; icon: LucideIcon; exact?: boolean };
 
 export function DashShell({ label, nav, children }: { label: string; nav: NavItem[]; children: ReactNode }) {
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, isStaff, signOut } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
   const active = (n: NavItem) => (n.exact ? path === n.to : path.startsWith(n.to));
   return (
@@ -23,7 +23,7 @@ export function DashShell({ label, nav, children }: { label: string; nav: NavIte
           ))}
         </nav>
         <div className="hidden space-y-1 border-t border-ink-foreground/10 p-3 text-sm lg:block">
-          {isAdmin && label !== "Admin" && <Link to="/admin" className="flex items-center gap-3 rounded-xl px-3 py-2 text-ink-muted hover:bg-ink-foreground/10">Admin panel</Link>}
+          {isStaff && label !== "Admin" && <Link to="/admin" className="flex items-center gap-3 rounded-xl px-3 py-2 text-ink-muted hover:bg-ink-foreground/10">Staff panel</Link>}
           {label === "Admin" && <Link to="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2 text-ink-muted hover:bg-ink-foreground/10">Business dashboard</Link>}
           <Link to="/" className="flex items-center gap-3 rounded-xl px-3 py-2 text-ink-muted hover:bg-ink-foreground/10"><ExternalLink className="size-4" />View site</Link>
           <p className="truncate px-3 pt-2 text-xs text-ink-muted">{user?.email}</p>
