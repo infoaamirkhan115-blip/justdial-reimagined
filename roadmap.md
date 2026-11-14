@@ -1,10 +1,12 @@
 # Phase 1 public directory repair
-- [ ] Reproduce current issues and inspect existing data, routes, permissions and integrations.
-- [ ] Repair loading/errors, offering search, location filters, pagination and URL state.
-- [ ] Correct category recommendations and real Save/Share/Directions/Call/WhatsApp actions.
-- [ ] Improve catalogue, contextual enquiries, missing-data states and mobile layouts.
-- [ ] Preserve onboarding drafts through authentication and submission.
-- [ ] Verify automated checks, public journeys, persisted favourites and access denial; document remaining dependencies.
+- [x] Reproduce current issues and inspect existing data, routes, permissions and integrations.
+- [x] Repair loading/errors, offering search, location filters, pagination and URL state.
+- [x] Correct category recommendations and real Save/Share/Directions/Call/WhatsApp actions.
+- [x] Improve catalogue, contextual enquiries, missing-data states and mobile layouts.
+- [x] Preserve onboarding drafts through authentication and submission.
+- [x] Verify 35 automated tests, targeted lint, public search/pagination, persisted favourites, copy-link sharing, directions, mobile layout, draft restoration/discard, and admin access; latest preview check passed.
+- [ ] Verify published offering search and nested offering/enquiry dialogs against a live eligible offering. Blocker: current database has no Gypsum Ceiling offering; its former parent is no longer present. Do not recreate removed production records.
+- [ ] Verify enquiry insertion/rate limits, successful listing submission/draft clearing, and cross-owner direct API denial using isolated fixtures. Blocker: an isolated test business and second test-owner session are required; never submit fake enquiries to real listings.
 
 # Product and service module
 - [x] Store products/services securely for each business.
