@@ -17,7 +17,7 @@ export const saveOffering = createServerFn({ method: "POST" })
     const { id, ...values } = data;
     const requested = data.review_state ?? (data.published ? "published" : "draft");
     const review_state = !admin && requested === "published" ? "review" : requested;
-    const payload = { ...values, review_state, published: review_state === "published" };
+    const payload = { ...values, inclusions: values.inclusions ?? "", exclusions: values.exclusions ?? "", minimum_quantity: values.minimum_quantity ?? null, minimum_area: values.minimum_area ?? null, review_state, published: review_state === "published" };
     const result = id
       ? await context.supabase.from("business_offerings").update(payload).eq("id", id).eq("business_id", business.id).select("id").single()
       : await context.supabase.from("business_offerings").insert(payload).select("id").single();
