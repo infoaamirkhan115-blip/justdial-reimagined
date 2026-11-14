@@ -3,7 +3,7 @@ import clinic from "@/assets/biz-clinic.jpg";
 import repair from "@/assets/biz-repair.jpg";
 
 export const CITIES = ["Noida", "Mumbai", "Delhi", "Bengaluru", "Chennai", "Hyderabad", "Pune", "Kolkata", "Ahmedabad"] as const;
-export type City = (typeof CITIES)[number];
+export type City = string;
 
 export type Category = { slug: string; name: string; icon: string; group: string; subs: string[] };
 
@@ -52,6 +52,7 @@ export type Business = {
   rating: number; reviews: number; years: number; verified: boolean; trust: boolean; sponsored: boolean;
   open: boolean | null; hours: string; distance: number | null; phone: string; image: string; tags: string[];
   offeringTitles?: string[]; matchedOfferings?: string[];
+  categoryName?: string; searchAliases?: string[]; attributes?: Record<string, unknown>; serviceAreas?: string[];
   highlight: string; price: string; services: { name: string; price: string }[]; reviewList: Review[];
   live?: boolean; description?: string; address?: string;
   gallery?: string[]; logo?: string | undefined; website?: string; email?: string; whatsapp?: string; landmark?: string; pincode?: string; payments?: string[]; days?: string[];

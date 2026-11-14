@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { CATEGORIES } from "@/data/catalog";
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { CategoryTile } from "@/components/site/ui";
 
 export const Route = createFileRoute("/categories")({
@@ -14,13 +14,14 @@ export const Route = createFileRoute("/categories")({
 });
 
 function Page() {
+  const { categories: CATEGORIES } = useDirectoryDefinitions();
   const [q, setQ] = useState("");
   const list = CATEGORIES.filter((c) => c.name.toLowerCase().includes(q.toLowerCase()) || c.subs.some((s) => s.toLowerCase().includes(q.toLowerCase())));
   const groups = [...new Set(list.map((c) => c.group))];
   return (
     <div className="container-page pt-10">
       <h1 className="text-4xl font-extrabold md:text-5xl">All categories</h1>
-      <p className="mt-2 text-muted-foreground">{CATEGORIES.length} categories · millions of businesses</p>
+      <p className="mt-2 text-muted-foreground">{CATEGORIES.length} categories</p>
       <label className="mt-6 flex h-12 max-w-md items-center gap-2 rounded-2xl border bg-card px-4">
         <Search className="size-5 text-muted-foreground" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter categories" aria-label="Filter categories" className="flex-1 bg-transparent outline-none" />

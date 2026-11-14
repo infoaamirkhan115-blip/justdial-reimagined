@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { type Business, type City } from "@/data/catalog";
 import { photoUrls } from "@/lib/photos";
+import { directoryDefinitionsQ, mapCategories } from "./managed-directory";
 
 type Row = Tables<"businesses"> & {
   business_offerings?: { name: string; published: boolean }[];
@@ -21,6 +22,8 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
     id: r.id,
     name: r.name,
     category: r.category,
+    attributes: r.attributes as Record<string, unknown>,
+    serviceAreas: Array.isArray(r.service_areas) ? r.service_areas as string[] : [],
     sub: r.sub,
     city: r.city as City,
     area: r.area,
@@ -75,6 +78,7 @@ export const liveBusinessesQ = queryOptions({
         .from("businesses")
         .select(SELECT)
         .eq("status", "approved")
+        .is("archived_at", null)
         .order("id")
         .range(offset, offset + 499);
       if (error) throw new Error("Couldn't load businesses. Please retry.");
@@ -82,7 +86,9 @@ export const liveBusinessesQ = queryOptions({
       if (data.length < 500) break;
     }
     const urls = await photoUrls(allPaths(rows, false));
-    return rows.map((r) => rowToBusiness(r, urls));
+    const definitions = await directoryDefinitionsQ.queryFn();
+    const categories = mapCategories(definitions.categories);
+    return rows.map((r) => { const b = rowToBusiness(r, urls); const c = categories.find(c => c.id === r.category_id || c.slug === r.category); return { ...b, categoryName: c?.name, searchAliases: c?.aliases }; });
   },
   staleTime: 30_000,
 });
@@ -96,6 +102,7 @@ export const liveBusinessQ = (id: string) =>
         .select(SELECT)
         .eq("id", id)
         .eq("status", "approved")
+        .is("archived_at", null)
         .maybeSingle();
       if (error) throw new Error("Couldn't load this business. Please retry.");
       if (!data) return null;
