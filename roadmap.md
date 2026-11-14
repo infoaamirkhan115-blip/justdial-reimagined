@@ -15,3 +15,8 @@
 - [x] Replace only original imported samples; preserve owner-created listings.
 - [x] Add Noida and correct public city filtering without invented listing facts.
 - [x] Verify search, category results, and admin records.
+
+# Real Noida photos and contacts
+- [ ] Source actual photos and verify contacts for all 11 imported Noida listings.
+- [ ] Store sourced photos and update the existing listings without changing owner listings.
+- [ ] Verify photos on search/category/business pages and saved contact details.
