@@ -53,7 +53,8 @@ export function TrustCenter({
     reports: "Review reports & appeals",
     audit: "Trust audit history",
   }[mode];
-  const exp = expiry && Number.isFinite(new Date(expiry).getTime()) ? new Date(expiry).toISOString() : null;
+  const exp =
+    expiry && Number.isFinite(new Date(expiry).getTime()) ? new Date(expiry).toISOString() : null;
   return (
     <>
       <PageTitle title={title} />
@@ -136,8 +137,15 @@ export function TrustCenter({
                   Requested corrections: {c.corrections || "None"}
                 </p>
                 <p className="text-sm text-muted-foreground">{c.reason}</p>
-                <p className="text-xs text-muted-foreground">Submitted {new Date(c.created_at).toLocaleString()}{c.decided_at ? ` · Decision ${new Date(c.decided_at).toLocaleString()}` : ""}{c.expires_at ? ` · Expiry ${new Date(c.expires_at).toLocaleDateString()}` : ""}</p>
-                {c.claimant_id===data.userId && ["submitted","evidence_requested"].includes(c.status) && <ClaimEvidence id={c.id} userId={data.userId} paths={c.evidence}/>}
+                <p className="text-xs text-muted-foreground">
+                  Submitted {new Date(c.created_at).toLocaleString()}
+                  {c.decided_at ? ` · Decision ${new Date(c.decided_at).toLocaleString()}` : ""}
+                  {c.expires_at ? ` · Expiry ${new Date(c.expires_at).toLocaleDateString()}` : ""}
+                </p>
+                {c.claimant_id === data.userId &&
+                  ["submitted", "evidence_requested"].includes(c.status) && (
+                    <ClaimEvidence id={c.id} userId={data.userId} paths={c.evidence} />
+                  )}
                 <p className="text-xs">
                   Competing active claims:{" "}
                   {
