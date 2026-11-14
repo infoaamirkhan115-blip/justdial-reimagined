@@ -32,7 +32,7 @@ export const getPublishedPhotoUrls = createServerFn({ method: "POST" })
     const { data: signed, error } = await supabaseAdmin.storage.from("business-photos").createSignedUrls(allowed, 3600);
     if (error) return {};
     // Server connection URLs can be private in drafts; return browser-facing URLs.
-    const browserOrigin = new URL(import.meta.env.VITE_SUPABASE_URL).origin;
+    const browserOrigin = new URL(import.meta.env["VITE_SUPABASE_URL"]).origin;
     return Object.fromEntries((signed ?? []).flatMap(item => {
       if (!item.path || !allowed.includes(item.path) || !item.signedUrl) return [];
       const url = new URL(item.signedUrl);
