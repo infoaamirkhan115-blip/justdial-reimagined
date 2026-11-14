@@ -537,6 +537,69 @@ export type Database = {
           },
         ]
       }
+      directory_events: {
+        Row: {
+          business_id: string | null
+          campaign: string
+          category: string
+          city: string
+          created_at: string
+          dedupe_key: string
+          event: string
+          id: string
+          medium: string
+          offering_id: string | null
+          outcome: string
+          source: string
+          term: string
+        }
+        Insert: {
+          business_id?: string | null
+          campaign?: string
+          category?: string
+          city?: string
+          created_at?: string
+          dedupe_key: string
+          event: string
+          id?: string
+          medium?: string
+          offering_id?: string | null
+          outcome?: string
+          source?: string
+          term?: string
+        }
+        Update: {
+          business_id?: string | null
+          campaign?: string
+          category?: string
+          city?: string
+          created_at?: string
+          dedupe_key?: string
+          event?: string
+          id?: string
+          medium?: string
+          offering_id?: string | null
+          outcome?: string
+          source?: string
+          term?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_events_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "directory_events_offering_id_fkey"
+            columns: ["offering_id"]
+            isOneToOne: false
+            referencedRelation: "business_offerings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       directory_import_batches: {
         Row: {
           applied_at: string | null
@@ -1346,6 +1409,14 @@ export type Database = {
         Returns: undefined
       }
       obvious_placeholder: { Args: { t: string }; Returns: boolean }
+      operations_records: {
+        Args: { filters: Json; page_number?: number; queue_key: string }
+        Returns: Json
+      }
+      operations_summary: {
+        Args: { filters: Json; owner_only?: boolean }
+        Returns: Json
+      }
       ops_permission: {
         Args: { bid?: string; permission: string }
         Returns: boolean
@@ -1386,6 +1457,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      record_directory_event: { Args: { payload: Json }; Returns: undefined }
       review_listing_change: {
         Args: { approve: boolean; feedback_text: string; request_id: string }
         Returns: undefined
