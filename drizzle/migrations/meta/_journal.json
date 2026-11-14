@@ -162,6 +162,13 @@
       "when": 1794650896619,
       "tag": "0022_phase6_validated_commerce_actions",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1794651171583,
+      "tag": "0023_phase6_entitlement_limits_and_safe_public_reads",
+      "breakpoints": true
     }
   ]
 }
