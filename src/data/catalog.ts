@@ -50,7 +50,8 @@ export type Review = { name: string; rating: number; date: string; text: string 
 export type Business = {
   id: string; name: string; category: string; sub: string; city: City; area: string;
   rating: number; reviews: number; years: number; verified: boolean; trust: boolean; sponsored: boolean;
-  open: boolean; hours: string; distance: number; phone: string; image: string; tags: string[];
+  open: boolean | null; hours: string; distance: number | null; phone: string; image: string; tags: string[];
+  offeringTitles?: string[]; matchedOfferings?: string[];
   highlight: string; price: string; services: { name: string; price: string }[]; reviewList: Review[];
   live?: boolean; description?: string; address?: string;
   gallery?: string[]; logo?: string | undefined; website?: string; email?: string; whatsapp?: string; landmark?: string; pincode?: string; payments?: string[]; days?: string[];
