@@ -1,7 +1,8 @@
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { useNavigate } from "@tanstack/react-router";
 import { MapPin, Mic, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { CATEGORIES, CITIES, type City } from "@/data/catalog";
+import { type City } from "@/data/catalog";
 import { useCity } from "./city";
 import { cn } from "@/lib/utils";
 import { Btn } from "./ui";
@@ -15,6 +16,7 @@ export function SearchBar({
   initial?: string;
   initialCity?: string;
 }) {
+  const { categories: CATEGORIES, cities: CITIES } = useDirectoryDefinitions();
   const { city, setCity } = useCity();
   const [q, setQ] = useState(initial);
   const [focus, setFocus] = useState(false);

@@ -1,3 +1,4 @@
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -23,7 +24,7 @@ import {
 import hero from "@/assets/hero-street.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
-import { BUSINESSES, CATEGORIES, STATS, TRENDING } from "@/data/catalog";
+import { BUSINESSES, STATS, TRENDING } from "@/data/catalog";
 import { SearchBar } from "@/components/site/search-bar";
 import {
   CategoryTile,
