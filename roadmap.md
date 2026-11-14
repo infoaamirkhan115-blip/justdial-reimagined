@@ -15,3 +15,9 @@
 - [x] Replace only original imported samples; preserve owner-created listings.
 - [x] Add Noida and correct public city filtering without invented listing facts.
 - [x] Verify search, category results, and admin records.
+
+# Real Noida photos and contacts
+- [x] Verify official contacts for all 11 listings; update changed contacts and keep confirmed numbers.
+- [x] Source and save official venue photos for 10 listings, retaining source notes and owner listings.
+- [ ] Replace Lemon Tree Hotel's remaining placeholder: official photo downloads time out and its page capture has no usable photo; needs an accessible official image or owner-provided photo.
+- [x] Verify the 10 saved photos load for visitors and updated contacts read back on public pages.
