@@ -1021,6 +1021,10 @@ export type Database = {
         Args: { batch_id: string; reverse_batch: boolean }
         Returns: undefined
       }
+      change_listing_trust: {
+        Args: { bid: string; decision_reason: string; patch: Json }
+        Returns: undefined
+      }
       decide_claim: {
         Args: {
           claim_id: string
