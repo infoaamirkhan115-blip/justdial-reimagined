@@ -28,9 +28,9 @@
 - [x] Verify all 32 main Noida category pages have approved public results (39 listings total).
 
 # Real photos for newly added Noida listings
-- [ ] Restore visitor results: imported descriptive photo filenames fail public photo validation, aborting the listing query; verify signed-out search, categories, and photos.
+- [x] Restore visitor results: support safe imported descriptive photo filenames and isolate photo failures; 8 tests pass; signed-out Noida search shows 39 results, homepage/category listings and all 17 new photos verified.
 - [x] Research all 28 official sites; visually verify authentic photos for 17 listings and reject stock, illustrated, and AI-generated substitutes.
 - [x] Save verified photos privately for 17 listings, link them to listings, and retain official source notes.
 - [x] Verify all 17 photos load on listing pages in the signed-in preview, including desktop/mobile views; no runtime errors.
 - [ ] Source authentic photos for the remaining 11: Noida Luxury Spa, Deepak Bhargava & Associates, Carqlinic, Bala Ji Enterprises, Fix Fast Electrical, Mobile House, Dreamland Interior Designers, ZX Pest Control, Doon Pet Shop, Noida Home Tutor, Wholesale Story. Blocker: checked official sources expose only stock/generated/illustrated images or no accessible genuine business photo; need an accessible verified gallery or owner-provided photos.
-- [ ] Verify signed-out public delivery for the newly saved images. Blocker: signed-out localhost listing pages remain on Loading; signed-in listing pages verified successfully.
+- [x] Verify signed-out public delivery for all 17 newly saved photo sets after correcting filename validation; all listing pages and images load without runtime errors.
