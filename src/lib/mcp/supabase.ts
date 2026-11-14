@@ -3,12 +3,12 @@ import type { ToolContext } from "@lovable.dev/mcp-js";
 import type { Database } from "@/integrations/supabase/types";
 
 function projectUrl() {
-  const url = process.env["SUPABASE_URL"] ?? import.meta.env.VITE_SUPABASE_URL;
+  const url = process.env["SUPABASE_URL"] ?? import.meta.env["VITE_SUPABASE_URL"];
   if (!url) throw new Error("Database configuration is unavailable.");
   return url;
 }
 function publishableKey() {
-  const direct = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const direct = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
   if (direct) return direct;
   const dictionary = process.env["SUPABASE_PUBLISHABLE_KEYS"];
   if (dictionary) {
@@ -20,7 +20,7 @@ function publishableKey() {
       }
     } catch { /* Continue to legacy configuration. */ }
   }
-  const legacy = process.env["SUPABASE_ANON_KEY"] ?? import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const legacy = process.env["SUPABASE_ANON_KEY"] ?? import.meta.env["VITE_SUPABASE_ANON_KEY"];
   if (legacy) return legacy;
   throw new Error("Database configuration is unavailable.");
 }

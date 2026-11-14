@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>) => ({ authorization_id: typeof s.authorization_id === "string" ? s.authorization_id : "" }),
+  validateSearch: (s: Record<string, unknown>) => ({ authorization_id: typeof s["authorization_id"] === "string" ? s["authorization_id"] : "" }),
   head: () => ({ meta: [
     { title: "Connect an assistant — Justdial Neighborhood Navigator" },
     { name: "description", content: "Review and approve secure assistant access to your Justdial account." },
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
     return data;
   },
   pendingComponent: () => <main className="container-page py-16" role="status">Loading connection request…</main>,
-  errorComponent: ({ error, reset }) => <main className="container-page max-w-xl py-16"><h1 className="text-2xl font-bold">Couldn't load this connection</h1><p role="alert" className="my-4 text-muted-foreground">{error.message}</p><Btn onClick={reset} variant="outline">Try again</Btn></main>,
+  errorComponent: ({ error, reset }) => <main className="container-page max-w-xl py-16"><h1 className="text-2xl font-bold">Couldn't load this connection</h1><p role="alert" className="my-4 text-muted-foreground">{error instanceof Error ? error.message : "This connection request is unavailable."}</p><Btn onClick={reset} variant="outline">Try again</Btn></main>,
   component: ConsentPage,
 });
 
