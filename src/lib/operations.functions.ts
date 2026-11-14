@@ -1,41 +1,324 @@
-import {createServerFn} from '@tanstack/react-start';
-import {z} from 'zod';
-import {createClient} from '@supabase/supabase-js';
-import type {Database} from '@/integrations/supabase/types';
-import {requireSupabaseAuth} from '@/integrations/supabase/auth-middleware';
-import {ticketSchema,filterSchema} from './operations-rules';
-export const submitTicket=createServerFn({method:'POST'}).inputValidator(ticketSchema).handler(async({data})=>{
- const key=process.env['SUPABASE_PUBLISHABLE_KEY'];const url=process.env['SUPABASE_URL'];if(!key||!url)throw new Error('Support is unavailable. Please retry later.');
- const s=createClient<Database>(url,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
- const r=await s.rpc('create_support_ticket',{payload:data});if(r.error)throw new Error(r.error.message);return r.data as {id:string;reference:string};
-});
-export const submitAccountTicket=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(ticketSchema).handler(async({data,context})=>{const r=await context.supabase.rpc('create_support_ticket',{payload:data});if(r.error)throw new Error(r.error.message);return r.data as {id:string;reference:string};});
-export const supportData=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({page:z.number().int().min(1).default(1),status:z.string().optional(),overdue:z.boolean().optional(),ticket:z.string().uuid().optional(),staff:z.boolean().default(false)})).handler(async({data,context})=>{
- const s=context.supabase;let q=s.from('support_tickets').select('*',{count:'exact'}).order('created_at',{ascending:false});if(!data.staff)q=q.eq('requester_id',context.userId);if(data.status)q=q.eq('status',data.status);if(data.overdue)q=q.lt('response_due_at',new Date().toISOString()).not('status','in','(resolved,closed)');const r=await q.range((data.page-1)*20,data.page*20-1);if(r.error)throw new Error('Could not load support tickets');
- const messages=data.ticket?await s.from('support_messages').select('*').eq('ticket_id',data.ticket).order('created_at'):null;if(messages?.error)throw new Error('Could not load conversation');
- const selected=data.ticket?await s.from('support_tickets').select('*').eq('id',data.ticket).maybeSingle():null;
- const staff= data.staff?await s.from('staff_assignments').select('user_id,role,city,category'):null;
- return {tickets:r.data,total:r.count??0,messages:messages?.data??[],selected:selected?.data??null,staff:staff?.data??[],userId:context.userId};
-});
-export const ticketAction=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),payload:z.discriminatedUnion('action',[z.object({action:z.enum(['reply','internal']),body:z.string().trim().min(1).max(5000)}),z.object({action:z.literal('update'),status:z.enum(['open','in_progress','waiting_requester','escalated','resolved','closed']),priority:z.enum(['low','normal','high','urgent']),assignee:z.string().uuid().or(z.literal('')),deadline:z.string().or(z.literal('')),reason:z.string().max(2000)})])})).handler(async({data,context})=>{const r=await context.supabase.rpc('support_ticket_action',{ticket:data.id,action_payload:data.payload});if(r.error)throw new Error(r.error.message);return {saved:true};});
-export type Summary={queues:{key:string;label:string;count:number}[];metrics:Record<string,number>;businesses:number;saved_enquiries:number;quotations:number;reported_won:number;reported_lost:number;response_minutes:number|null;zero_terms:{term:string;city:string;category:string;count:number}[]};
-export type QueueRecord={id:string;title:string;status:string;created_at:string;kind:string;city:string;category:string};
-export const operationsData=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({filters:filterSchema,owner:z.boolean().default(false),queue:z.string().optional(),page:z.number().int().min(1).default(1)})).handler(async({data,context})=>{
- const s=context.supabase;const summary=await s.rpc('operations_summary',{filters:data.filters,owner_only:data.owner});if(summary.error)throw new Error('Could not load operations totals');
- const rows=data.queue&&!data.owner?await s.rpc('operations_records',{filters:data.filters,queue_key:data.queue,page_number:data.page}):null;if(rows?.error)throw new Error('Could not load queue records');
- const people=!data.owner?await s.from('staff_assignments').select('user_id,role,city,category'):null;
- return {summary:summary.data as unknown as Summary,records:(rows?.data??[]) as unknown as QueueRecord[],staff:people?.data??[]};
-});
-export const notificationsData=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({staff:z.boolean().default(false),page:z.number().int().min(1).default(1)})).handler(async({data,context})=>{
- const s=context.supabase;let q=s.from('in_app_notifications').select('*',{count:'exact'}).order('created_at',{ascending:false});if(!data.staff)q=q.eq('recipient_id',context.userId);const r=await q.range((data.page-1)*30,data.page*30-1);if(r.error)throw new Error('Could not load notifications');const prefs=await s.from('notification_preferences').select('*').eq('user_id',context.userId).maybeSingle();return {rows:r.data,total:r.count??0,preferences:prefs.data,userId:context.userId};
-});
-export const processNotification=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),read:z.boolean().default(false)})).handler(async({data,context})=>{const r=await context.supabase.rpc('process_in_app_notification',{nid:data.id,mark_read:data.read});if(r.error)throw new Error(r.error.message);return {status:r.data};});
-export const saveNotificationPreferences=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({in_app:z.boolean(),email_consent:z.boolean(),sms_consent:z.boolean(),whatsapp_consent:z.boolean()})).handler(async({data,context})=>{const r=await context.supabase.from('notification_preferences').upsert({...data,user_id:context.userId,updated_at:new Date().toISOString()});if(r.error)throw new Error('Could not save notification preferences');return {saved:true};});
-export const leadOpsData=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({owner:z.boolean().default(false),page:z.number().int().min(1).default(1),requirement:z.string().uuid().optional(),lead:z.string().uuid().optional()})).handler(async({data,context})=>{
- const s=context.supabase;let l=s.from('leads').select('*,businesses!inner(id,name,owner_id,city,category)',{count:'exact'}).order('created_at',{ascending:false});if(data.owner)l=l.eq('businesses.owner_id',context.userId);if(data.lead)l=l.eq('id',data.lead);const leads=await l.range((data.page-1)*20,data.page*20-1);
- let rq=s.from('buy_requirements').select('*',{count:'exact'}).order('created_at',{ascending:false});if(data.owner)rq=rq.eq('requester_id',context.userId);if(data.requirement)rq=rq.eq('id',data.requirement);const req=await rq.range((data.page-1)*20,data.page*20-1);
- const b=await s.from('businesses').select('id,name,city,category,status').eq('status','approved');const staff=await s.from('staff_assignments').select('user_id,role,city,category');if(leads.error||req.error||b.error)throw new Error('Could not load lead operations');return {leads:leads.data,total:leads.count??0,requirements:req.data,requirementTotal:req.count??0,businesses:b.data,staff:staff.data??[]};
-});
-export const postRequirement=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({topic:z.string().trim().min(3).max(150),description:z.string().trim().min(10).max(3000),city:z.string().min(1).max(100),category:z.string().min(1).max(100),name:z.string().trim().min(2).max(100),phone:z.string().regex(/^[6-9]\d{9}$/)})).handler(async({data,context})=>{const r=await context.supabase.rpc('create_buy_requirement',{payload:data});if(r.error)throw new Error(r.error.message);return {id:r.data};});
-export const assignRequirement=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),business:z.string().uuid(),assignee:z.string().uuid().nullable(),deadline:z.string().datetime().nullable()})).handler(async({data,context})=>{const r=await context.supabase.rpc('assign_requirement',{rid:data.id,bid:data.business,staff_id:data.assignee as unknown as string,deadline:data.deadline as unknown as string});if(r.error)throw new Error(r.error.message);return {id:r.data};});
-export const leadAction=createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid(),payload:z.object({action:z.enum(['assign','response','quote','outcome']),body:z.string().max(3000).optional(),status:z.enum(['won','lost']).optional(),assignee:z.string().uuid().or(z.literal('')).optional(),deadline:z.string().optional()})})).handler(async({data,context})=>{const r=await context.supabase.rpc('lead_operations_action',{lid:data.id,payload:data.payload});if(r.error)throw new Error(r.error.message);return {saved:true};});
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { ticketSchema, filterSchema } from "./operations-rules";
+export const submitTicket = createServerFn({ method: "POST" })
+  .inputValidator(ticketSchema)
+  .handler(async ({ data }) => {
+    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
+    const url = process.env["SUPABASE_URL"];
+    if (!key || !url) throw new Error("Support is unavailable. Please retry later.");
+    const s = createClient<Database>(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      global: {
+        fetch: (input, init) => {
+          const h = new Headers(init?.headers);
+          if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`)
+            h.delete("Authorization");
+          h.set("apikey", key);
+          return fetch(input, { ...init, headers: h });
+        },
+      },
+    });
+    const r = await s.rpc("create_support_ticket", { payload: data });
+    if (r.error) throw new Error(r.error.message);
+    return r.data as { id: string; reference: string };
+  });
+export const submitAccountTicket = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(ticketSchema)
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("create_support_ticket", { payload: data });
+    if (r.error) throw new Error(r.error.message);
+    return r.data as { id: string; reference: string };
+  });
+export const supportData = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      page: z.number().int().min(1).default(1),
+      status: z.string().optional(),
+      overdue: z.boolean().optional(),
+      ticket: z.string().uuid().optional(),
+      staff: z.boolean().default(false),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const s = context.supabase;
+    let q = s
+      .from("support_tickets")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false });
+    if (!data.staff) q = q.eq("requester_id", context.userId);
+    if (data.status) q = q.eq("status", data.status);
+    if (data.overdue)
+      q = q
+        .lt("response_due_at", new Date().toISOString())
+        .not("status", "in", "(resolved,closed)");
+    const r = await q.range((data.page - 1) * 20, data.page * 20 - 1);
+    if (r.error) throw new Error("Could not load support tickets");
+    const messages = data.ticket
+      ? await s
+          .from("support_messages")
+          .select("*")
+          .eq("ticket_id", data.ticket)
+          .order("created_at")
+      : null;
+    if (messages?.error) throw new Error("Could not load conversation");
+    const selected = data.ticket
+      ? await s.from("support_tickets").select("*").eq("id", data.ticket).maybeSingle()
+      : null;
+    const staff = data.staff
+      ? await s.from("staff_assignments").select("user_id,role,city,category")
+      : null;
+    return {
+      tickets: r.data,
+      total: r.count ?? 0,
+      messages: messages?.data ?? [],
+      selected: selected?.data ?? null,
+      staff: staff?.data ?? [],
+      userId: context.userId,
+    };
+  });
+export const ticketAction = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      id: z.string().uuid(),
+      payload: z.discriminatedUnion("action", [
+        z.object({
+          action: z.enum(["reply", "internal"]),
+          body: z.string().trim().min(1).max(5000),
+        }),
+        z.object({
+          action: z.literal("update"),
+          status: z.enum([
+            "open",
+            "in_progress",
+            "waiting_requester",
+            "escalated",
+            "resolved",
+            "closed",
+          ]),
+          priority: z.enum(["low", "normal", "high", "urgent"]),
+          assignee: z.string().uuid().or(z.literal("")),
+          deadline: z.string().or(z.literal("")),
+          reason: z.string().max(2000),
+        }),
+      ]),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("support_ticket_action", {
+      ticket: data.id,
+      action_payload: data.payload,
+    });
+    if (r.error) throw new Error(r.error.message);
+    return { saved: true };
+  });
+export type Summary = {
+  queues: { key: string; label: string; count: number }[];
+  metrics: Record<string, number>;
+  businesses: number;
+  saved_enquiries: number;
+  quotations: number;
+  reported_won: number;
+  reported_lost: number;
+  response_minutes: number | null;
+  zero_terms: { term: string; city: string; category: string; count: number }[];
+};
+export type QueueRecord = {
+  id: string;
+  title: string;
+  status: string;
+  created_at: string;
+  kind: string;
+  city: string;
+  category: string;
+};
+export const operationsData = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      filters: filterSchema,
+      owner: z.boolean().default(false),
+      queue: z.string().optional(),
+      page: z.number().int().min(1).default(1),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const s = context.supabase;
+    const summary = await s.rpc("operations_summary", {
+      filters: data.filters,
+      owner_only: data.owner,
+    });
+    if (summary.error) throw new Error("Could not load operations totals");
+    const rows =
+      data.queue && !data.owner
+        ? await s.rpc("operations_records", {
+            filters: data.filters,
+            queue_key: data.queue,
+            page_number: data.page,
+          })
+        : null;
+    if (rows?.error) throw new Error("Could not load queue records");
+    const people = !data.owner
+      ? await s.from("staff_assignments").select("user_id,role,city,category")
+      : null;
+    return {
+      summary: summary.data as unknown as Summary,
+      records: (rows?.data ?? []) as unknown as QueueRecord[],
+      staff: people?.data ?? [],
+    };
+  });
+export const notificationsData = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({ staff: z.boolean().default(false), page: z.number().int().min(1).default(1) }),
+  )
+  .handler(async ({ data, context }) => {
+    const s = context.supabase;
+    let q = s
+      .from("in_app_notifications")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false });
+    if (!data.staff) q = q.eq("recipient_id", context.userId);
+    const r = await q.range((data.page - 1) * 30, data.page * 30 - 1);
+    if (r.error) throw new Error("Could not load notifications");
+    const prefs = await s
+      .from("notification_preferences")
+      .select("*")
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    return { rows: r.data, total: r.count ?? 0, preferences: prefs.data, userId: context.userId };
+  });
+export const processNotification = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(z.object({ id: z.string().uuid(), read: z.boolean().default(false) }))
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("process_in_app_notification", {
+      nid: data.id,
+      mark_read: data.read,
+    });
+    if (r.error) throw new Error(r.error.message);
+    return { status: r.data };
+  });
+export const saveNotificationPreferences = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      in_app: z.boolean(),
+      email_consent: z.boolean(),
+      sms_consent: z.boolean(),
+      whatsapp_consent: z.boolean(),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase
+      .from("notification_preferences")
+      .upsert({ ...data, user_id: context.userId, updated_at: new Date().toISOString() });
+    if (r.error) throw new Error("Could not save notification preferences");
+    return { saved: true };
+  });
+export const leadOpsData = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      owner: z.boolean().default(false),
+      page: z.number().int().min(1).default(1),
+      requirement: z.string().uuid().optional(),
+      lead: z.string().uuid().optional(),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const s = context.supabase;
+    let l = s
+      .from("leads")
+      .select("*,businesses!inner(id,name,owner_id,city,category)", { count: "exact" })
+      .order("created_at", { ascending: false });
+    if (data.owner) l = l.eq("businesses.owner_id", context.userId);
+    if (data.lead) l = l.eq("id", data.lead);
+    const leads = await l.range((data.page - 1) * 20, data.page * 20 - 1);
+    let rq = s
+      .from("buy_requirements")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false });
+    if (data.owner) rq = rq.eq("requester_id", context.userId);
+    if (data.requirement) rq = rq.eq("id", data.requirement);
+    const req = await rq.range((data.page - 1) * 20, data.page * 20 - 1);
+    const b = await s
+      .from("businesses")
+      .select("id,name,city,category,status")
+      .eq("status", "approved");
+    const staff = await s.from("staff_assignments").select("user_id,role,city,category");
+    if (leads.error || req.error || b.error) throw new Error("Could not load lead operations");
+    return {
+      leads: leads.data,
+      total: leads.count ?? 0,
+      requirements: req.data,
+      requirementTotal: req.count ?? 0,
+      businesses: b.data,
+      staff: staff.data ?? [],
+    };
+  });
+export const postRequirement = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      topic: z.string().trim().min(3).max(150),
+      description: z.string().trim().min(10).max(3000),
+      city: z.string().min(1).max(100),
+      category: z.string().min(1).max(100),
+      name: z.string().trim().min(2).max(100),
+      phone: z.string().regex(/^[6-9]\d{9}$/),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("create_buy_requirement", { payload: data });
+    if (r.error) throw new Error(r.error.message);
+    return { id: r.data };
+  });
+export const assignRequirement = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      id: z.string().uuid(),
+      business: z.string().uuid(),
+      assignee: z.string().uuid().nullable(),
+      deadline: z.string().datetime().nullable(),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("assign_requirement", {
+      rid: data.id,
+      bid: data.business,
+      staff_id: data.assignee as unknown as string,
+      deadline: data.deadline as unknown as string,
+    });
+    if (r.error) throw new Error(r.error.message);
+    return { id: r.data };
+  });
+export const leadAction = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(
+    z.object({
+      id: z.string().uuid(),
+      payload: z.object({
+        action: z.enum(["assign", "response", "quote", "outcome"]),
+        body: z.string().max(3000).optional(),
+        status: z.enum(["won", "lost"]).optional(),
+        assignee: z.string().uuid().or(z.literal("")).optional(),
+        deadline: z.string().optional(),
+      }),
+    }),
+  )
+  .handler(async ({ data, context }) => {
+    const r = await context.supabase.rpc("lead_operations_action", {
+      lid: data.id,
+      payload: data.payload,
+    });
+    if (r.error) throw new Error(r.error.message);
+    return { saved: true };
+  });
