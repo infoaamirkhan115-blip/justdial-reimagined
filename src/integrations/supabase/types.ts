@@ -178,6 +178,32 @@ export type Database = {
         }
         Relationships: []
       }
+      favourites: {
+        Row: {
+          business_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favourites_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           business_id: string
