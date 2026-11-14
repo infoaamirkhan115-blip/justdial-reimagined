@@ -162,19 +162,10 @@ function Page() {
                       <option key={s}>{s}</option>
                     ))}
                   </select>
-                  <button
-                    onClick={() =>
-                      set(b.id, { verified: !b.verified }, b.verified ? "Unverified" : "Verified")
-                    }
-                    aria-pressed={b.verified}
-                    className={cn(
-                      "inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold",
-                      b.verified ? "border-success bg-success-soft text-success" : "bg-background",
-                    )}
-                  >
+                  <Link to="/admin/verification" className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold">
                     <BadgeCheck className="size-4" />
-                    Verified
-                  </button>
+                    Information checks
+                  </Link>
                   <button
                     onClick={() =>
                       set(

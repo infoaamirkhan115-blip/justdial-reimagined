@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { TrustCenter, trustQ } from "@/components/dash/trust-center";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -20,8 +21,8 @@ export const Route = createFileRoute("/_authenticated/admin/users")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(allUsersQ),
-  component: Page,
+  loader: ({ context }) => context.queryClient.ensureQueryData(trustQ),
+  component: () => <TrustCenter mode="staff" />,
 });
 
 function Page() {
