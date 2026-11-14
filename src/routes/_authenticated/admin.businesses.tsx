@@ -152,22 +152,7 @@ function Page() {
                       <option key={s}>{s}</option>
                     ))}
                   </select>
-                  <select
-                    value={b.plan}
-                    onChange={(e) =>
-                      set(
-                        b.id,
-                        { plan: e.target.value, requested_plan: null },
-                        `Plan: ${e.target.value}`,
-                      )
-                    }
-                    aria-label="Plan"
-                    className="h-10 rounded-xl border bg-background px-3 text-sm font-semibold capitalize"
-                  >
-                    {["free", "premium", "platinum"].map((s) => (
-                      <option key={s}>{s}</option>
-                    ))}
-                  </select>
+                  <Link to="/admin/commerce" className="inline-flex h-10 items-center rounded-xl border px-3 text-sm font-bold">Dated plans</Link>
                   <Link
                     to="/admin/verification"
                     className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold"
@@ -175,23 +160,10 @@ function Page() {
                     <BadgeCheck className="size-4" />
                     Information checks
                   </Link>
-                  <button
-                    onClick={() =>
-                      set(
-                        b.id,
-                        { sponsored: !b.sponsored },
-                        b.sponsored ? "Removed from sponsored" : "Now sponsored",
-                      )
-                    }
-                    aria-pressed={b.sponsored}
-                    className={cn(
-                      "inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold",
-                      b.sponsored ? "border-primary bg-saffron-soft" : "bg-background",
-                    )}
-                  >
+                  <Link to="/admin/commerce" className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold">
                     <Megaphone className="size-4" />
                     Sponsored
-                  </button>
+                  </Link>
                   {b.status === "approved" && (
                     <Link
                       to="/business/$id"
