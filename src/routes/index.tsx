@@ -107,6 +107,7 @@ function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: str
 }
 
 function Home() {
+  const { categories: CATEGORIES } = useDirectoryDefinitions();
   const { city } = useCity();
   const navigate = useNavigate();
   return (

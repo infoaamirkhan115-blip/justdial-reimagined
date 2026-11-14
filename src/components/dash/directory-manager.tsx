@@ -12,7 +12,7 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export const managementQ = queryOptions({ queryKey: ["admin", "directory-management"], queryFn: () => managementData() });
 type Mode = "categories" | "locations" | "quality" | "imports" | "changes";
-const emptyCategory = { parent_id: null, slug: "", legacy_slug: "", name: "", icon: "Building2", group_name: "", description: "", aliases: [] as string[], fields: [] as CategoryField[], cta_label: "Send enquiry", position: 0, active: true, public_visible: true };
+const emptyCategory = { parent_id: null as string | null, slug: "", legacy_slug: "", name: "", icon: "Building2", group_name: "", description: "", aliases: [] as string[], fields: [] as CategoryField[], cta_label: "Send enquiry", position: 0, active: true, public_visible: true };
 export function DirectoryManager({ mode }: { mode: Mode }) {
   const { data } = useSuspenseQuery(managementQ); const qc = useQueryClient(); const [busy, setBusy] = useState(false); const [q, setQ] = useState(""); const [status, setStatus] = useState("all"); const [severity, setSeverity] = useState("all");
   const [cat, setCat] = useState<(typeof emptyCategory & { id?: string })>(); const [loc, setLoc] = useState<Partial<Tables<"directory_locations">>>(); const [issue, setIssue] = useState<Tables<"directory_quality_issues">>(); const [change, setChange] = useState<Tables<"listing_change_requests">>(); const [feedback, setFeedback] = useState(""); const [history, setHistory] = useState<string>();

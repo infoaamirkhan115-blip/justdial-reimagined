@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { type Business, type City } from "@/data/catalog";
 import { photoUrls } from "@/lib/photos";
-import { directoryDefinitionsQ, mapCategories } from "./managed-directory";
+import { fetchDirectoryDefinitions, mapCategories } from "./managed-directory";
 
 type Row = Tables<"businesses"> & {
   business_offerings?: { name: string; published: boolean }[];
@@ -86,7 +86,7 @@ export const liveBusinessesQ = queryOptions({
       if (data.length < 500) break;
     }
     const urls = await photoUrls(allPaths(rows, false));
-    const definitions = await directoryDefinitionsQ.queryFn();
+    const definitions = await fetchDirectoryDefinitions();
     const categories = mapCategories(definitions.categories);
     return rows.map((r) => { const b = rowToBusiness(r, urls); const c = categories.find(c => c.id === r.category_id || c.slug === r.category); return { ...b, categoryName: c?.name, searchAliases: c?.aliases }; });
   },
