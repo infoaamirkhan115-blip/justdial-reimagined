@@ -69,7 +69,17 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
         }
       />
       <div className="mb-5 flex flex-wrap gap-3">
-        <select aria-label="Catalogue review state" value={reviewFilter} onChange={e=>setReviewFilter(e.target.value)} className={`${inputCls} sm:max-w-48`}><option value="all">All review states</option>{["draft","review","published"].map(s=><option key={s}>{s}</option>)}</select>
+        <select
+          aria-label="Catalogue review state"
+          value={reviewFilter}
+          onChange={(e) => setReviewFilter(e.target.value)}
+          className={`${inputCls} sm:max-w-48`}
+        >
+          <option value="all">All review states</option>
+          {["draft", "review", "published"].map((s) => (
+            <option key={s}>{s}</option>
+          ))}
+        </select>
         <div className="flex gap-1">
           {["all", "product", "service"].map((t) => (
             <Btn
@@ -154,7 +164,9 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
                     <Pencil className="size-4" />
                     Edit
                   </Btn>
-                  <Btn variant="ghost" onClick={()=>setHistoryId(item.id)}>History</Btn>
+                  <Btn variant="ghost" onClick={() => setHistoryId(item.id)}>
+                    History
+                  </Btn>
                   <Btn
                     variant="ghost"
                     aria-label={`Delete ${item.name}`}
@@ -185,7 +197,14 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
           )}
         </DialogContent>
       </Dialog>
-      <Dialog open={Boolean(historyId)} onOpenChange={o=>!o&&setHistoryId(undefined)}><DialogContent className="max-h-[90vh] overflow-y-auto"><DialogHeader><DialogTitle>Catalogue revision history</DialogTitle></DialogHeader>{historyId&&<OfferingHistory id={historyId}/>}</DialogContent></Dialog>
+      <Dialog open={Boolean(historyId)} onOpenChange={(o) => !o && setHistoryId(undefined)}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Catalogue revision history</DialogTitle>
+          </DialogHeader>
+          {historyId && <OfferingHistory id={historyId} />}
+        </DialogContent>
+      </Dialog>
       <Dialog open={Boolean(removing)} onOpenChange={(o) => !o && setRemoving(undefined)}>
         <DialogContent>
           <DialogHeader>
