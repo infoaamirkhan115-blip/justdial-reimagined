@@ -1,3 +1,6 @@
+import { useServerFn } from "@tanstack/react-start";
+import { archiveBusiness } from "@/lib/directory-management.functions";
+import { completeness } from "@/lib/directory-quality";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, ExternalLink, Megaphone, Pencil, Search, Trash2 } from "lucide-react";
@@ -13,7 +16,7 @@ import { Btn } from "@/components/site/ui";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
-const STATUSES = ["all", "pending", "approved", "rejected", "suspended"] as const;
+const STATUSES = ["all", "pending", "approved", "rejected", "suspended", "archived"] as const;
 type S = { status?: string | undefined };
 export const Route = createFileRoute("/_authenticated/admin/businesses")({
   head: () => ({ meta: [
@@ -33,6 +36,7 @@ function Page() {
   const { status = "all" } = Route.useSearch();
   const nav = useNavigate({ from: Route.fullPath });
   const qc = useQueryClient();
+  const archive = useServerFn(archiveBusiness);
   const { data } = useSuspenseQuery(allBusinessesQ);
   const [q, setQ] = useState("");
   const [editing, setEditing] = useState<Tables<"businesses"> | undefined>();
@@ -43,9 +47,8 @@ function Page() {
     if (error) toast.error(error.message); else { toast.success(msg); qc.invalidateQueries(); }
   };
   const remove = async (b: Tables<"businesses">) => {
-    if (!confirm(`Permanently delete "${b.name}"?`)) return;
-    const { error } = await supabase.from("businesses").delete().eq("id", b.id);
-    if (error) toast.error(error.message); else { toast.success("Deleted"); qc.invalidateQueries(); }
+    if (!confirm(`${b.archived_at ? "Restore" : "Archive"} "${b.name}"? Linked records are preserved.`)) return;
+    try { await archive({ data: { id: b.id, restore: Boolean(b.archived_at) } }); toast.success(b.archived_at ? "Restored" : "Archived"); qc.invalidateQueries(); } catch(e) { toast.error(e instanceof Error ? e.message : "Could not archive"); }
   };
 
   return (
@@ -71,11 +74,11 @@ function Page() {
                 <button onClick={() => set(b.id, { sponsored: !b.sponsored }, b.sponsored ? "Removed from sponsored" : "Now sponsored")} aria-pressed={b.sponsored} className={cn("inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold", b.sponsored ? "border-primary bg-saffron-soft" : "bg-background")}><Megaphone className="size-4" />Sponsored</button>
                 {b.status === "approved" && <Link to="/business/$id" params={{ id: b.id }} aria-label="View" className="grid size-10 place-items-center rounded-xl border hover:bg-muted"><ExternalLink className="size-4" /></Link>}
                 <button onClick={() => setEditing(b)} aria-label="Edit" className="grid size-10 place-items-center rounded-xl border hover:bg-muted"><Pencil className="size-4" /></button>
-                <button onClick={() => remove(b)} aria-label="Delete" className="grid size-10 place-items-center rounded-xl border hover:bg-muted"><Trash2 className="size-4 text-destructive" /></button>
+                <button onClick={() => remove(b)} aria-label={b.archived_at ? "Restore listing" : "Archive listing"} className="grid size-10 place-items-center rounded-xl border hover:bg-muted"><Trash2 className="size-4 text-destructive" /></button>
               </div>
             </div>
-            <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); const v = new FormData(e.currentTarget).get("note"); set(b.id, { admin_note: String(v ?? "").trim() || null }, "Note saved"); }}>
-              <input name="note" defaultValue={b.admin_note ?? ""} maxLength={300} placeholder="Note to owner (shown on their dashboard)" className="h-9 flex-1 rounded-xl border border-input bg-background px-3 text-sm" />
+            <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); const v = new FormData(e.currentTarget).get("note"); set(b.id, { owner_feedback: String(v ?? "").trim() }, "Note saved"); }}>
+              <input name="note" defaultValue={b.owner_feedback} maxLength={300} placeholder="Feedback to owner (private staff notes are in Quality centre)" className="h-9 flex-1 rounded-xl border border-input bg-background px-3 text-sm" />
               <Btn type="submit" variant="outline" className="min-h-9">Save note</Btn>
             </form>
           </div>))}</div>

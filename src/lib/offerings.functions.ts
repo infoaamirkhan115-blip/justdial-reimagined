@@ -13,7 +13,11 @@ export const saveOffering = createServerFn({ method: "POST" })
       const { data: admin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
       if (!admin) throw new Error("You cannot manage this business");
     }
-    const { id, ...payload } = data;
+    const { data: admin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    const { id, ...values } = data;
+    const requested = data.review_state ?? (data.published ? "published" : "draft");
+    const review_state = !admin && requested === "published" ? "review" : requested;
+    const payload = { ...values, review_state, published: review_state === "published" };
     const result = id
       ? await context.supabase.from("business_offerings").update(payload).eq("id", id).eq("business_id", business.id).select("id").single()
       : await context.supabase.from("business_offerings").insert(payload).select("id").single();

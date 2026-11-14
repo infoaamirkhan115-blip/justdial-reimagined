@@ -1,3 +1,6 @@
+import { useServerFn } from "@tanstack/react-start";
+import { archiveBusiness } from "@/lib/directory-management.functions";
+import { completeness } from "@/lib/directory-quality";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
@@ -32,32 +35,33 @@ function Page() {
   const search = Route.useSearch();
   const nav = useNavigate({ from: Route.fullPath });
   const qc = useQueryClient();
+  const archive = useServerFn(archiveBusiness);
   const { data } = useSuspenseQuery(myBusinessesQ(user.id));
   const [editing, setEditing] = useState<Tables<"businesses"> | undefined>();
   const open = !!search.new || !!editing;
   const close = () => { setEditing(undefined); nav({ search: {} }); };
 
-  const remove = async (id: string, name: string) => {
-    if (!confirm(`Delete "${name}"? This also removes its leads and reviews.`)) return;
-    const { error } = await supabase.from("businesses").delete().eq("id", id);
-    if (error) toast.error(error.message); else { toast.success("Listing deleted"); qc.invalidateQueries(); }
+  const remove = async (id: string, name: string, restore: boolean) => {
+    if (!confirm(`${restore ? "Restore" : "Archive"} "${name}"? Leads, reviews and products remain saved.`)) return;
+    try { await archive({ data: { id, restore } }); toast.success(restore ? "Listing restored" : "Listing archived"); qc.invalidateQueries(); } catch(e) { toast.error(e instanceof Error ? e.message : "Could not archive"); }
   };
 
   return (
     <>
-      <PageTitle title="My listings" sub="Edits to live listings show up right away." action={<Btn onClick={() => nav({ search: { new: true } })}><Plus className="size-4" />Add listing</Btn>} />
+      <PageTitle title="My listings" sub="Sensitive changes to approved listings are reviewed before publication." action={<Btn onClick={() => nav({ search: { new: true } })}><Plus className="size-4" />Add listing</Btn>} />
       {data.length === 0 ? <Empty title="No listings yet" sub="Add your business to start getting customers." /> : (
         <div className="space-y-3">{data.map((b) => (
           <div key={b.id} className="flex flex-col gap-4 rounded-3xl border bg-card p-5 md:flex-row md:items-center">
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2"><h3 className="text-lg font-bold">{b.name}</h3><Pill v={b.status} /><Pill v={b.plan} />{b.verified && <span className="inline-flex items-center gap-1 text-xs font-bold text-success"><BadgeCheck className="size-4" />Verified</span>}</div>
               <p className="mt-1 text-sm text-muted-foreground">{getCategory(b.category)?.name}{b.sub && ` · ${b.sub}`} · {b.area}, {b.city} · {b.phone}</p>
-              {b.admin_note && <p className="mt-1 text-sm text-coral">Note: {b.admin_note}</p>}
+              <p className="mt-2 text-sm font-semibold">Profile completeness: {completeness(b)}% <span className="font-normal text-muted-foreground">· not verification</span></p>
+              {b.owner_feedback && <p className="mt-1 text-sm text-coral">Note: {b.owner_feedback}</p>}
             </div>
             <div className="flex gap-2">
               {b.status === "approved" && <Link to="/business/$id" params={{ id: b.id }} className="inline-flex min-h-11 items-center gap-2 rounded-xl border px-3 text-sm font-bold hover:bg-muted"><ExternalLink className="size-4" />View</Link>}
               <Btn variant="outline" onClick={() => setEditing(b)}><Pencil className="size-4" />Edit</Btn>
-              <Btn variant="ghost" aria-label="Delete" onClick={() => remove(b.id, b.name)}><Trash2 className="size-4 text-destructive" /></Btn>
+              <Btn variant="ghost" aria-label={b.archived_at ? "Restore listing" : "Archive listing"} onClick={() => remove(b.id, b.name, Boolean(b.archived_at))}><Trash2 className="size-4 text-destructive" /></Btn>
             </div>
           </div>))}</div>
       )}

@@ -9,7 +9,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { uploadPhoto } from "@/lib/photos";
 import { emptyDetails, emptyPricing, offeringSchema, type OfferingInput } from "@/lib/offering-schema";
 import { saveOffering } from "@/lib/offerings.functions";
-import { CATEGORIES } from "@/data/catalog";
+import { useDirectoryDefinitions } from "@/lib/managed-directory";
+import { useAuth } from "@/lib/auth";
+import { placeholderContent } from "@/lib/directory-quality";
 
 type Choice = { id: string; name: string };
 function Field({ label, children }: { label: string; children: ReactNode }) {
@@ -19,8 +21,12 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   return <section className="space-y-4 border-t pt-5"><h3 className="font-display text-lg font-bold">{title}</h3>{children}</section>;
 }
 export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: (OfferingInput & { images?: string[] }) | undefined; kind: "product" | "service"; businesses: Choice[]; onDone: () => void }) {
+  const { categories: CATEGORIES } = useDirectoryDefinitions();
+  const { isAdmin } = useAuth();
+  const [preview, setPreview] = useState(false);
   const [f, setF] = useState<OfferingInput>(() => ({
     ...(initial?.id ? { id: initial.id } : {}), business_id: initial?.business_id ?? businesses[0]?.id ?? "", kind: initial?.kind ?? kind,
+    review_state: initial?.review_state ?? "draft", inclusions: initial?.inclusions ?? "", exclusions: initial?.exclusions ?? "", minimum_quantity: initial?.minimum_quantity ?? null, minimum_area: initial?.minimum_area ?? null,
     name: initial?.name ?? "", category: initial?.category ?? "", business_type: initial?.business_type ?? "", description: initial?.description ?? "",
     photos: initial?.photos ?? [], pricing: initial?.pricing ?? { ...emptyPricing }, specifications: initial?.specifications ?? [], product_details: initial?.product_details ?? { ...emptyDetails }, published: initial?.published ?? true,
   }));
@@ -52,6 +58,7 @@ export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: 
     e.preventDefault();
     const parsed = offeringSchema.safeParse(f);
     if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Check the form"); return; }
+    if(parsed.data.review_state === "published" && placeholderContent(parsed.data.description)) { toast.error("Correct development or placeholder content before publication"); return; }
     mutation.mutate(parsed.data);
   }}>
     <Field label="Business"><select aria-label="Business" className={inputCls} disabled={Boolean(initial)} value={f.business_id} onChange={e => update("business_id", e.target.value)} required><option value="">Select business</option>{businesses.map(b => <option value={b.id} key={b.id}>{b.name}</option>)}</select></Field>
@@ -100,7 +107,10 @@ export function OfferingForm({ initial, kind, businesses, onDone }: { initial?: 
       <input aria-label="Specification value" placeholder="Value" maxLength={300} value={s.value} onChange={e => update("specifications", f.specifications.map((x, n) => n === i ? { ...x, value: e.target.value } : x))} className={inputCls} />
       <Btn type="button" variant="ghost" aria-label="Remove specification" onClick={() => update("specifications", f.specifications.filter((_, n) => n !== i))}><Trash2 className="size-4" /></Btn>
     </div>)}<Btn type="button" variant="outline" onClick={() => update("specifications", [...f.specifications, { name: "", value: "" }])}><Plus className="size-4" />Add specification</Btn></div></Section>
-    <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={f.published} onChange={e => update("published", e.target.checked)} />Published</label>
+    <Section title="Scope & minimums"><div className="grid gap-3 sm:grid-cols-2"><Field label="Inclusions"><textarea value={f.inclusions ?? ""} onChange={e => update("inclusions", e.target.value)} className="rounded-xl border bg-background p-3" /></Field><Field label="Exclusions"><textarea value={f.exclusions ?? ""} onChange={e => update("exclusions", e.target.value)} className="rounded-xl border bg-background p-3" /></Field><Field label="Minimum quantity"><input type="number" min={0} value={f.minimum_quantity ?? ""} onChange={e => update("minimum_quantity", e.target.value ? Number(e.target.value) : null)} className={inputCls} /></Field><Field label="Minimum area (sq ft)"><input type="number" min={0} value={f.minimum_area ?? ""} onChange={e => update("minimum_area", e.target.value ? Number(e.target.value) : null)} className={inputCls} /></Field></div></Section>
+    <Field label="Publication state"><select value={f.review_state ?? "draft"} onChange={e => { const value=e.target.value as "draft"|"review"|"published"; setF({ ...f, review_state:value, published:value==="published" }); }} className={inputCls}><option value="draft">Draft</option><option value="review">Submit for review</option>{isAdmin && <option value="published">Approve publication</option>}</select></Field>
+    <Btn type="button" variant="outline" onClick={() => setPreview(!preview)}>Public preview</Btn>
+    {preview && <article className="space-y-3 border-y py-5">{images[0] && <img src={images[0]} alt={f.name} className="aspect-[4/3] max-h-72 w-full rounded-xl object-cover" />}<h3 className="text-xl font-bold">{f.name}</h3><p className="whitespace-pre-wrap text-sm">{f.description}</p><p className="text-sm">{f.inclusions}</p>{f.specifications.map((s,i)=><p key={i} className="text-sm">{s.name}: {s.value}</p>)}<p className="text-xs text-muted-foreground">Preview only · {f.review_state}</p></article>}
     <div className="sticky bottom-0 flex justify-end gap-2 border-t bg-card py-4"><Btn type="button" variant="outline" onClick={onDone}>Cancel</Btn><Btn type="submit" disabled={uploading || mutation.isPending || !businesses.length}>{mutation.isPending ? "Saving…" : "Save"}</Btn></div>
   </form>;
 }

@@ -25,6 +25,9 @@ export const offeringSchema = z.object({
   specifications: z.array(z.object({ name: z.string().trim().min(1).max(80), value: z.string().trim().min(1).max(300) })).max(30),
   product_details: z.object({ brand: z.string().max(120), manufacturer: z.string().max(200), transaction: z.enum(["enquiry", "online"]), stock: z.number().int().min(0), mrp: amount, minimum_order: z.number().int().min(1), order_unit: z.string().max(40), weight: amount, length: amount, width: amount, height: amount, origin: z.string().max(100) }),
   published: z.boolean(),
+  review_state: z.enum(["draft","review","published"]).optional(),
+  inclusions: z.string().max(3000).optional(), exclusions: z.string().max(3000).optional(),
+  minimum_quantity: z.number().min(0).nullable().optional(), minimum_area: z.number().min(0).nullable().optional(),
 }).strict();
 export type OfferingInput = z.infer<typeof offeringSchema>;
 export type Pricing = z.infer<typeof pricingSchema>;

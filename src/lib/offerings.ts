@@ -5,7 +5,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { emptyDetails, emptyPricing, type OfferingInput } from "./offering-schema";
 
 export function offeringInput(row: Tables<"business_offerings">): OfferingInput {
-  return { ...row, kind: row.kind === "product" ? "product" : "service", pricing: { ...emptyPricing, ...(row.pricing as object) }, product_details: { ...emptyDetails, ...(row.product_details as object) }, specifications: row.specifications as OfferingInput["specifications"] };
+  return { ...row, review_state: row.review_state === "published" ? "published" : row.review_state === "review" ? "review" : "draft", kind: row.kind === "product" ? "product" : "service", pricing: { ...emptyPricing, ...(row.pricing as object) }, product_details: { ...emptyDetails, ...(row.product_details as object) }, specifications: row.specifications as OfferingInput["specifications"] };
 }
 export const offeringsQ = (businessId?: string, ownerId?: string) => queryOptions({
   queryKey: ["offerings", businessId ?? "all", ownerId ?? "public"],
