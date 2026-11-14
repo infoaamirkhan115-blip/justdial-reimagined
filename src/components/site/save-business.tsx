@@ -20,19 +20,22 @@ export function SaveBusiness({ id }: { id: string }) {
     enabled: Boolean(user),
     queryFn: () => load({ data: { businessId: id } }),
   });
-  const change = useCallback(async (saved: boolean) => {
-    setBusy(true);
-    try {
-      await save({ data: { businessId: id, saved } });
-      qc.setQueryData(["favourite", user?.id, id], saved);
-      sessionStorage.removeItem("pendingFavourite");
-      toast.success(saved ? "Business saved" : "Business removed from saved");
-    } catch {
-      toast.error("Couldn't update saved businesses. Please retry.");
-    } finally {
-      setBusy(false);
-    }
-  }, [save, qc, user?.id, id]);
+  const change = useCallback(
+    async (saved: boolean) => {
+      setBusy(true);
+      try {
+        await save({ data: { businessId: id, saved } });
+        qc.setQueryData(["favourite", user?.id, id], saved);
+        sessionStorage.removeItem("pendingFavourite");
+        toast.success(saved ? "Business saved" : "Business removed from saved");
+      } catch {
+        toast.error("Couldn't update saved businesses. Please retry.");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [save, qc, user?.id, id],
+  );
   useEffect(() => {
     if (user && state.isSuccess && sessionStorage.getItem("pendingFavourite") === id) {
       if (state.data) sessionStorage.removeItem("pendingFavourite");
