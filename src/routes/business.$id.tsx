@@ -7,6 +7,7 @@ import { liveBusinessQ, liveBusinessesQ } from "@/lib/public-data";
 import { EnquiryForm, MiniBusinessCard, RatingBadge, btnClass } from "@/components/site/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BusinessOfferings } from "@/components/site/business-offerings";
+import { EnquiryPopup } from "@/components/site/enquiry-popup";
 
 export const Route = createFileRoute("/business/$id")({
   loader: async ({ params, context }) => ({ b: /^[0-9a-f-]{36}$/.test(params.id) ? await context.queryClient.ensureQueryData(liveBusinessQ(params.id)).catch(() => null) : null }),
@@ -79,6 +80,7 @@ function BusinessView({ b }: { b: Business }) {
             <span className="flex items-center gap-2"><Clock className="size-4" /><span className={b.open ? "font-bold text-success" : "font-bold text-destructive"}>{b.open ? "Open now" : "Closed"}</span> · {b.hours}{b.days?.length ? ` · ${b.days.length === 7 ? "All days" : b.days.join(", ")}` : ""}</span>
           </div>
           <div className="mt-5 flex flex-wrap gap-2">
+            {b.live && <EnquiryPopup context={{ businessId: b.id, businessName: b.name, title: b.sub || b.name, image: b.image, location: `${b.area}, ${b.city}`, price: b.price, description: b.description }} />}
             <a href={`tel:${b.phone}`} className={btnClass("ink")}><Phone className="size-4" />{b.phone}</a>
             <Link to="/write-review" search={{ b: b.id }} className={btnClass("outline")}><PenLine className="size-4" />Review</Link>
             {wa && <a href={wa} target="_blank" rel="noreferrer" className={btnClass("outline")}><MessageCircle className="size-4" />WhatsApp</a>}
@@ -99,7 +101,7 @@ function BusinessView({ b }: { b: Business }) {
             <TabsContent value="services" className="mt-6">
               <ul className="divide-y rounded-3xl border bg-card">{b.services.length === 0 && <li className="p-4 text-sm text-muted-foreground">Call or send an enquiry for prices.</li>}{b.services.map((s) => <li key={s.name} className="flex items-center justify-between p-4"><span className="font-semibold">{s.name}</span><span className="font-bold">{s.price}</span></li>)}</ul>
             </TabsContent>
-            <TabsContent value="catalog" className="mt-6"><BusinessOfferings businessId={b.id} /></TabsContent>
+            <TabsContent value="catalog" className="mt-6"><BusinessOfferings businessId={b.id} businessName={b.name} businessImage={b.image} location={`${b.area}, ${b.city}`} /></TabsContent>
             <TabsContent value="photos" className="mt-6">
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">{pics.map((src, i) => <a key={src} href={src} target="_blank" rel="noreferrer" className="overflow-hidden rounded-2xl border"><img src={src} alt={`${b.name} photo ${i + 1}`} loading="lazy" className="aspect-[4/3] size-full object-cover transition hover:scale-105" /></a>)}</div>
               {!b.gallery?.length && <p className="mt-3 text-sm text-muted-foreground">The business hasn't added photos yet.</p>}

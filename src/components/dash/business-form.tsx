@@ -10,6 +10,7 @@ import { MAX_PHOTOS, photoUrls, uploadPhoto } from "@/lib/photos";
 import type { Service } from "@/lib/public-data";
 import { cn } from "@/lib/utils";
 import { inputCls } from "./shell";
+import { ListingAiAssistant } from "./listing-ai-assistant";
 
 type Row = Tables<"businesses">;
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -120,8 +121,18 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
         <L label="Speciality"><select value={f.sub} onChange={set("sub")} className={inputCls}><option value="">Choose…</option>{cat?.subs.map((s) => <option key={s}>{s}</option>)}</select></L>
         <L label="Year established"><input inputMode="numeric" placeholder="e.g. 2012" value={f.year} onChange={digits("year", 4)} className={inputCls} /></L>
         <L label="Price range (e.g. ₹500 for two)"><input maxLength={60} value={f.price} onChange={set("price")} className={inputCls} /></L>
-        <L label="About your business" wide><textarea rows={4} maxLength={1500} value={f.description} onChange={set("description")} className="w-full rounded-xl border border-input bg-background p-3 text-sm" /></L>
+        <L label="About your business" wide><textarea aria-label="About your business" rows={4} maxLength={1500} value={f.description} onChange={set("description")} className="w-full rounded-xl border border-input bg-background p-3 text-sm" /></L>
         <L label="Highlights (comma separated)" wide><input maxLength={200} value={f.tags} onChange={set("tags")} placeholder="Home delivery, Parking, AC" className={inputCls} /></L>
+      </Section>
+
+      <Section title="AI profile assistant">
+        <ListingAiAssistant details={{
+          name: f.name, category: cat?.name ?? f.category, sub: f.sub, city: f.city, area: f.area,
+          description: f.description, highlights: f.tags, year: f.year, price: f.price, hours: f.hours,
+          days, payments, services, photoCount: photos.length, hasLogo: Boolean(logo),
+          hasAddress: Boolean(f.address.trim()), hasLandmark: Boolean(f.landmark.trim()), hasPincode: Boolean(f.pincode.trim()),
+          hasPhone: Boolean(f.phone.trim()), hasWhatsapp: Boolean(f.whatsapp.trim()), hasEmail: Boolean(f.email.trim()), hasWebsite: Boolean(f.website.trim()),
+        }} onApply={(description) => setF((current) => ({ ...current, description }))} />
       </Section>
 
       <Section title="Photos & logo" hint={`Add up to ${MAX_PHOTOS} photos (max 5 MB each). The starred photo is the cover shown in search results.`}>

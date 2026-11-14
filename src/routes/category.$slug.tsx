@@ -7,6 +7,7 @@ import { useCity } from "@/components/site/city";
 import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { EnquiryPopup } from "@/components/site/enquiry-popup";
 
 export const Route = createFileRoute("/category/$slug")({
   loader: ({ params }) => {
@@ -64,7 +65,7 @@ function CategoryPage() {
           </section>
         </div>
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-          <EnquiryForm title={`Need ${cat.name.toLowerCase()}?`} subtitle="Get callbacks from the top 5 near you." />
+          {list[0] && <EnquiryPopup label={`Enquire about ${cat.name.toLowerCase()}`} context={{ businessId: list[0].id, businessName: list[0].name, title: cat.name, image: list[0].image, location: `${list[0].area}, ${list[0].city}`, description: list[0].description }} />}
           {related.length > 0 && <div><h3 className="mb-3 font-bold">Related</h3><div className="grid grid-cols-3 gap-2">{related.map((c) => <CategoryTile key={c.slug} {...c} />)}</div></div>}
         </aside>
       </div>

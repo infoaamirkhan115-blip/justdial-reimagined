@@ -16,6 +16,14 @@ import { cn } from "@/lib/utils";
 const STATUSES = ["all", "pending", "approved", "rejected", "suspended"] as const;
 type S = { status?: string | undefined };
 export const Route = createFileRoute("/_authenticated/admin/businesses")({
+  head: () => ({ meta: [
+    { title: "Business management — Justdial Admin" },
+    { name: "description", content: "Review and manage Justdial business listings, approvals, and profile details." },
+    { property: "og:title", content: "Business management — Justdial Admin" },
+    { property: "og:description", content: "Manage business approvals and listing profiles." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+    { name: "robots", content: "noindex" },
+  ] }),
   validateSearch: (s: Record<string, unknown>): S => ({ status: typeof s["status"] === "string" ? s["status"] : undefined }),
   loader: ({ context }) => context.queryClient.ensureQueryData(allBusinessesQ),
   component: Page,
