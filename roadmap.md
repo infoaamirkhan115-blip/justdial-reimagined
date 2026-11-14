@@ -1,9 +1,12 @@
 # Phase 5 operational support, notifications and measurable outcomes
-- [ ] Add persistent support tickets, real references, private notes, conversation history and customer/owner/admin queues.
-- [ ] Inspect Phase 3 prerequisites and approved providers; add honest notification setup, consent, outcome and duplicate-prevention controls.
-- [ ] Add privacy-conscious directory events and owner-scoped outcome analytics with precise metric definitions.
-- [ ] Replace overview totals with filtered database aggregates and actionable operational queues.
-- [ ] Verify persistence, access isolation, notification idempotency, aggregate accuracy and desktop/mobile journeys using isolated fixtures.
+- [x] Add persistent support tickets, real references, private notes, conversation history and customer/owner/admin queues; browser submission and reload confirmed.
+- [x] Inspect absent Phase 3 foundations; add buying requirements, scoped assignment/deadlines, recorded responses/quotations and reasoned reported outcomes. Isolated transactional flow and duplicate assignment checks passed.
+- [x] Add in-app event templates, recipient preferences, idempotent processing, read acknowledgement, bounded retries and failure inspection. Browser missing-recipient failure and three-attempt limit passed; external channels honestly show setup required.
+- [x] Add privacy-conscious directory events and owner-scoped outcome analytics with precise definitions; database-triggered outcomes and duplicate event prevention checked.
+- [x] Replace overview totals with filtered database aggregates and actionable operational queues; overdue ticket aggregate opens the matching record. Remove obsolete page-limited owner counters.
+- [x] Verify 59 tests, current preview checks, signed-in support persistence/escalation, notification read/retry states, guest private-data denial and mobile no-overflow; isolated ticket/lead/notification fixtures removed, isolated business suspended.
+- [ ] Activate external notification delivery. Blocker: no verified email sender domain and no configured/approved SMS or WhatsApp provider; no external sends or email queue created.
+- [ ] Verify nonadmin/cross-owner support and analytics isolation and large-dataset aggregate pagination through the browser. Blocker: only the existing admin session is available; SQL aggregates are not page-limited, but bulk fixture verification is not yet complete.
 
 # Phase 4 ownership, trust and staff controls
 - [x] Add existing-business claims, private evidence updates, competing-claim review and controlled transfer/revocation; isolated browser submission persisted without ownership transfer.
