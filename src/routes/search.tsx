@@ -7,6 +7,8 @@ import { BusinessCard, Btn, DirectoryState } from "@/components/site/ui";
 import { SearchBar } from "@/components/site/search-bar";
 import { useEffect } from "react";
 import { trackDirectory } from "@/lib/directory-analytics";
+import { useWebMCP } from "use-webmcp-tool";
+import { runWebMCPTool } from "@/lib/webmcp-telemetry";
 
 type S = {
   q?: string | undefined;
@@ -69,6 +71,47 @@ function SearchPage() {
         .filter(Boolean),
     ),
   ].sort();
+  useWebMCP({
+    name: "read_search_results",
+    description:
+      "Read the businesses currently visible on this search results page, respecting city, filters and pagination.",
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
+    execute: () =>
+      runWebMCPTool("read_search_results", () => {
+        if (query.isPending || query.isFetching) return "Search results are loading.";
+        if (query.isError) throw new Error("Search results are unavailable. Retry using the page.");
+        return (
+          `Page ${result.page} of ${result.pages}; ${result.total} matches in ${city}.\n` +
+          (result.results.map((b) => `${b.id}: ${b.name} — ${b.area}, ${b.city}`).join("\n") ||
+            "No businesses shown.")
+        );
+      }),
+  });
+  async function openVisibleBusiness(id: unknown) {
+    if (typeof id !== "string") throw new Error("business_id must be a string.");
+    if (query.isPending || query.isFetching || query.isError)
+      throw new Error("Wait for available search results before opening a business.");
+    const business = result.results.find((b) => b.id === id);
+    if (!business) throw new Error("This business is not on the current results page.");
+    await nav({ to: "/business/$id", params: { id: business.id } });
+    return "Business details opened.";
+  }
+  useWebMCP<{ business_id: string }, string>({
+    name: "open_search_result",
+    description:
+      "Open details for a business currently visible on this results page, using an ID from read_search_results.",
+    enabled: query.isSuccess && !query.isFetching,
+    inputSchema: {
+      type: "object",
+      properties: {
+        business_id: { type: "string", description: "ID of a business currently shown." },
+      },
+      required: ["business_id"],
+      additionalProperties: false,
+    },
+    execute: ({ business_id }) =>
+      runWebMCPTool("open_search_result", () => openVisibleBusiness(business_id)),
+  });
   return (
     <div className="container-page pt-6">
       <nav className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">

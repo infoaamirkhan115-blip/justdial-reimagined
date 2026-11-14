@@ -1,3 +1,10 @@
+# Agent integrations
+- [x] Enable managed OAuth; existing database, sign-in providers and asymmetric signing preserved; hosted redirect allow-list confirmed.
+- [x] Add read-only MCP business search, business/catalogue details and caller-owned listings, with consent and safe sign-in return paths.
+- [x] Add WebMCP browser-local tools for reading and opening visible search results with static telemetry; native browser registration unavailable in the test browser.
+- [x] Verify three-tool manifest, 61 tests, guest/session-token denial, real OAuth approval/token exchange/three read tools, cancellation and desktop/mobile consent. Trusted-origin requests were bridged only in the test browser because the provider rejects localhost; five isolated test grants revoked.
+- [ ] Verify hosted revision and unmodified external-client authorization after republishing. Blocker: the existing published revision has not been republished; local verification is not hosted deployment.
+
 # Phase 5 operational support, notifications and measurable outcomes
 - [x] Add persistent support tickets, real references, private notes, conversation history and customer/owner/admin queues; browser submission and reload confirmed.
 - [x] Inspect absent Phase 3 foundations; add buying requirements, scoped assignment/deadlines, recorded responses/quotations and reasoned reported outcomes. Isolated transactional flow and duplicate assignment checks passed.

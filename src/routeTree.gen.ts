@@ -19,6 +19,7 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FreeListingRouteImport } from './routes/free-listing'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MoviesRouteImport } from './routes/movies'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -27,11 +28,13 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ClaimIdRouteImport } from './routes/claim.$id'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
@@ -111,6 +114,11 @@ const FreeListingRoute = FreeListingRouteImport.update({
   path: '/free-listing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoviesRoute = MoviesRouteImport.update({
   id: '/movies',
   path: '/movies',
@@ -151,6 +159,12 @@ const WriteReviewRoute = WriteReviewRouteImport.update({
   path: '/write-review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -174,6 +188,11 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
 const ClaimIdRoute = ClaimIdRouteImport.update({
   id: '/claim/$id',
   path: '/claim/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
@@ -357,6 +376,7 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
+  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -365,11 +385,13 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -410,6 +432,7 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
+  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -418,9 +441,11 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -463,6 +488,7 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/free-listing': typeof FreeListingRoute
+  '/mcp': typeof McpRoute
   '/movies': typeof MoviesRoute
   '/offers': typeof OffersRoute
   '/privacy': typeof PrivacyRoute
@@ -471,11 +497,13 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
   '/claim/$id': typeof ClaimIdRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
@@ -518,6 +546,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
+    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -526,11 +555,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
@@ -571,6 +602,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
+    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -579,9 +611,11 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/.well-known/oauth-protected-resource'
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/.lovable/oauth/consent'
     | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
@@ -623,6 +657,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/contact'
     | '/free-listing'
+    | '/mcp'
     | '/movies'
     | '/offers'
     | '/privacy'
@@ -631,11 +666,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/travel'
     | '/write-review'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
     | '/claim/$id'
+    | '/.lovable/oauth/consent'
     | '/_authenticated/admin/audit'
     | '/_authenticated/admin/businesses'
     | '/_authenticated/admin/categories'
@@ -678,6 +715,7 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   FreeListingRoute: typeof FreeListingRoute
+  McpRoute: typeof McpRoute
   MoviesRoute: typeof MoviesRoute
   OffersRoute: typeof OffersRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -686,9 +724,11 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TravelRoute: typeof TravelRoute
   WriteReviewRoute: typeof WriteReviewRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ClaimIdRoute: typeof ClaimIdRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -763,6 +803,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FreeListingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movies': {
       id: '/movies'
       path: '/movies'
@@ -819,6 +866,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WriteReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -852,6 +906,13 @@ declare module '@tanstack/react-router' {
       path: '/claim/$id'
       fullPath: '/claim/$id'
       preLoaderRoute: typeof ClaimIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/': {
@@ -1166,6 +1227,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   FreeListingRoute: FreeListingRoute,
+  McpRoute: McpRoute,
   MoviesRoute: MoviesRoute,
   OffersRoute: OffersRoute,
   PrivacyRoute: PrivacyRoute,
@@ -1174,9 +1236,12 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TravelRoute: TravelRoute,
   WriteReviewRoute: WriteReviewRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
   ClaimIdRoute: ClaimIdRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
