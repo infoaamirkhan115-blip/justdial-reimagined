@@ -12,6 +12,8 @@ import {
   Upload,
   ClipboardCheck,
   BadgeCheck,
+  LifeBuoy,
+  Bell,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/shell";
@@ -37,6 +39,9 @@ export const Route = createFileRoute("/_authenticated/admin")({
       label="Admin"
       nav={[
         { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+        { to: "/admin/operations", label: "Requirements & outcomes", icon: Inbox },
+        { to: "/admin/support", label: "Support tickets", icon: LifeBuoy },
+        { to: "/admin/notifications", label: "Notifications", icon: Bell },
         { to: "/admin/businesses", label: "Businesses", icon: Building2 },
         { to: "/admin/products", label: "Products & services", icon: Package },
         { to: "/admin/categories", label: "Categories & attributes", icon: Tags },

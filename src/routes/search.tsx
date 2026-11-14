@@ -5,6 +5,8 @@ import { liveBusinessesQ } from "@/lib/public-data";
 import { directoryResults } from "@/lib/directory-search";
 import { BusinessCard, Btn, DirectoryState } from "@/components/site/ui";
 import { SearchBar } from "@/components/site/search-bar";
+import { useEffect } from "react";
+import { trackDirectory } from "@/lib/directory-analytics";
 
 type S = {
   q?: string | undefined;
@@ -52,6 +54,11 @@ function SearchPage() {
   const nav = Route.useNavigate();
   const query = useQuery(liveBusinessesQ);
   const result = directoryResults(query.data ?? [], { ...s, city });
+  useEffect(() => {
+    if (!query.isSuccess || query.isFetching) return;
+    trackDirectory("search", { city, term: s.q ?? "" });
+    if (result.total === 0) trackDirectory("zero_result_search", { city, term: s.q ?? "" });
+  }, [query.isSuccess, query.isFetching, city, s.q, s.locality, s.rated, s.verified, result.total]);
   const update = (change: Partial<S>) =>
     nav({ search: { ...s, ...change, page: change.page ?? 1 } });
   const localities = [

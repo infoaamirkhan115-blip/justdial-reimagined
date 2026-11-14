@@ -36,6 +36,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ReviewReport } from "@/components/site/review-report";
 import { VerificationBadges } from "@/components/site/verification-badges";
 import { useDirectoryDefinitions } from "@/lib/managed-directory";
+import { useEffect } from "react";
+import { trackDirectory } from "@/lib/directory-analytics";
 
 export const Route = createFileRoute("/business/$id")({
   loader: async ({ params, context }) => {
@@ -110,6 +112,7 @@ function BusinessPage() {
 }
 
 function BusinessView({ b }: { b: Business }) {
+  useEffect(() => { trackDirectory("business_view", { business_id: b.id }); }, [b.id]);
   const { categories } = useDirectoryDefinitions();
   const cat = categories.find((c) => c.slug === b.category) ?? getCategory(b.category);
   const { data: all = [] } = useQuery(liveBusinessesQ);
@@ -213,7 +216,7 @@ function BusinessView({ b }: { b: Business }) {
           <div className="mt-5 flex flex-wrap gap-2">
             {b.live && <EnquiryPopup context={enquiryContext} />}
             {phone && (
-              <a href={`tel:${phone}`} className={btnClass("ink")}>
+              <a href={`tel:${phone}`} onClick={() => trackDirectory("call_click", { business_id: b.id })} className={btnClass("ink")}>
                 <Phone className="size-4" />
                 {b.phone}
               </a>
@@ -223,7 +226,7 @@ function BusinessView({ b }: { b: Business }) {
               Review
             </Link>
             {wa && (
-              <a href={wa} target="_blank" rel="noreferrer" className={btnClass("outline")}>
+              <a href={wa} onClick={() => trackDirectory("whatsapp_click", { business_id: b.id })} target="_blank" rel="noreferrer" className={btnClass("outline")}>
                 <MessageCircle className="size-4" />
                 WhatsApp
               </a>
@@ -455,7 +458,7 @@ function BusinessView({ b }: { b: Business }) {
       )}
       <div className="fixed inset-x-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-center gap-3 border-t bg-card p-3 md:hidden">
         {phone && (
-          <a href={`tel:${phone}`} className={btnClass("ink")}>
+          <a href={`tel:${phone}`} onClick={() => trackDirectory("call_click", { business_id: b.id })} className={btnClass("ink")}>
             <Phone className="size-4" />
             Call
           </a>

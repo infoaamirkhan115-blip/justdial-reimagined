@@ -5,6 +5,7 @@ import { myBusinessesQ, myLeadsQ, myReviewsQ } from "@/lib/owner-data";
 import { Empty, PageTitle, Pill, Stat, timeAgo } from "@/components/dash/shell";
 import { btnClass } from "@/components/site/ui";
 import { useAuth } from "@/lib/auth";
+import { OperationsOverview } from "@/components/dash/operations-overview";
 
 export const Route = createFileRoute("/_authenticated/dashboard/")({
   head: () => ({
@@ -83,11 +84,12 @@ function Overview() {
           tone="success"
         />
         <Stat
-          label="Deals won"
+          label="Reported wins"
           value={leads.filter((l) => l.status === "won").length}
           tone="coral"
         />
       </div>
+      <div className="mt-8"><OperationsOverview owner /></div>
       {biz.length === 0 ? (
         <div className="mt-8">
           <Empty

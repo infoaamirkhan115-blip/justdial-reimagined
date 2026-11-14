@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BadgeCheck, FileText, Handshake, MessagesSquare, Factory, Shirt, Package, Cpu, Hammer, Leaf, Pill, Armchair } from "lucide-react";
 import { EnquiryForm, SectionHeader, RatingBadge } from "@/components/site/ui";
+import { RequirementForm } from "@/components/dash/lead-operations";
 
 export const Route = createFileRoute("/b2b")({
   head: () => ({ meta: [
@@ -31,7 +32,7 @@ function Page() {
           <h1 className="mt-3 text-4xl font-extrabold md:text-6xl">India's wholesale market, in one place.</h1>
           <p className="mt-4 max-w-lg text-ink-muted">50 lakh+ verified suppliers across 2,000+ product categories. Free quotes, direct contact, no middlemen.</p>
         </div>
-        <div className="text-foreground"><EnquiryForm title="Post buy requirement" subtitle="Tell us the product and quantity." cta="Get quotes" /></div>
+        <div className="text-foreground"><RequirementForm /></div>
       </section>
       <section className="mt-16">
         <SectionHeader eyebrow="Browse" title="Top product categories" />
