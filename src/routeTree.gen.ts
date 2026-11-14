@@ -31,6 +31,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ClaimIdRouteImport } from './routes/claim.$id'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
@@ -158,6 +159,11 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClaimIdRoute = ClaimIdRouteImport.update({
+  id: '/claim/$id',
+  path: '/claim/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -280,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
@@ -318,6 +325,7 @@ export interface FileRoutesByTo {
   '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
@@ -360,6 +368,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/changes': typeof AuthenticatedAdminChangesRoute
@@ -402,6 +411,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
@@ -440,6 +450,7 @@ export interface FileRouteTypes {
     | '/write-review'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
@@ -481,6 +492,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
     | '/_authenticated/admin/businesses'
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/changes'
@@ -521,6 +533,7 @@ export interface RootRouteChildren {
   WriteReviewRoute: typeof WriteReviewRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  ClaimIdRoute: typeof ClaimIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -677,6 +690,13 @@ declare module '@tanstack/react-router' {
       path: '/category/$slug'
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claim/$id': {
+      id: '/claim/$id'
+      path: '/claim/$id'
+      fullPath: '/claim/$id'
+      preLoaderRoute: typeof ClaimIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/': {
@@ -891,6 +911,7 @@ const rootRouteChildren: RootRouteChildren = {
   WriteReviewRoute: WriteReviewRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
+  ClaimIdRoute: ClaimIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
