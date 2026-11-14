@@ -41,6 +41,7 @@ import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 import { Route as AuthenticatedAdminChangesRouteImport } from './routes/_authenticated/admin.changes'
 import { Route as AuthenticatedAdminClaimsRouteImport } from './routes/_authenticated/admin.claims'
+import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin.content'
 import { Route as AuthenticatedAdminImportsRouteImport } from './routes/_authenticated/admin.imports'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminLocationsRouteImport } from './routes/_authenticated/admin.locations'
@@ -229,6 +230,12 @@ const AuthenticatedAdminClaimsRoute =
     path: '/claims',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminContentRoute =
+  AuthenticatedAdminContentRouteImport.update({
+    id: '/content',
+    path: '/content',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminImportsRoute =
   AuthenticatedAdminImportsRouteImport.update({
     id: '/imports',
@@ -397,6 +404,7 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -451,6 +459,7 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -509,6 +518,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/changes': typeof AuthenticatedAdminChangesRoute
   '/_authenticated/admin/claims': typeof AuthenticatedAdminClaimsRoute
+  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/_authenticated/admin/locations': typeof AuthenticatedAdminLocationsRoute
@@ -567,6 +577,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/changes'
     | '/admin/claims'
+    | '/admin/content'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
@@ -621,6 +632,7 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/changes'
     | '/admin/claims'
+    | '/admin/content'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
@@ -678,6 +690,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/changes'
     | '/_authenticated/admin/claims'
+    | '/_authenticated/admin/content'
     | '/_authenticated/admin/imports'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/locations'
@@ -957,6 +970,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminClaimsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/content': {
+      id: '/_authenticated/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/imports': {
       id: '/_authenticated/admin/imports'
       path: '/imports'
@@ -1127,6 +1147,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedAdminChangesRoute: typeof AuthenticatedAdminChangesRoute
   AuthenticatedAdminClaimsRoute: typeof AuthenticatedAdminClaimsRoute
+  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminImportsRoute: typeof AuthenticatedAdminImportsRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
   AuthenticatedAdminLocationsRoute: typeof AuthenticatedAdminLocationsRoute
@@ -1148,6 +1169,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
   AuthenticatedAdminChangesRoute: AuthenticatedAdminChangesRoute,
   AuthenticatedAdminClaimsRoute: AuthenticatedAdminClaimsRoute,
+  AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminImportsRoute: AuthenticatedAdminImportsRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
   AuthenticatedAdminLocationsRoute: AuthenticatedAdminLocationsRoute,
