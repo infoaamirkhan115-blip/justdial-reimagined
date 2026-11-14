@@ -1,0 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { liveBusinessQ } from "@/lib/public-data";
+import { ClaimForm } from "@/components/site/claim-form";
+export const Route=createFileRoute('/claim/$id')({head:()=>({meta:[{title:"Claim an existing business — Justdial"},{name:"description",content:"Submit a private ownership claim for an existing Justdial listing."},{property:"og:title",content:"Business ownership claim — Justdial"},{property:"og:description",content:"Request ownership review without creating a duplicate listing."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary"}]}),loader:({context,params})=>context.queryClient.ensureQueryData(liveBusinessQ(params.id)),component:Page});
+function Page(){const {id}=Route.useParams();const {data:b}=useSuspenseQuery(liveBusinessQ(id));return <main className="mx-auto max-w-4xl px-5 py-10"><h1 className="mb-3 text-3xl font-bold">Claim {b?.name??"business"}</h1>{b?<ClaimForm businessId={id} name={b.name}/>:<p>This listing is not available for claims.</p>}</main>;}
