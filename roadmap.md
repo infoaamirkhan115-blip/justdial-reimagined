@@ -1,3 +1,9 @@
+# Agent integrations
+- [ ] Enable managed OAuth and verify signing configuration while preserving existing auth.
+- [ ] Add read-only MCP business search, business/catalogue details and caller-owned listings, with consent and safe sign-in return paths.
+- [ ] Add browser-local tools for reading and opening visible search results, preserving normal controls.
+- [ ] Verify manifest, authorization failures/decisions, caller-scoped data, tests and desktop/mobile consent; republishing required for hosted tools.
+
 # Phase 5 operational support, notifications and measurable outcomes
 - [x] Add persistent support tickets, real references, private notes, conversation history and customer/owner/admin queues; browser submission and reload confirmed.
 - [x] Inspect absent Phase 3 foundations; add buying requirements, scoped assignment/deadlines, recorded responses/quotations and reasoned reported outcomes. Isolated transactional flow and duplicate assignment checks passed.

@@ -6,16 +6,13 @@ import { lovable } from "@/integrations/lovable/index";
 import { Btn } from "@/components/site/ui";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { oauthReturnPath } from "@/lib/oauth-return-path";
 
-type S = { redirect?: string | undefined };
+type S = { redirect?: string | undefined; next?: string | undefined };
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): S => ({
-    redirect:
-      typeof s["redirect"] === "string" &&
-      s["redirect"].startsWith("/") &&
-      !s["redirect"].startsWith("//")
-        ? s["redirect"]
-        : undefined,
+    redirect: typeof s["redirect"] === "string" ? oauthReturnPath(s["redirect"]) : undefined,
+    next: typeof s["next"] === "string" ? oauthReturnPath(s["next"]) : undefined,
   }),
   head: () => ({
     meta: [
@@ -63,8 +60,8 @@ function GoogleIcon() {
 }
 
 function AuthPage() {
-  const { redirect } = Route.useSearch();
-  const dest = redirect ?? "/dashboard";
+  const { redirect, next } = Route.useSearch();
+  const dest = next ?? redirect ?? "/dashboard";
   const { user } = useAuth();
   const nav = useNavigate();
   const [mode, setMode] = useState<"in" | "up">("in");
@@ -77,9 +74,10 @@ function AuthPage() {
     if (user) {
       const p = sessionStorage.getItem("postAuth");
       sessionStorage.removeItem("postAuth");
-      nav({ to: p && p.startsWith("/") && !p.startsWith("//") ? p : dest, replace: true });
+      const target = next ?? redirect ?? (p ? oauthReturnPath(p) : dest);
+      nav({ href: target, replace: true });
     }
-  }, [user, dest, nav]);
+  }, [user, dest, next, redirect, nav]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +90,7 @@ function AuthPage() {
         email,
         password: pw,
         options: {
-          emailRedirectTo: window.location.origin + "/auth?redirect=" + encodeURIComponent(dest),
+          emailRedirectTo: new URL(dest, window.location.origin).href,
           data: { full_name: name },
         },
       });
@@ -103,9 +101,9 @@ function AuthPage() {
     setBusy(false);
   };
   const google = async () => {
-    if (redirect) sessionStorage.setItem("postAuth", dest);
+    sessionStorage.setItem("postAuth", dest);
     const r = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/auth",
+      redirect_uri: new URL(dest.startsWith("/.lovable/oauth/consent") ? dest : "/auth?next=" + encodeURIComponent(dest), window.location.origin).href,
     });
     if (r.error) toast.error("Google sign-in failed. Please try again.");
   };
