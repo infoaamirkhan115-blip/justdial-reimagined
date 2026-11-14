@@ -25,6 +25,7 @@ import { Route as OffersRouteImport } from './routes/offers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RechargeRouteImport } from './routes/recharge'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TravelRouteImport } from './routes/travel'
 import { Route as WriteReviewRouteImport } from './routes/write-review'
@@ -145,6 +146,11 @@ const RechargeRoute = RechargeRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -402,6 +408,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -461,6 +468,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -520,6 +528,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/recharge': typeof RechargeRoute
   '/search': typeof SearchRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/travel': typeof TravelRoute
   '/write-review': typeof WriteReviewRoute
@@ -581,6 +590,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -640,6 +650,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -698,6 +709,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/recharge'
     | '/search'
+    | '/sitemap.xml'
     | '/terms'
     | '/travel'
     | '/write-review'
@@ -759,6 +771,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RechargeRoute: typeof RechargeRoute
   SearchRoute: typeof SearchRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TravelRoute: typeof TravelRoute
   WriteReviewRoute: typeof WriteReviewRoute
@@ -882,6 +895,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -1297,6 +1317,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RechargeRoute: RechargeRoute,
   SearchRoute: SearchRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TravelRoute: TravelRoute,
   WriteReviewRoute: WriteReviewRoute,
