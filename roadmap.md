@@ -1,3 +1,13 @@
+# Phase 2 directory data administration
+- [ ] Move categories, hierarchy, attributes, aliases and public visibility into managed records with legacy URL compatibility.
+- [ ] Add managed locations, organizations, branches and separate service coverage with reviewable location conflicts.
+- [ ] Build persistent listing-quality queue, assignments, notes, history and owner completeness guidance.
+- [ ] Add catalogue review states, category specifications, publication validation, preview and revisions.
+- [ ] Build staged CSV import, validation, provenance, batch history and explicit publication approval.
+- [ ] Add duplicate previews and audited relationship-preserving merges with redirects.
+- [ ] Replace routine listing deletion with recoverable archive; review sensitive edits with field differences and separate owner feedback/staff notes.
+- [ ] Verify isolated customer/owner/admin journeys, permission denial, existing URLs, and desktop/mobile layouts.
+
 # Phase 1 public directory repair
 - [x] Reproduce current issues and inspect existing data, routes, permissions and integrations.
 - [x] Repair loading/errors, offering search, location filters, pagination and URL state.
