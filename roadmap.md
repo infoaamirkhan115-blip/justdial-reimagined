@@ -3,12 +3,12 @@
 - [x] Add managed cities/localities/pincodes, organization/branch links, separate service areas and coordinate evidence fields.
 - [x] Add persistent quality queue, severity/status/assignment, private notes, ownership evidence, history and owner completeness; 111 real issues recorded.
 - [x] Add catalogue review states, specifications, scope/minimums, draft preview, publication guards and revisions.
-- [x] Add staged CSV mapping, validation, provenance, batch history and transactional approval/reversal.
+- [x] Add staged CSV mapping, validation, provenance, batch history and transactional approval/reversal; isolated batch approval and reversal persisted, with its test listing archived.
 - [x] Add explicit duplicate merge preview, audited transactional relationship preservation and redirects; isolated offering move and redirect checked.
 - [x] Replace listing deletion with archive/restore and stage sensitive owner edits; staff notes separated from owner feedback.
 - [x] Verify 46 automated tests, targeted lint (zero errors), automatic preview checks, populated desktop/mobile admin pages, all 40 public records, hidden category edits, archive persistence, isolated merge preservation and guest private-data denial.
 - [ ] Verify cross-owner denial and nonadmin review journeys. Blocker: only one existing admin account is available; no second owner session supplied.
-- [ ] Complete end-to-end valid CSV publication/reversal and owner sensitive-edit approval with isolated fixtures. These flows are implemented but not fully browser verified; no real listings were used for test submissions.
+- [ ] Complete browser form journey for CSV publication/reversal and owner sensitive-edit approval with isolated fixtures. Import approval/reversal passed direct authenticated checks; owner approval still needs a nonadmin session.
 
 # Phase 1 public directory repair
 - [x] Reproduce current issues and inspect existing data, routes, permissions and integrations.
