@@ -424,7 +424,11 @@ function BusinessView({ b }: { b: Business }) {
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">
             Is this your business?{" "}
-            <Link to="/claim/$id" params={{id:b.id}} className="font-bold text-foreground underline">
+            <Link
+              to="/claim/$id"
+              params={{ id: b.id }}
+              className="font-bold text-foreground underline"
+            >
               Claim it for free
             </Link>
           </p>

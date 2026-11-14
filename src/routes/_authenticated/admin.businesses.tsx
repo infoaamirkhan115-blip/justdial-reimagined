@@ -162,7 +162,10 @@ function Page() {
                       <option key={s}>{s}</option>
                     ))}
                   </select>
-                  <Link to="/admin/verification" className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold">
+                  <Link
+                    to="/admin/verification"
+                    className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold"
+                  >
                     <BadgeCheck className="size-4" />
                     Information checks
                   </Link>

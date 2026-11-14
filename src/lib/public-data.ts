@@ -7,7 +7,10 @@ import { fetchDirectoryDefinitions, mapCategories } from "./managed-directory";
 
 type Row = Tables<"businesses"> & {
   business_offerings?: { name: string; published: boolean }[];
-  reviews?: Pick<Tables<"reviews">, "id" | "name" | "rating" | "text" | "created_at" | "owner_reply">[];
+  reviews?: Pick<
+    Tables<"reviews">,
+    "id" | "name" | "rating" | "text" | "created_at" | "owner_reply"
+  >[];
 };
 export type Service = { name: string; price: string };
 

@@ -113,7 +113,7 @@ export const trustAction = createServerFn({ method: "POST" })
             next_state: d.state,
             decision_reason: d.reason,
             contact_checks: d.contacts,
-            ...(d.expiry ? {expiry:d.expiry} : {}),
+            ...(d.expiry ? { expiry: d.expiry } : {}),
           })
         : d.action === "verification"
           ? await s.rpc("record_business_verification", {
@@ -122,8 +122,8 @@ export const trustAction = createServerFn({ method: "POST" })
               summary: d.summary,
               evidence_ref: d.evidence,
               decision_reason: d.reason,
-              ...(d.expiry ? {expiry:d.expiry} : {}),
-              ...(d.revoke ? {revoke_id:d.revoke} : {}),
+              ...(d.expiry ? { expiry: d.expiry } : {}),
+              ...(d.revoke ? { revoke_id: d.revoke } : {}),
             })
           : d.action === "staff"
             ? await s.rpc("set_staff_assignment", {
