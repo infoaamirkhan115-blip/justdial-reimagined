@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { MapPin, Send } from "lucide-react";
 import { Btn, EnquiryForm } from "./ui";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,DialogTrigger } from "@/components/ui/dialog";
 
 type EnquiryContext = { businessId: string; businessName: string; title: string; image?: string | undefined; location?: string | undefined; price?: string | undefined; description?: string | undefined };
 
 export function EnquiryPopup({ context, label = "Get best price" }: { context: EnquiryContext; label?: string }) {
   const [open, setOpen] = useState(false);
   return <>
-    <Btn type="button" onClick={() => setOpen(true)}><Send className="size-4" />{label}</Btn>
     <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild><Btn type="button"><Send className="size-4" />{label}</Btn></DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto p-0 sm:max-w-4xl">
         <div className="grid md:grid-cols-2">
           <div className="p-5 sm:p-8">

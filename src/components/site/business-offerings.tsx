@@ -4,23 +4,25 @@ import { Package, Wrench } from "lucide-react";
 import { offeringsQ } from "@/lib/offerings";
 import { priceLabel } from "@/lib/offering-schema";
 import { Btn } from "./ui";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle,DialogDescription } from "@/components/ui/dialog";
 import { EnquiryPopup } from "./enquiry-popup";
 
-export function BusinessOfferings({ businessId, businessName = "this business", businessImage, location }: { businessId: string; businessName?: string; businessImage?: string; location?: string }) {
-  const { data = [], isLoading, error } = useQuery(offeringsQ(businessId));
+export function BusinessOfferings({ businessId, businessName = "this business", businessImage, location,services=[] }: { businessId: string; businessName?: string; businessImage?: string; location?: string;services?:{name:string;price:string}[] }) {
+  const { data = [], isLoading, error,refetch } = useQuery(offeringsQ(businessId));
   const [selectedId, setSelectedId] = useState<string>();
   const [photo, setPhoto] = useState(0);
   const selected = data.find(x => x.id === selectedId);
   if (isLoading) return <p className="py-8 text-muted-foreground">Loading products & services…</p>;
-  if (error) return <p className="py-8 text-muted-foreground">Products and services are unavailable right now.</p>;
+  if (error) return <div role="alert" className="space-y-3 py-8"><p>Products and services are unavailable right now.</p><Btn variant="outline" onClick={()=>void refetch()}>Retry</Btn></div>;
+  const simple=services.filter(s=>!data.some(o=>o.name.toLowerCase()===s.name.toLowerCase()));
   return <>
-    {!data.length && <p className="py-6 text-muted-foreground">No products or services added yet.</p>}
+    {!data.length&&!simple.length && <p className="py-6 text-muted-foreground">No products or services added yet. Contact the business for details.</p>}
+    {simple.length>0&&<ul className="mb-5 divide-y">{simple.map(s=><li key={s.name} className="flex flex-wrap items-center justify-between gap-3 py-4"><div><h3 className="font-semibold">{s.name}</h3>{s.price&&<p className="text-sm">{s.price}</p>}</div><EnquiryPopup label="Enquire" context={{businessId,businessName,title:s.name,image:businessImage||undefined,location,price:s.price}}/></li>)}</ul>}
     <div className="grid gap-4 sm:grid-cols-2">{data.map(item => <article key={item.id} className="overflow-hidden rounded-2xl border bg-card">
       <div className="aspect-[4/3] bg-muted">{item.images[0] ? <img src={item.images[0]} alt={item.name} className="size-full object-cover" loading="lazy" /> : <div className="grid size-full place-items-center text-muted-foreground">{item.kind === "product" ? <Package className="size-12" /> : <Wrench className="size-12" />}</div>}</div>
       <div className="space-y-2 p-4"><p className="text-xs font-semibold uppercase text-coral">{item.kind} · {item.category}</p><h3 className="font-display text-lg font-bold">{item.name}</h3><p className="font-bold">{priceLabel(item.pricing)}</p><p className="line-clamp-2 text-sm text-muted-foreground">{item.description}</p><Btn variant="outline" onClick={() => { setSelectedId(item.id); setPhoto(0); }}>View details</Btn></div>
     </article>)}</div>
-    <Dialog open={Boolean(selected)} onOpenChange={o => !o && setSelectedId(undefined)}><DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl"><DialogHeader><DialogTitle className="font-display text-2xl">{selected?.name}</DialogTitle></DialogHeader>{selected && <div className="space-y-5">
+    <Dialog open={Boolean(selected)} onOpenChange={o => !o && setSelectedId(undefined)}><DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl"><DialogHeader><DialogTitle className="break-words font-display text-2xl">{selected?.name}</DialogTitle><DialogDescription>{businessName} · {location}</DialogDescription></DialogHeader>{selected && <div className="space-y-5">
       {selected.images.length > 0 && <div><img src={selected.images[photo]} alt={selected.name} className="aspect-[4/3] w-full rounded-xl object-contain bg-muted" /><div className="mt-2 flex gap-2 overflow-x-auto">{selected.images.map((src, i) => <Btn key={src} variant={i === photo ? "primary" : "outline"} aria-label={`View photo ${i + 1}`} className="size-16 shrink-0 overflow-hidden p-1" onClick={() => setPhoto(i)}><img src={src} alt="" className="size-full rounded-lg object-cover" /></Btn>)}</div></div>}
       <p className="text-xl font-bold">{priceLabel(selected.pricing)}</p>
       {selected.pricing.mode === "single" && selected.pricing.discount > 0 && <p className="text-sm text-muted-foreground"><s>₹{selected.pricing.price.toLocaleString("en-IN")}</s> · Save ₹{selected.pricing.discount.toLocaleString("en-IN")}</p>}
