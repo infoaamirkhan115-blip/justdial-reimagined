@@ -111,10 +111,10 @@ export function BusinessCard({ b }: { b: Business }) {
   );
 }
 
-export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Send enquiry", businessId }: { title?: string; subtitle?: string; cta?: string; businessId?: string | undefined }) {
+export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Send enquiry", businessId, initialMessage = "", onSent, unframed = false }: { title?: string; subtitle?: string; cta?: string; businessId?: string | undefined; initialMessage?: string; onSent?: () => void; unframed?: boolean }) {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState(initialMessage);
   const [busy, setBusy] = useState(false);
   return (
     <form
@@ -129,18 +129,19 @@ export function EnquiryForm({ title = "Get the best price", subtitle, cta = "Sen
           toast.success("Enquiry sent! The business will call you shortly.");
         } else toast.success("Done! Top businesses will call you within minutes.");
         setPhone(""); setName(""); setMsg("");
+        onSent?.();
       }}
-      className="rounded-3xl border bg-card p-5 shadow-soft"
+      className={unframed ? "space-y-3" : "rounded-3xl border bg-card p-5 shadow-soft"}
     >
       <h3 className="text-lg font-bold">{title}</h3>
       {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       <div className="mt-4 space-y-3">
-        <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
+        <input required aria-label="Your name" maxLength={100} value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
         <div className="flex h-11 overflow-hidden rounded-xl border border-input bg-background">
           <span className="grid place-items-center border-r px-3 text-sm font-semibold text-muted-foreground">+91</span>
-          <input value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} inputMode="numeric" placeholder="Mobile number" className="w-full bg-transparent px-3 text-sm outline-none" />
+          <input required aria-label="Mobile number" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} inputMode="numeric" placeholder="Mobile number" className="min-w-0 w-full bg-transparent px-3 text-sm outline-none" />
         </div>
-        {businessId && <textarea value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={1000} rows={2} placeholder="What do you need? (optional)" className="w-full rounded-xl border border-input bg-background p-3 text-sm" />}
+        {businessId && <textarea aria-label="Your requirement" value={msg} onChange={(e) => setMsg(e.target.value)} maxLength={1000} rows={3} placeholder="What do you need? (optional)" className="w-full rounded-xl border border-input bg-background p-3 text-sm" />}
         <Btn type="submit" disabled={busy} className="w-full">{busy ? "Sending…" : cta}</Btn>
         <p className="text-center text-xs text-muted-foreground">Free · No spam · Your number is shared only with matching businesses</p>
       </div>
