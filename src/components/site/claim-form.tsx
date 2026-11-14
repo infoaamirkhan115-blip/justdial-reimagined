@@ -20,7 +20,7 @@ export function ClaimForm({ businessId, name }: { businessId: string; name: stri
     return (
       <div className="py-8">
         <p className="mb-4">Sign in to claim {name}.</p>
-        <Link to="/auth" search={{ next: `/claim/${businessId}` }}>
+        <Link to="/auth" search={{ redirect: `/claim/${businessId}` }}>
           Sign in to claim this listing
         </Link>
       </div>
