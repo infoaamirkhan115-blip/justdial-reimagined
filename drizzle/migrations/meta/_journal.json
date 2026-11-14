@@ -85,6 +85,13 @@
       "when": 1794642981460,
       "tag": "0011_guard_new_catalogue_publication",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1794643425279,
+      "tag": "0012_trust_claims_staff_and_moderation",
+      "breakpoints": true
     }
   ]
 }
