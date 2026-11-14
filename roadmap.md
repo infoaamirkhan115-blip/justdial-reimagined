@@ -28,6 +28,8 @@
 - [x] Verify all 32 main Noida category pages have approved public results (39 listings total).
 
 # Real photos for newly added Noida listings
-- [ ] Find and visually verify official business photos for the 28 newly added listings.
-- [ ] Save verified photos privately, link them to listings, and retain official source notes.
-- [ ] Verify the saved photos display on public listing pages; identify any unavailable official photos.
+- [x] Research all 28 official sites; visually verify authentic photos for 17 listings and reject stock, illustrated, and AI-generated substitutes.
+- [x] Save verified photos privately for 17 listings, link them to listings, and retain official source notes.
+- [x] Verify all 17 photos load on listing pages in the signed-in preview, including desktop/mobile views; no runtime errors.
+- [ ] Source authentic photos for the remaining 11: Noida Luxury Spa, Deepak Bhargava & Associates, Carqlinic, Bala Ji Enterprises, Fix Fast Electrical, Mobile House, Dreamland Interior Designers, ZX Pest Control, Doon Pet Shop, Noida Home Tutor, Wholesale Story. Blocker: checked official sources expose only stock/generated/illustrated images or no accessible genuine business photo; need an accessible verified gallery or owner-provided photos.
+- [ ] Verify signed-out public delivery for the newly saved images. Blocker: signed-out localhost listing pages remain on Loading; signed-in listing pages verified successfully.
