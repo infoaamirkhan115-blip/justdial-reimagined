@@ -35,7 +35,7 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
     years,
     verified: false,
     trust: false,
-    sponsored: r.sponsored,
+    sponsored: false,
     open: null,
     hours: r.hours,
     distance: null,
@@ -108,7 +108,7 @@ export const liveBusinessQ = (id: string) =>
       const { data, error } = await supabase
         .from("businesses")
         .select(SELECT)
-        .eq("id", id)
+        .eq(/^[0-9a-f-]{36}$/.test(id) ? "id" : "public_slug", id)
         .eq("status", "approved")
         .is("archived_at", null)
         .maybeSingle();

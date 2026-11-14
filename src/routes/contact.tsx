@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SupportForm } from "@/components/dash/support-center";
+import { ManagedLinks } from "@/components/site/managed-content";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/contact")({
       <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_2fr]">
         <section className="space-y-4">
           <h2 className="text-xl font-bold">Your requests</h2>
+          <ManagedLinks kind="contact" />
           <Link
             to="/dashboard/support"
             search={{ ticket: undefined }}
