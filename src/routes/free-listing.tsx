@@ -1,11 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, PhoneCall, Store, TrendingUp, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CATEGORIES, CITIES, STATS } from "@/data/catalog";
 import { Btn, SectionHeader } from "@/components/site/ui";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { saveListingDraft,readListingDraft,clearListingDraft } from "@/lib/listing-draft";
 
 export const Route = createFileRoute("/free-listing")({
   head: () => ({ meta: [
@@ -24,8 +25,9 @@ const PLANS = [
 const FEATURES = ["Business listing & photos", "Customer reviews", "Higher ranking in search", "Verified badge", "Top-of-category placement", "Dedicated account manager & 100 lead credits"];
 
 function Page() {
-  const [form, setForm] = useState({ name: "", phone: "", city: "Mumbai", cat: "restaurants" });
+  const [form, setForm] = useState({ name: "", phone: "", city: "Noida", cat: "restaurants" });
   const nav = useNavigate();
+  useEffect(()=>{const d=readListingDraft();if(d)setForm({name:d.name,phone:d.phone,city:d.city,cat:d.category});},[]);
   return (
     <div className="container-page pt-6">
       <section className="grid items-center gap-10 rounded-[2rem] bg-saffron-soft p-8 md:grid-cols-[1.2fr_1fr] md:p-14">
@@ -35,16 +37,16 @@ function Page() {
           <p className="mt-4 max-w-lg text-muted-foreground">Crores of people search every day. Put your business in front of them — free.</p>
           <div className="mt-8 grid grid-cols-2 gap-4">{STATS.slice(0, 2).map((s) => <div key={s.label}><p className="font-display text-3xl font-extrabold">{s.value}</p><p className="text-sm text-muted-foreground">{s.label}</p></div>)}</div>
         </div>
-        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; } toast.success("Create your free account to finish your listing."); nav({ to: "/auth", search: { redirect: "/dashboard/businesses?new=true" } }); }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
+        <form id="signup" onSubmit={(e) => { e.preventDefault(); if (!/^[6-9]\d{9}$/.test(form.phone)) { toast.error("Enter a valid 10-digit mobile number"); return; } try{saveListingDraft({name:form.name,phone:form.phone,city:form.city,category:form.cat});nav({ to: "/auth", search: { redirect: "/dashboard/businesses?new=true" } });}catch{toast.error("Could not keep your draft. Please retry.");} }} className="space-y-3 rounded-3xl border bg-card p-6 shadow-lift">
           <h2 className="text-xl font-bold">List your business</h2>
-          <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Business name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
-          <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })} inputMode="numeric" placeholder="Mobile number" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
+          <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} aria-label="Business name" maxLength={100} placeholder="Business name" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
+          <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })} inputMode="numeric" aria-label="Mobile number" placeholder="Mobile number" className="h-11 w-full rounded-xl border border-input bg-background px-3 text-sm" />
           <div className="grid grid-cols-2 gap-3">
             <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} aria-label="City" className="h-11 rounded-xl border border-input bg-background px-3 text-sm">{CITIES.map((c) => <option key={c}>{c}</option>)}</select>
             <select value={form.cat} onChange={(e) => setForm({ ...form, cat: e.target.value })} aria-label="Category" className="h-11 rounded-xl border border-input bg-background px-3 text-sm">{CATEGORIES.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}</select>
           </div>
           <Btn type="submit" className="w-full">Start getting customers</Btn>
-          <p className="text-center text-xs text-muted-foreground">Takes 2 minutes · No credit card</p>
+          <Btn type="button" variant="ghost" className="w-full" onClick={()=>{clearListingDraft();setForm({name:"",phone:"",city:"Noida",cat:"restaurants"});}}>Discard draft</Btn><p className="text-center text-xs text-muted-foreground">Draft kept on this device for up to 7 days.</p>
         </form>
       </section>
 

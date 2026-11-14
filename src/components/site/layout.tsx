@@ -48,6 +48,7 @@ export function Header() {
           <AccountButton />
         </nav>
       </div>
+      {showSearch&&<div className="container-page pb-3 md:hidden"><SearchBar size="sm"/></div>}
     </header>
   );
 }

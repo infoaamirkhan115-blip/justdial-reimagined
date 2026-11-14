@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { CATEGORIES, getCategory } from "@/data/catalog";
-import { BusinessCard, CategoryTile, EnquiryForm } from "@/components/site/ui";
+import { BusinessCard, CategoryTile, DirectoryState } from "@/components/site/ui";
 import { DynIcon } from "@/components/site/icon";
 import { useCity } from "@/components/site/city";
 import { useQuery } from "@tanstack/react-query";
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/category/$slug")({
 function CategoryPage() {
   const { cat } = Route.useLoaderData();
   const { city } = useCity();
-  const { data: live = [] } = useQuery(liveBusinessesQ);
+  const query=useQuery(liveBusinessesQ); const live=query.data??[];
   const list = live.filter((b) => b.category === cat.slug && b.city === city);
   const related = CATEGORIES.filter((c) => c.group === cat.group && c.slug !== cat.slug).slice(0, 6);
   return (
@@ -42,7 +42,7 @@ function CategoryPage() {
         <span className="grid size-16 place-items-center rounded-2xl bg-card shadow-soft"><DynIcon name={cat.icon} className="size-8" /></span>
         <div>
           <h1 className="text-3xl font-extrabold md:text-5xl">{cat.name} in {city}</h1>
-          <p className="mt-1 text-muted-foreground">{list.length} listings</p>
+          <p className="mt-1 text-muted-foreground">{query.isPending?"Loading listings…":query.isError?"Listings unavailable":`${list.length} listings`}</p>
         </div>
       </header>
       <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">
@@ -50,17 +50,16 @@ function CategoryPage() {
       </div>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <div className="space-y-4">
-          {list.length ? list.map((b) => <BusinessCard key={b.id} b={b} />) : (
-            <div className="rounded-3xl border border-dashed bg-card p-10 text-center"><h2 className="text-xl font-bold">Listings coming soon</h2><p className="mt-1 text-sm text-muted-foreground">Share your requirement and we'll connect you with verified {cat.name.toLowerCase()}.</p></div>
-          )}
+          <DirectoryState query={query} empty={!list.length}/>
+          {!query.isPending&&!query.isError&&list.map(b=><BusinessCard key={b.id} b={b}/>)}
           <section className="pt-8">
             <h2 className="mb-3 text-2xl font-bold">Frequently asked</h2>
             <Accordion type="single" collapsible className="rounded-3xl border bg-card px-5">
               {[
                 [`How do I choose the best ${cat.name.toLowerCase()}?`, "Look for the Verified badge, a 4+ rating with many reviews, and years in business. Compare 2–3 options and ask for quotes."],
                 ["Is it free to enquire?", "Yes. Calling, chatting and getting quotes is always free for customers."],
-                ["What does Verified mean?", "We've checked the business's documents, address and phone number in person or via video."],
-              ].map(([q, a]) => <AccordionItem key={q} value={q!}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
+                ["What does Verified mean?", "Verification is separate from subscriptions and sponsored placement. Ask for documents relevant to your requirement."],
+              ].map(([q, a]) => <AccordionItem key={q} value={q??""}><AccordionTrigger className="text-left font-semibold">{q}</AccordionTrigger><AccordionContent className="text-muted-foreground">{a}</AccordionContent></AccordionItem>)}
             </Accordion>
           </section>
         </div>

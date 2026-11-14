@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { inputCls } from "./shell";
 import { ListingAiAssistant } from "./listing-ai-assistant";
 import { isBusinessPhone } from "@/lib/business-phone";
+import { readListingDraft,clearListingDraft } from "@/lib/listing-draft";
 
 type Row = Tables<"businesses">;
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -47,12 +48,12 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
     name: initial?.name ?? "", category: initial?.category ?? "restaurants", sub: initial?.sub ?? "", city: initial?.city ?? "Mumbai",
     area: initial?.area ?? "", address: initial?.address ?? "", landmark: initial?.landmark ?? "", pincode: initial?.pincode ?? "",
     phone: initial?.phone ?? "", whatsapp: initial?.whatsapp ?? "", email: initial?.email ?? "", website: initial?.website ?? "",
-    price: initial?.price ?? "", hours: initial?.hours ?? "10:00 am – 8:00 pm", description: initial?.description ?? "",
+    price: initial?.price ?? "", hours: initial?.hours ?? "", description: initial?.description ?? "",
     tags: (initial?.tags ?? []).join(", "), year: initial?.year_established ? String(initial.year_established) : "",
   });
   const [days, setDays] = useState<string[]>(initial?.days_open ?? DAYS.slice(0, 6));
-  const [payments, setPayments] = useState<string[]>(initial?.payment_methods ?? ["Cash", "UPI"]);
-  const [services, setServices] = useState<Service[]>(Array.isArray(initial?.services) ? (initial!.services as Service[]) : []);
+  const [payments, setPayments] = useState<string[]>(initial?.payment_methods ?? []);
+  const [services, setServices] = useState<Service[]>(Array.isArray(initial?.services) ? (initial?.services as Service[]) : []);
   const [photos, setPhotos] = useState<string[]>(initial?.photos ?? []);
   const [logo, setLogo] = useState<string | null>(initial?.logo ?? null);
   const [urls, setUrls] = useState<Record<string, string>>({});
@@ -60,6 +61,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
   const [busy, setBusy] = useState(false);
   const photoInput = useRef<HTMLInputElement>(null);
   const logoInput = useRef<HTMLInputElement>(null);
+  useEffect(()=>{if(!initial){const d=readListingDraft();if(d)setF(f=>({...f,name:d.name,phone:d.phone,city:d.city,category:d.category}));}},[initial]);
   const cat = CATEGORIES.find((c) => c.slug === f.category);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
   const digits = (k: keyof typeof f, n: number) => (e: React.ChangeEvent<HTMLInputElement>) => setF({ ...f, [k]: e.target.value.replace(/\D/g, "").slice(0, n) });
@@ -68,7 +70,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
 
   const upload = async (files: FileList | null, kind: "photos" | "logo") => {
     if (!files?.length) return;
-    const list = kind === "logo" ? [files[0]!] : Array.from(files).slice(0, MAX_PHOTOS - photos.length);
+    const list = kind === "logo" ? Array.from(files).slice(0,1) : Array.from(files).slice(0, MAX_PHOTOS - photos.length);
     if (kind === "photos" && !list.length) { toast.error(`You can add up to ${MAX_PHOTOS} photos`); return; }
     setUploading(true);
     try {
@@ -80,7 +82,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
         paths.push(p);
         setUrls((u) => ({ ...u, [p]: URL.createObjectURL(file) }));
       }
-      if (kind === "logo") setLogo(paths[0]!); else setPhotos((x) => [...x, ...paths]);
+      if (kind === "logo") setLogo(paths[0]??null); else setPhotos((x) => [...x, ...paths]);
     } catch (err) { toast.error(err instanceof Error ? err.message : "Upload failed"); }
     setUploading(false);
   };
@@ -107,12 +109,13 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
       : await supabase.from("businesses").insert({ ...payload, owner_id: ownerId });
     setBusy(false);
     if (error) { toast.error(error.message); return; }
+    if(!initial)clearListingDraft();
     toast.success(initial ? "Changes saved" : "Business submitted for review. It goes live once approved.");
     qc.invalidateQueries();
     onDone();
   };
 
-  const move = (i: number) => setPhotos((p) => [p[i]!, ...p.filter((_, k) => k !== i)]);
+  const move = (i: number) => setPhotos((p) => p[i]?[p[i], ...p.filter((_, k) => k !== i)]:p);
 
   return (
     <form onSubmit={save} className="grid gap-5">
@@ -187,7 +190,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
         <L label="Payment methods accepted" wide><Chips options={PAYMENTS} value={payments} onChange={setPayments} /></L>
       </Section>
 
-      <Section title="Services & prices" hint="Shown on the Services tab of your listing.">
+      <Section title="Services & prices" hint="Shown alongside detailed products and services on your listing.">
         <div className="space-y-2 sm:col-span-2">
           {services.map((s, i) => (
             <div key={i} className="flex gap-2">
@@ -200,7 +203,7 @@ export function BusinessForm({ initial, ownerId, onDone }: { initial?: Row | und
         </div>
       </Section>
 
-      <div className="flex justify-end gap-2"><Btn type="button" variant="outline" onClick={onDone}>Cancel</Btn><Btn type="submit" disabled={busy || uploading}>{busy ? "Saving…" : initial ? "Save changes" : "Submit listing"}</Btn></div>
+      <div className="flex justify-end gap-2">{!initial&&<Btn type="button" variant="outline" onClick={()=>{clearListingDraft();onDone();}}>Discard draft</Btn>}<Btn type="button" variant="outline" onClick={onDone}>Cancel</Btn><Btn type="submit" disabled={busy || uploading}>{busy ? "Saving…" : initial ? "Save changes" : "Submit listing"}</Btn></div>
     </form>
   );
 }

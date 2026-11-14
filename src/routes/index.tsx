@@ -5,14 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import { liveBusinessesQ } from "@/lib/public-data";
 import { BUSINESSES, CATEGORIES, STATS, TRENDING } from "@/data/catalog";
 import { SearchBar } from "@/components/site/search-bar";
-import { CategoryTile, MiniBusinessCard, SectionHeader, btnClass, EnquiryForm } from "@/components/site/ui";
+import { CategoryTile, MiniBusinessCard, SectionHeader, btnClass, EnquiryForm, DirectoryState } from "@/components/site/ui";
 import { useCity } from "@/components/site/city";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Justdial — Find anything near you, in seconds" },
-      { name: "description", content: "Search 4 crore+ local businesses: restaurants, doctors, AC repair, movers and more. Compare ratings and call in one tap." },
+      { name: "description", content: "Search approved local businesses: restaurants, doctors, AC repair, movers and more. Compare ratings and call in one tap." },
       { property: "og:title", content: "Justdial — Find anything near you, in seconds" },
       { property: "og:description", content: "Search local businesses, compare ratings and reviews, and get the best price." },
       { property: "og:type", content: "website" },
@@ -35,20 +35,14 @@ const BILLS = [
   { label: "Mobile", icon: Smartphone }, { label: "Electricity", icon: Zap }, { label: "DTH", icon: Tv },
   { label: "Gas", icon: Flame }, { label: "FASTag", icon: Fuel }, { label: "Credit card", icon: CreditCard },
 ];
-const REVIEWS = [
-  { name: "Neha Kapoor", city: "Pune", text: "Needed an AC fixed during a heatwave. Got three calls in 5 minutes and the technician came the same evening.", biz: "CoolTech AC Services" },
-  { name: "Imran Shaikh", city: "Mumbai", text: "Shifted my whole flat through a mover I found here. Insured, on time, and the price matched the quote.", biz: "SafeShift Packers" },
-  { name: "Lakshmi Iyer", city: "Chennai", text: "The reviews made it so easy to pick a paediatrician near home. Booked an appointment in one call.", biz: "LittleSteps Child Clinic" },
-];
-
 function Row({ title, eyebrow, cat }: { title: string; eyebrow: string; cat: string[] }) {
   const { city } = useCity();
-  const { data: live = [] } = useQuery(liveBusinessesQ);
+  const query=useQuery(liveBusinessesQ);const live=query.data??[];
   const items = live.filter((b) => cat.includes(b.category) && b.city === city);
   return (
     <section className="container-page mt-20">
-      <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0]! }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />
-      <div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 md:-mx-8 md:px-8">
+      <SectionHeader eyebrow={eyebrow} title={title} action={<Link to="/category/$slug" params={{ slug: cat[0]??"restaurants" }} className="hidden items-center gap-1 text-sm font-bold hover:underline sm:flex">View all <ArrowRight className="size-4" /></Link>} />
+      <DirectoryState query={query} empty={!items.length}/><div className="no-scrollbar -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 md:-mx-8 md:px-8">
         {items.map((b) => <div key={b.id} className="snap-start"><MiniBusinessCard b={b} /></div>)}
       </div>
     </section>
@@ -66,7 +60,7 @@ function Home() {
           <img src={hero} alt="A busy Indian neighbourhood street with shops" width={1600} height={1008} className="absolute inset-0 size-full object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/10" />
           <div className="relative px-6 py-16 md:px-14 md:py-24">
-            <p className="inline-flex items-center gap-2 rounded-full bg-ink-foreground/10 px-3 py-1 text-xs font-bold backdrop-blur"><TrendingUp className="size-3.5 text-primary" />4.3 crore businesses · 11,000+ cities</p>
+            <p className="inline-flex items-center gap-2 rounded-full bg-ink-foreground/10 px-3 py-1 text-xs font-bold backdrop-blur"><TrendingUp className="size-3.5 text-primary" />Explore businesses in your city</p>
             <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] md:text-7xl">
               Find anything near you, <span className="text-primary">in seconds.</span>
             </h1>
@@ -88,7 +82,7 @@ function Home() {
           {QUICK.map((q) => {
             const inner = <><q.icon className="size-5 text-coral" /><span>{q.label}</span></>;
             const cls = "flex shrink-0 items-center gap-2 rounded-2xl border bg-card px-5 py-3 text-sm font-bold lift";
-            return q.to ? <Link key={q.label} to={q.to} className={cls}>{inner}</Link> : <Link key={q.label} to="/category/$slug" params={{ slug: q.slug! }} className={cls}>{inner}</Link>;
+            return q.to ? <Link key={q.label} to={q.to} className={cls}>{inner}</Link> : <Link key={q.label} to="/category/$slug" params={{ slug: q.slug??"restaurants" }} className={cls}>{inner}</Link>;
           })}
         </div>
       </section>
@@ -101,9 +95,9 @@ function Home() {
         </div>
       </section>
 
-      <Row eyebrow="Near you" title={`Top restaurants in ${city}`} cat={["restaurants", "hotels"]} />
-      <Row eyebrow="Health" title="Hospitals & clinics" cat={["doctors", "hospitals"]} />
-      <Row eyebrow="At your doorstep" title="Home services you can trust" cat={["ac-repair", "plumbers", "packers-movers"]} />
+      <Row eyebrow="Near you" title={`Restaurants in ${city}`} cat={["restaurants"]} />
+      <Row eyebrow="Health" title={`Hospitals in ${city}`} cat={["hospitals"]} />
+      <Row eyebrow="At your doorstep" title={`AC repair in ${city}`} cat={["ac-repair"]} />
 
       {/* Bills */}
       <section className="container-page mt-20">
@@ -127,7 +121,7 @@ function Home() {
         <div className="grid gap-8 overflow-hidden rounded-[2rem] bg-saffron-soft p-6 md:grid-cols-2 md:p-12">
           <div>
             <p className="text-xs font-bold uppercase tracking-[.18em] text-coral">B2B marketplace</p>
-            <h2 className="mt-2 text-3xl font-extrabold md:text-4xl">Buy wholesale direct from 50 lakh+ suppliers</h2>
+            <h2 className="mt-2 text-3xl font-extrabold md:text-4xl">Find local wholesale suppliers</h2>
             <p className="mt-3 text-muted-foreground">Tell us what you need. Verified manufacturers and wholesalers send you quotes — free.</p>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Garments", "Machinery", "Packaging", "FMCG", "Hardware", "Textiles", "Electricals"].map((t) => <span key={t} className="rounded-full bg-card px-3 py-1.5 text-sm font-semibold shadow-soft">{t}</span>)}
@@ -146,20 +140,6 @@ function Home() {
             <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
           </div>
         ))}
-      </section>
-
-      {/* Reviews */}
-      <section className="container-page mt-20">
-        <SectionHeader eyebrow="Real stories" title="What people found this week" />
-        <div className="grid gap-4 md:grid-cols-3">
-          {REVIEWS.map((r) => (
-            <figure key={r.name} className="rounded-3xl border bg-card p-6">
-              <div className="flex gap-0.5 text-primary">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}</div>
-              <blockquote className="mt-3 text-[15px] leading-relaxed">“{r.text}”</blockquote>
-              <figcaption className="mt-4 text-sm"><span className="font-bold">{r.name}</span> <span className="text-muted-foreground">· {r.city} · about {r.biz}</span></figcaption>
-            </figure>
-          ))}
-        </div>
       </section>
 
       {/* Grow business */}

@@ -33,7 +33,7 @@ function AuthPage() {
   const [pw, setPw] = useState("");
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => { if (user) nav({ to: dest, replace: true }); }, [user, dest, nav]);
+  useEffect(() => { if(user){const p=sessionStorage.getItem("postAuth");sessionStorage.removeItem("postAuth");nav({to:p&&p.startsWith("/")&&!p.startsWith("//")?p:dest,replace:true});} }, [user, dest, nav]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault(); setBusy(true);
@@ -41,7 +41,7 @@ function AuthPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password: pw });
       if (error) toast.error(error.message);
     } else {
-      const { data, error } = await supabase.auth.signUp({ email, password: pw, options: { emailRedirectTo: window.location.origin + dest, data: { full_name: name } } });
+      const { data, error } = await supabase.auth.signUp({ email, password: pw, options: { emailRedirectTo: window.location.origin + "/auth?redirect=" + encodeURIComponent(dest), data: { full_name: name } } });
       if (error) toast.error(error.message);
       else if (!data.session) toast.success("Check your email to confirm your account, then sign in.");
     }
@@ -52,7 +52,7 @@ function AuthPage() {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
     if (r.error) toast.error("Google sign-in failed. Please try again.");
   };
-  useEffect(() => { const p = sessionStorage.getItem("postAuth"); if (user && p) { sessionStorage.removeItem("postAuth"); nav({ to: p, replace: true }); } }, [user, nav]);
+
 
   const field = "h-11 w-full rounded-xl border border-input bg-background px-3 text-sm";
   return (

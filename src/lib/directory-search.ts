@@ -7,7 +7,7 @@ export function matchingTerms(query: string) {
   const q = normalize(query);
   return [...new Set([q, ...synonyms.filter(group => group.includes(q)).flat()])];
 }
-export function directoryResults(list: Business[], input: { q?: string; city: string; locality?: string; verified?: boolean; rated?: boolean; sort?: string; page?: number }) {
+export function directoryResults(list: Business[], input: { q?: string | undefined; city: string; locality?: string | undefined; verified?: boolean | undefined; rated?: boolean | undefined; sort?: string | undefined; page?: number | undefined }) {
   const terms = matchingTerms(input.q ?? "");
   const matches = (s: string) => terms.some(term => normalize(s).includes(term));
   const rows = list.filter(b => b.city === input.city && (!input.locality || normalize(b.area) === normalize(input.locality)) && (!input.verified || b.verified) && (!input.rated || (b.reviews > 0 && b.rating >= 4.5))).flatMap(b => {
