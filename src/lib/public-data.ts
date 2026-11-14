@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { categoryImage, type Business, type City } from "@/data/catalog";
+import { type Business, type City } from "@/data/catalog";
 import { photoUrls } from "@/lib/photos";
 
 type Row = Tables<"businesses"> & {

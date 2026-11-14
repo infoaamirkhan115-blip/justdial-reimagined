@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,11 +20,11 @@ export function SaveBusiness({ id }: { id: string }) {
     enabled: Boolean(user),
     queryFn: () => load({ data: { businessId: id } }),
   });
-  async function change(saved: boolean) {
+  const change = useCallback(async (saved: boolean) => {
     setBusy(true);
     try {
       await save({ data: { businessId: id, saved } });
-      qc.setQueryData(key, saved);
+      qc.setQueryData(["favourite", user?.id, id], saved);
       sessionStorage.removeItem("pendingFavourite");
       toast.success(saved ? "Business saved" : "Business removed from saved");
     } catch {
@@ -32,13 +32,13 @@ export function SaveBusiness({ id }: { id: string }) {
     } finally {
       setBusy(false);
     }
-  }
+  }, [save, qc, user?.id, id]);
   useEffect(() => {
     if (user && state.isSuccess && sessionStorage.getItem("pendingFavourite") === id) {
       if (state.data) sessionStorage.removeItem("pendingFavourite");
       else void change(true);
     }
-  }, [user?.id, state.isSuccess, id]);
+  }, [user, state.isSuccess, state.data, id, change]);
   return (
     <Btn
       variant="outline"

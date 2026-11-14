@@ -24,15 +24,15 @@ export const Route = createFileRoute("/category/$slug")({
     const n = loaderData?.cat.name ?? "Category";
     return {
       meta: [
-        { title: `Best ${n} near you — Justdial` },
+        { title: `${n} directory — Justdial` },
         {
           name: "description",
-          content: `Compare top-rated ${n.toLowerCase()} with verified reviews, prices and timings. Call or get quotes free.`,
+          content: `Browse ${n.toLowerCase()} by city, compare available business details and send an enquiry.`,
         },
-        { property: "og:title", content: `Best ${n} near you — Justdial` },
+        { property: "og:title", content: `${n} directory — Justdial` },
         {
           property: "og:description",
-          content: `Top-rated ${n.toLowerCase()} with verified reviews and prices.`,
+          content: `Find ${n.toLowerCase()} in your selected city and contact a business directly.`,
         },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary" },
