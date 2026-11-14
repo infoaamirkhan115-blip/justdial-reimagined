@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "sdk_version": "3.5.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://zdbpjmrmbngcqyhkafgs.supabase.co/auth/v1",
+    "require_oauth_client_claim": true,
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "justdial-neighborhood-navigator",
+      "version": "0.1.0",
+      "title": "Justdial Neighborhood Navigator"
+    },
+    "tools": [
+      {
+        "name": "search_businesses",
+        "title": "Search local businesses",
+        "description": "Find approved businesses in an exact city, optionally filtering business name, category slug and locality; returns at most 20 records per page.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "description": "Exact city name, for example Noida."
+            },
+            "name": {
+              "description": "Optional text contained in the business name.",
+              "type": "string",
+              "maxLength": 100
+            },
+            "category": {
+              "description": "Optional exact category slug.",
+              "type": "string",
+              "maxLength": 100
+            },
+            "locality": {
+              "description": "Optional exact locality name.",
+              "type": "string",
+              "maxLength": 100
+            },
+            "page": {
+              "default": 1,
+              "description": "Results page, starting at 1.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "city"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_business",
+        "title": "Read business details",
+        "description": "Read an approved business and its published products or services without exposing internal notes or private photo paths.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "business_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "Business ID returned by search_businesses."
+            }
+          },
+          "required": [
+            "business_id"
+          ],
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_businesses",
+        "title": "List my business listings",
+        "description": "Read only the authenticated caller's own listings and approval states, including drafts; never returns another owner's listings or internal staff notes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "page": {
+              "default": 1,
+              "description": "Results page of 20 listings, starting at 1.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
