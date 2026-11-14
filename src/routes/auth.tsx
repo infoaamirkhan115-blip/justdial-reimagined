@@ -103,7 +103,12 @@ function AuthPage() {
   const google = async () => {
     sessionStorage.setItem("postAuth", dest);
     const r = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: new URL(dest.startsWith("/.lovable/oauth/consent") ? dest : "/auth?next=" + encodeURIComponent(dest), window.location.origin).href,
+      redirect_uri: new URL(
+        dest.startsWith("/.lovable/oauth/consent")
+          ? dest
+          : "/auth?next=" + encodeURIComponent(dest),
+        window.location.origin,
+      ).href,
     });
     if (r.error) toast.error("Google sign-in failed. Please try again.");
   };
