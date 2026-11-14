@@ -11,13 +11,14 @@ import {
   ShieldCheck,
   Upload,
   ClipboardCheck,
+  BadgeCheck,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { DashShell } from "@/components/dash/shell";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: async ({ context }) => {
-    const { data } = await supabase.rpc("has_role", { _user_id: context.user.id, _role: "admin" });
+    const { data } = await supabase.rpc("is_staff");
     if (!data) throw redirect({ to: "/dashboard" });
   },
   head: () => ({
@@ -43,6 +44,10 @@ export const Route = createFileRoute("/_authenticated/admin")({
         { to: "/admin/quality", label: "Quality centre", icon: ShieldCheck },
         { to: "/admin/imports", label: "Imports & duplicates", icon: Upload },
         { to: "/admin/changes", label: "Change review", icon: ClipboardCheck },
+        { to: "/admin/claims", label: "Ownership claims", icon: ShieldCheck },
+        { to: "/admin/verification", label: "Information checks", icon: BadgeCheck },
+        { to: "/admin/reports", label: "Review reports", icon: ClipboardCheck },
+        { to: "/admin/audit", label: "Trust audit", icon: ClipboardCheck },
         { to: "/admin/leads", label: "Leads", icon: Inbox },
         { to: "/admin/reviews", label: "Reviews", icon: Star },
         { to: "/admin/users", label: "Users", icon: Users },

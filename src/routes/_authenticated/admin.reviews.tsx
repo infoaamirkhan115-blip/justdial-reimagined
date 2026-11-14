@@ -8,6 +8,8 @@ import { allReviewsQ } from "@/lib/admin-data";
 import { Empty, PageTitle, Pill, timeAgo } from "@/components/dash/shell";
 import { Btn, RatingBadge } from "@/components/site/ui";
 import { cn } from "@/lib/utils";
+import { useServerFn } from "@tanstack/react-start";
+import { moderateReview } from "@/lib/trust.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/reviews")({
   head: () => ({
@@ -29,6 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/reviews")({
 });
 
 function Page() {
+  const moderate = useServerFn(moderateReview);
   const qc = useQueryClient();
   const { data } = useSuspenseQuery(allReviewsQ);
   const [f, setF] = useState("all");
@@ -43,7 +46,10 @@ function Page() {
   };
   return (
     <>
-      <PageTitle title="Review moderation" sub="Hide fake, abusive or promotional reviews." />
+      <PageTitle
+        title="Review moderation"
+        sub="Review evidence before acting. A negative rating alone is not abuse."
+      />
       <div className="mb-4 flex gap-2">
         {[
           ["all", "All"],
@@ -53,7 +59,7 @@ function Page() {
         ].map(([k, l]) => (
           <button
             key={k}
-            onClick={() => setF(k!)}
+            onClick={() => k && setF(k)}
             className={cn(
               "rounded-full border px-4 py-1.5 text-sm font-semibold",
               f === k ? "border-ink bg-ink text-ink-foreground" : "bg-card",
@@ -86,15 +92,19 @@ function Page() {
                   <Btn
                     variant="outline"
                     className="min-h-9"
-                    onClick={() =>
-                      act(
-                        supabase
-                          .from("reviews")
-                          .update({ status: r.status === "hidden" ? "published" : "hidden" })
-                          .eq("id", r.id),
-                        r.status === "hidden" ? "Published" : "Hidden",
-                      )
-                    }
+                    onClick={async () => {
+                      const reason = prompt(
+                        "Decision reason (negative ratings alone are not abuse)",
+                      );
+                      if (!reason) return;
+                      try {
+                        await moderate({ data: { id: r.id, hide: r.status !== "hidden", reason } });
+                        toast.success("Moderation decision saved");
+                        qc.invalidateQueries();
+                      } catch (e) {
+                        toast.error(e instanceof Error ? e.message : "Decision failed");
+                      }
+                    }}
                   >
                     {r.status === "hidden" ? (
                       <>
@@ -107,17 +117,6 @@ function Page() {
                         Hide
                       </>
                     )}
-                  </Btn>
-                  <Btn
-                    variant="ghost"
-                    className="min-h-9"
-                    aria-label="Delete"
-                    onClick={() =>
-                      confirm("Delete this review?") &&
-                      act(supabase.from("reviews").delete().eq("id", r.id), "Deleted")
-                    }
-                  >
-                    <Trash2 className="size-4 text-destructive" />
                   </Btn>
                 </div>
               </div>

@@ -1,0 +1,1 @@
+DO $$ DECLARE def text; BEGIN SELECT pg_get_functiondef(oid) INTO def FROM pg_proc WHERE pronamespace='public'::regnamespace AND proname='set_staff_assignment'; def:=replace(def,'BEGIN PERFORM pg_advisory_xact_lock','BEGIN scope_city:=nullif(trim(scope_city),''''); scope_category:=nullif(trim(scope_category),''''); PERFORM pg_advisory_xact_lock'); EXECUTE def; END $$;

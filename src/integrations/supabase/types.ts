@@ -14,6 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
+      business_claims: {
+        Row: {
+          business_id: string
+          claimant_id: string
+          contact: string
+          corrections: string
+          created_at: string
+          decided_at: string | null
+          evidence: string[]
+          expires_at: string | null
+          id: string
+          identity_name: string
+          previous_owner_id: string | null
+          reason: string
+          reviewer_id: string | null
+          status: string
+          verified_contacts: string[]
+        }
+        Insert: {
+          business_id: string
+          claimant_id: string
+          contact: string
+          corrections?: string
+          created_at?: string
+          decided_at?: string | null
+          evidence?: string[]
+          expires_at?: string | null
+          id?: string
+          identity_name: string
+          previous_owner_id?: string | null
+          reason?: string
+          reviewer_id?: string | null
+          status?: string
+          verified_contacts?: string[]
+        }
+        Update: {
+          business_id?: string
+          claimant_id?: string
+          contact?: string
+          corrections?: string
+          created_at?: string
+          decided_at?: string | null
+          evidence?: string[]
+          expires_at?: string | null
+          id?: string
+          identity_name?: string
+          previous_owner_id?: string | null
+          reason?: string
+          reviewer_id?: string | null
+          status?: string
+          verified_contacts?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_claims_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       business_offerings: {
         Row: {
           business_id: string
@@ -108,6 +170,53 @@ export type Database = {
           owner_id?: string
         }
         Relationships: []
+      }
+      business_verifications: {
+        Row: {
+          business_id: string
+          checked_at: string
+          evidence_reference: string
+          expires_at: string | null
+          id: string
+          public_summary: string
+          reason: string
+          reviewer_id: string
+          scope: string
+          status: string
+        }
+        Insert: {
+          business_id: string
+          checked_at?: string
+          evidence_reference: string
+          expires_at?: string | null
+          id?: string
+          public_summary: string
+          reason: string
+          reviewer_id: string
+          scope: string
+          status?: string
+        }
+        Update: {
+          business_id?: string
+          checked_at?: string
+          evidence_reference?: string
+          expires_at?: string | null
+          id?: string
+          public_summary?: string
+          reason?: string
+          reviewer_id?: string
+          scope?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "business_verifications_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       businesses: {
         Row: {
@@ -750,11 +859,62 @@ export type Database = {
         }
         Relationships: []
       }
+      review_reports: {
+        Row: {
+          appeal: string
+          created_at: string
+          decided_at: string | null
+          decision_reason: string
+          evidence: string
+          id: string
+          reason: string
+          reporter_id: string
+          review_id: string
+          reviewer_id: string | null
+          status: string
+        }
+        Insert: {
+          appeal?: string
+          created_at?: string
+          decided_at?: string | null
+          decision_reason?: string
+          evidence?: string
+          id?: string
+          reason: string
+          reporter_id: string
+          review_id: string
+          reviewer_id?: string | null
+          status?: string
+        }
+        Update: {
+          appeal?: string
+          created_at?: string
+          decided_at?: string | null
+          decision_reason?: string
+          evidence?: string
+          id?: string
+          reason?: string
+          reporter_id?: string
+          review_id?: string
+          reviewer_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_reports_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           business_id: string
           created_at: string
           id: string
+          moderation_reason: string
           name: string
           owner_reply: string | null
           rating: number
@@ -766,6 +926,7 @@ export type Database = {
           business_id: string
           created_at?: string
           id?: string
+          moderation_reason?: string
           name: string
           owner_reply?: string | null
           rating: number
@@ -777,6 +938,7 @@ export type Database = {
           business_id?: string
           created_at?: string
           id?: string
+          moderation_reason?: string
           name?: string
           owner_reply?: string | null
           rating?: number
@@ -793,6 +955,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      staff_assignments: {
+        Row: {
+          category: string | null
+          city: string | null
+          created_at: string
+          granted_by: string | null
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          city?: string | null
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
@@ -817,9 +1009,39 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_claim_evidence: {
+        Args: { claim_id: string; paths: string[] }
+        Returns: undefined
+      }
+      appeal_review_report: {
+        Args: { appeal_text: string; report_id: string }
+        Returns: undefined
+      }
       apply_directory_import: {
         Args: { batch_id: string; reverse_batch: boolean }
         Returns: undefined
+      }
+      change_listing_trust: {
+        Args: { bid: string; decision_reason: string; patch: Json }
+        Returns: undefined
+      }
+      decide_claim: {
+        Args: {
+          claim_id: string
+          contact_checks: string[]
+          decision_reason: string
+          expiry?: string
+          next_state: string
+        }
+        Returns: undefined
+      }
+      decide_review_report: {
+        Args: { decision_reason: string; report_id: string; uphold: boolean }
+        Returns: undefined
+      }
+      has_permission: {
+        Args: { bid?: string; permission: string }
+        Returns: boolean
       }
       has_role: {
         Args: {
@@ -828,13 +1050,50 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_staff: { Args: never; Returns: boolean }
       merge_directory_businesses: {
         Args: { reason: string; source_id: string; target_id: string }
         Returns: undefined
       }
+      moderate_review: {
+        Args: { decision_reason: string; hide: boolean; review_id: string }
+        Returns: undefined
+      }
       obvious_placeholder: { Args: { t: string }; Returns: boolean }
+      public_verification: {
+        Args: { bid: string }
+        Returns: {
+          checked_at: string
+          expires_at: string
+          scope: string
+          summary: string
+        }[]
+      }
+      record_business_verification: {
+        Args: {
+          bid: string
+          checked_scope: string
+          decision_reason: string
+          evidence_ref: string
+          expiry?: string
+          revoke_id?: string
+          summary: string
+        }
+        Returns: undefined
+      }
       review_listing_change: {
         Args: { approve: boolean; feedback_text: string; request_id: string }
+        Returns: undefined
+      }
+      set_staff_assignment: {
+        Args: {
+          decision_reason: string
+          remove_role: boolean
+          scope_category: string
+          scope_city: string
+          staff_role: string
+          target_user: string
+        }
         Returns: undefined
       }
     }

@@ -46,7 +46,7 @@ export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === s
 
 export const TRENDING = ["Restaurants", "AC Repair", "Dentists", "Packers & Movers", "PG", "Gyms", "Beauty & Spa", "Plumbers"];
 
-export type Review = { name: string; rating: number; date: string; text: string };
+export type Review = { id?: string; name: string; rating: number; date: string; text: string };
 export type Business = {
   id: string; name: string; category: string; sub: string; city: City; area: string;
   rating: number; reviews: number; years: number; verified: boolean; trust: boolean; sponsored: boolean;

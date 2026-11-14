@@ -23,6 +23,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
         { to: "/dashboard/products", label: "Products & services", icon: Package },
         { to: "/dashboard/leads", label: "Leads", icon: Inbox },
         { to: "/dashboard/reviews", label: "Reviews", icon: Star },
+        { to: "/dashboard/claims", label: "Ownership claims", icon: Building2 },
+        { to: "/dashboard/reports", label: "Reports & appeals", icon: Star },
         { to: "/dashboard/plan", label: "Plans", icon: Crown },
       ]}
     >

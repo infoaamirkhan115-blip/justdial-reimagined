@@ -7,7 +7,10 @@ import { fetchDirectoryDefinitions, mapCategories } from "./managed-directory";
 
 type Row = Tables<"businesses"> & {
   business_offerings?: { name: string; published: boolean }[];
-  reviews?: Pick<Tables<"reviews">, "name" | "rating" | "text" | "created_at" | "owner_reply">[];
+  reviews?: Pick<
+    Tables<"reviews">,
+    "id" | "name" | "rating" | "text" | "created_at" | "owner_reply"
+  >[];
 };
 export type Service = { name: string; price: string };
 
@@ -30,7 +33,7 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
     rating,
     reviews: revs.length,
     years,
-    verified: r.verified,
+    verified: false,
     trust: false,
     sponsored: r.sponsored,
     open: null,
@@ -56,6 +59,7 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
     payments: r.payment_methods,
     days: r.days_open,
     reviewList: revs.map((x) => ({
+      id: x.id,
       name: x.name,
       rating: x.rating,
       date: new Date(x.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" }),
@@ -65,7 +69,7 @@ export function rowToBusiness(r: Row, urls: Record<string, string> = {}): Busine
 }
 
 const SELECT =
-  "*, reviews(name, rating, text, created_at, owner_reply), business_offerings(name,published)";
+  "*, reviews(id, name, rating, text, created_at, owner_reply), business_offerings(name,published)";
 const allPaths = (rows: Row[], galleryAll: boolean) =>
   rows.flatMap((r) => [...(galleryAll ? r.photos : r.photos.slice(0, 1)), r.logo ?? ""]);
 

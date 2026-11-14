@@ -1,5 +1,6 @@
 import { useServerFn } from "@tanstack/react-start";
 import { archiveBusiness } from "@/lib/directory-management.functions";
+import { changeListingTrust } from "@/lib/trust.functions";
 import { completeness } from "@/lib/directory-quality";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
@@ -45,6 +46,7 @@ function Page() {
   const nav = useNavigate({ from: Route.fullPath });
   const qc = useQueryClient();
   const archive = useServerFn(archiveBusiness);
+  const changeTrust = useServerFn(changeListingTrust);
   const { data } = useSuspenseQuery(allBusinessesQ);
   const [q, setQ] = useState("");
   const [editing, setEditing] = useState<Tables<"businesses"> | undefined>();
@@ -55,11 +57,14 @@ function Page() {
   );
 
   const set = async (id: string, patch: Partial<Tables<"businesses">>, msg: string) => {
-    const { error } = await supabase.from("businesses").update(patch).eq("id", id);
-    if (error) toast.error(error.message);
-    else {
+    const reason = prompt("Reason for this listing or entitlement change");
+    if (!reason) return;
+    try {
+      await changeTrust({ data: { id, patch: JSON.parse(JSON.stringify(patch)), reason } });
       toast.success(msg);
       qc.invalidateQueries();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Change denied");
     }
   };
   const remove = async (b: Tables<"businesses">) => {
@@ -162,19 +167,13 @@ function Page() {
                       <option key={s}>{s}</option>
                     ))}
                   </select>
-                  <button
-                    onClick={() =>
-                      set(b.id, { verified: !b.verified }, b.verified ? "Unverified" : "Verified")
-                    }
-                    aria-pressed={b.verified}
-                    className={cn(
-                      "inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold",
-                      b.verified ? "border-success bg-success-soft text-success" : "bg-background",
-                    )}
+                  <Link
+                    to="/admin/verification"
+                    className="inline-flex h-10 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold"
                   >
                     <BadgeCheck className="size-4" />
-                    Verified
-                  </button>
+                    Information checks
+                  </Link>
                   <button
                     onClick={() =>
                       set(

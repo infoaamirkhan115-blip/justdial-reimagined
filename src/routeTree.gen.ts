@@ -31,22 +31,29 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BusinessIdRouteImport } from './routes/business.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ClaimIdRouteImport } from './routes/claim.$id'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
 import { Route as AuthenticatedAdminBusinessesRouteImport } from './routes/_authenticated/admin.businesses'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 import { Route as AuthenticatedAdminChangesRouteImport } from './routes/_authenticated/admin.changes'
+import { Route as AuthenticatedAdminClaimsRouteImport } from './routes/_authenticated/admin.claims'
 import { Route as AuthenticatedAdminImportsRouteImport } from './routes/_authenticated/admin.imports'
 import { Route as AuthenticatedAdminLeadsRouteImport } from './routes/_authenticated/admin.leads'
 import { Route as AuthenticatedAdminLocationsRouteImport } from './routes/_authenticated/admin.locations'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
 import { Route as AuthenticatedAdminQualityRouteImport } from './routes/_authenticated/admin.quality'
+import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
+import { Route as AuthenticatedAdminVerificationRouteImport } from './routes/_authenticated/admin.verification'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBusinessesRouteImport } from './routes/_authenticated/dashboard.businesses'
+import { Route as AuthenticatedDashboardClaimsRouteImport } from './routes/_authenticated/dashboard.claims'
 import { Route as AuthenticatedDashboardLeadsRouteImport } from './routes/_authenticated/dashboard.leads'
 import { Route as AuthenticatedDashboardPlanRouteImport } from './routes/_authenticated/dashboard.plan'
 import { Route as AuthenticatedDashboardProductsRouteImport } from './routes/_authenticated/dashboard.products'
+import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
 
 const IndexRoute = IndexRouteImport.update({
@@ -158,9 +165,19 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClaimIdRoute = ClaimIdRouteImport.update({
+  id: '/claim/$id',
+  path: '/claim/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedAdminBusinessesRoute =
@@ -179,6 +196,12 @@ const AuthenticatedAdminChangesRoute =
   AuthenticatedAdminChangesRouteImport.update({
     id: '/changes',
     path: '/changes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminClaimsRoute =
+  AuthenticatedAdminClaimsRouteImport.update({
+    id: '/claims',
+    path: '/claims',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminImportsRoute =
@@ -210,6 +233,12 @@ const AuthenticatedAdminQualityRoute =
     path: '/quality',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminReportsRoute =
+  AuthenticatedAdminReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminReviewsRoute =
   AuthenticatedAdminReviewsRouteImport.update({
     id: '/reviews',
@@ -221,6 +250,12 @@ const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminVerificationRoute =
+  AuthenticatedAdminVerificationRouteImport.update({
+    id: '/verification',
+    path: '/verification',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/',
@@ -231,6 +266,12 @@ const AuthenticatedDashboardBusinessesRoute =
   AuthenticatedDashboardBusinessesRouteImport.update({
     id: '/businesses',
     path: '/businesses',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardClaimsRoute =
+  AuthenticatedDashboardClaimsRouteImport.update({
+    id: '/claims',
+    path: '/claims',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardLeadsRoute =
@@ -249,6 +290,12 @@ const AuthenticatedDashboardProductsRoute =
   AuthenticatedDashboardProductsRouteImport.update({
     id: '/products',
     path: '/products',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardReportsRoute =
+  AuthenticatedDashboardReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardReviewsRoute =
@@ -280,20 +327,27 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
+  '/admin/claims': typeof AuthenticatedAdminClaimsRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/quality': typeof AuthenticatedAdminQualityRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -318,20 +372,27 @@ export interface FileRoutesByTo {
   '/write-review': typeof WriteReviewRoute
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/changes': typeof AuthenticatedAdminChangesRoute
+  '/admin/claims': typeof AuthenticatedAdminClaimsRoute
   '/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/admin/locations': typeof AuthenticatedAdminLocationsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/quality': typeof AuthenticatedAdminQualityRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
@@ -360,20 +421,27 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/business/$id': typeof BusinessIdRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/claim/$id': typeof ClaimIdRoute
+  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
   '/_authenticated/admin/businesses': typeof AuthenticatedAdminBusinessesRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/changes': typeof AuthenticatedAdminChangesRoute
+  '/_authenticated/admin/claims': typeof AuthenticatedAdminClaimsRoute
   '/_authenticated/admin/imports': typeof AuthenticatedAdminImportsRoute
   '/_authenticated/admin/leads': typeof AuthenticatedAdminLeadsRoute
   '/_authenticated/admin/locations': typeof AuthenticatedAdminLocationsRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/admin/quality': typeof AuthenticatedAdminQualityRoute
+  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/admin/verification': typeof AuthenticatedAdminVerificationRoute
   '/_authenticated/dashboard/businesses': typeof AuthenticatedDashboardBusinessesRoute
+  '/_authenticated/dashboard/claims': typeof AuthenticatedDashboardClaimsRoute
   '/_authenticated/dashboard/leads': typeof AuthenticatedDashboardLeadsRoute
   '/_authenticated/dashboard/plan': typeof AuthenticatedDashboardPlanRoute
   '/_authenticated/dashboard/products': typeof AuthenticatedDashboardProductsRoute
+  '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
@@ -402,20 +470,27 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
+    | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
+    | '/admin/claims'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
     | '/admin/products'
     | '/admin/quality'
+    | '/admin/reports'
     | '/admin/reviews'
     | '/admin/users'
+    | '/admin/verification'
     | '/dashboard/businesses'
+    | '/dashboard/claims'
     | '/dashboard/leads'
     | '/dashboard/plan'
     | '/dashboard/products'
+    | '/dashboard/reports'
     | '/dashboard/reviews'
     | '/admin/'
     | '/dashboard/'
@@ -440,20 +515,27 @@ export interface FileRouteTypes {
     | '/write-review'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
+    | '/admin/audit'
     | '/admin/businesses'
     | '/admin/categories'
     | '/admin/changes'
+    | '/admin/claims'
     | '/admin/imports'
     | '/admin/leads'
     | '/admin/locations'
     | '/admin/products'
     | '/admin/quality'
+    | '/admin/reports'
     | '/admin/reviews'
     | '/admin/users'
+    | '/admin/verification'
     | '/dashboard/businesses'
+    | '/dashboard/claims'
     | '/dashboard/leads'
     | '/dashboard/plan'
     | '/dashboard/products'
+    | '/dashboard/reports'
     | '/dashboard/reviews'
     | '/admin'
     | '/dashboard'
@@ -481,20 +563,27 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/business/$id'
     | '/category/$slug'
+    | '/claim/$id'
+    | '/_authenticated/admin/audit'
     | '/_authenticated/admin/businesses'
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/changes'
+    | '/_authenticated/admin/claims'
     | '/_authenticated/admin/imports'
     | '/_authenticated/admin/leads'
     | '/_authenticated/admin/locations'
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/quality'
+    | '/_authenticated/admin/reports'
     | '/_authenticated/admin/reviews'
     | '/_authenticated/admin/users'
+    | '/_authenticated/admin/verification'
     | '/_authenticated/dashboard/businesses'
+    | '/_authenticated/dashboard/claims'
     | '/_authenticated/dashboard/leads'
     | '/_authenticated/dashboard/plan'
     | '/_authenticated/dashboard/products'
+    | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/reviews'
     | '/_authenticated/admin/'
     | '/_authenticated/dashboard/'
@@ -521,6 +610,7 @@ export interface RootRouteChildren {
   WriteReviewRoute: typeof WriteReviewRoute
   BusinessIdRoute: typeof BusinessIdRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  ClaimIdRoute: typeof ClaimIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -679,11 +769,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/claim/$id': {
+      id: '/claim/$id'
+      path: '/claim/$id'
+      fullPath: '/claim/$id'
+      preLoaderRoute: typeof ClaimIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/audit': {
+      id: '/_authenticated/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/businesses': {
@@ -705,6 +809,13 @@ declare module '@tanstack/react-router' {
       path: '/changes'
       fullPath: '/admin/changes'
       preLoaderRoute: typeof AuthenticatedAdminChangesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/claims': {
+      id: '/_authenticated/admin/claims'
+      path: '/claims'
+      fullPath: '/admin/claims'
+      preLoaderRoute: typeof AuthenticatedAdminClaimsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/imports': {
@@ -742,6 +853,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminQualityRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/reports': {
+      id: '/_authenticated/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/reviews': {
       id: '/_authenticated/admin/reviews'
       path: '/reviews'
@@ -756,6 +874,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/verification': {
+      id: '/_authenticated/admin/verification'
+      path: '/verification'
+      fullPath: '/admin/verification'
+      preLoaderRoute: typeof AuthenticatedAdminVerificationRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/'
@@ -768,6 +893,13 @@ declare module '@tanstack/react-router' {
       path: '/businesses'
       fullPath: '/dashboard/businesses'
       preLoaderRoute: typeof AuthenticatedDashboardBusinessesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/claims': {
+      id: '/_authenticated/dashboard/claims'
+      path: '/claims'
+      fullPath: '/dashboard/claims'
+      preLoaderRoute: typeof AuthenticatedDashboardClaimsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
     '/_authenticated/dashboard/leads': {
@@ -791,6 +923,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProductsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/reports': {
+      id: '/_authenticated/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof AuthenticatedDashboardReportsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/reviews': {
       id: '/_authenticated/dashboard/reviews'
       path: '/reviews'
@@ -802,30 +941,38 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
   AuthenticatedAdminBusinessesRoute: typeof AuthenticatedAdminBusinessesRoute
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedAdminChangesRoute: typeof AuthenticatedAdminChangesRoute
+  AuthenticatedAdminClaimsRoute: typeof AuthenticatedAdminClaimsRoute
   AuthenticatedAdminImportsRoute: typeof AuthenticatedAdminImportsRoute
   AuthenticatedAdminLeadsRoute: typeof AuthenticatedAdminLeadsRoute
   AuthenticatedAdminLocationsRoute: typeof AuthenticatedAdminLocationsRoute
   AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
   AuthenticatedAdminQualityRoute: typeof AuthenticatedAdminQualityRoute
+  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminVerificationRoute: typeof AuthenticatedAdminVerificationRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
   AuthenticatedAdminBusinessesRoute: AuthenticatedAdminBusinessesRoute,
   AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
   AuthenticatedAdminChangesRoute: AuthenticatedAdminChangesRoute,
+  AuthenticatedAdminClaimsRoute: AuthenticatedAdminClaimsRoute,
   AuthenticatedAdminImportsRoute: AuthenticatedAdminImportsRoute,
   AuthenticatedAdminLeadsRoute: AuthenticatedAdminLeadsRoute,
   AuthenticatedAdminLocationsRoute: AuthenticatedAdminLocationsRoute,
   AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
   AuthenticatedAdminQualityRoute: AuthenticatedAdminQualityRoute,
+  AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRoute,
   AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
   AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminVerificationRoute: AuthenticatedAdminVerificationRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
@@ -834,9 +981,11 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardBusinessesRoute: typeof AuthenticatedDashboardBusinessesRoute
+  AuthenticatedDashboardClaimsRoute: typeof AuthenticatedDashboardClaimsRoute
   AuthenticatedDashboardLeadsRoute: typeof AuthenticatedDashboardLeadsRoute
   AuthenticatedDashboardPlanRoute: typeof AuthenticatedDashboardPlanRoute
   AuthenticatedDashboardProductsRoute: typeof AuthenticatedDashboardProductsRoute
+  AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
@@ -845,9 +994,11 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardBusinessesRoute:
       AuthenticatedDashboardBusinessesRoute,
+    AuthenticatedDashboardClaimsRoute: AuthenticatedDashboardClaimsRoute,
     AuthenticatedDashboardLeadsRoute: AuthenticatedDashboardLeadsRoute,
     AuthenticatedDashboardPlanRoute: AuthenticatedDashboardPlanRoute,
     AuthenticatedDashboardProductsRoute: AuthenticatedDashboardProductsRoute,
+    AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   }
@@ -891,6 +1042,7 @@ const rootRouteChildren: RootRouteChildren = {
   WriteReviewRoute: WriteReviewRoute,
   BusinessIdRoute: BusinessIdRoute,
   CategorySlugRoute: CategorySlugRoute,
+  ClaimIdRoute: ClaimIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

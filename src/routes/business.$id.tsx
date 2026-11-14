@@ -33,6 +33,8 @@ import { SaveBusiness } from "@/components/site/save-business";
 import { telephone, whatsappUrl, directionsUrl, shareBusiness } from "@/lib/directory-actions";
 import { similarBusinesses } from "@/lib/directory-search";
 import { supabase } from "@/integrations/supabase/client";
+import { ReviewReport } from "@/components/site/review-report";
+import { VerificationBadges } from "@/components/site/verification-badges";
 import { useDirectoryDefinitions } from "@/lib/managed-directory";
 
 export const Route = createFileRoute("/business/$id")({
@@ -178,12 +180,7 @@ function BusinessView({ b }: { b: Business }) {
               />
             )}
             <h1 className="text-3xl font-extrabold md:text-4xl">{b.name}</h1>
-            {b.verified && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2.5 py-1 text-xs font-bold text-success">
-                <BadgeCheck className="size-4" />
-                Verified
-              </span>
-            )}
+            <VerificationBadges id={b.id} />
             {b.trust && (
               <span className="inline-flex items-center gap-1 rounded-full bg-saffron-soft px-2.5 py-1 text-xs font-bold">
                 <ShieldCheck className="size-4" />
@@ -379,6 +376,7 @@ function BusinessView({ b }: { b: Business }) {
                       <RatingBadge rating={r.rating} className="ml-auto" />
                     </div>
                     <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed">{r.text}</p>
+                    {r.id && <ReviewReport id={r.id} />}
                   </li>
                 ))}
               </ul>
@@ -426,7 +424,11 @@ function BusinessView({ b }: { b: Business }) {
           </Tabs>
           <p className="mt-8 text-sm text-muted-foreground">
             Is this your business?{" "}
-            <Link to="/free-listing" className="font-bold text-foreground underline">
+            <Link
+              to="/claim/$id"
+              params={{ id: b.id }}
+              className="font-bold text-foreground underline"
+            >
               Claim it for free
             </Link>
           </p>
