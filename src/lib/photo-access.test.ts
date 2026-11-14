@@ -22,9 +22,15 @@ describe("public photo delivery authorization", () => {
   });
   it("rejects arbitrary URLs, traversal and oversized requests", () => {
     expect(photoRequestSchema.safeParse({ paths: [path] }).success).toBe(true);
-    for (const invalid of ["../private.jpg", "https://example.com/photo.jpg", "other-bucket/photo.jpg"]) {
+    for (const invalid of ["../private.jpg", "https://example.com/photo.jpg", "other-bucket/photo.jpg", path.replace("00000000-0000-4000-8000-000000000002.jpg", "../private.jpg"), path.replace("002.jpg", "002.jpg?token=x")]) {
       expect(photoRequestSchema.safeParse({ paths: [invalid] }).success).toBe(false);
     }
     expect(photoRequestSchema.safeParse({ paths: Array(101).fill(path) }).success).toBe(false);
+  });
+  it("accepts descriptive official-photo filenames without relaxing approval checks", () => {
+    const imported = "eae5a35a-4c50-40e2-a17c-58c9ae324e4f/official-noida-20261114-dance-7.jpg";
+    expect(photoRequestSchema.parse({ paths: [imported] }).paths).toEqual([imported]);
+    expect(publishedPhotoPaths([imported], [{ status: "approved", photos: [imported], logo: null }], [])).toEqual([imported]);
+    expect(publishedPhotoPaths([imported], [], [])).toEqual([]);
   });
 });

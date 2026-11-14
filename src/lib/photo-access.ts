@@ -1,7 +1,9 @@
 import { z } from "zod";
 
+export const photoPathSchema = z.string().regex(/^[0-9a-f-]{36}\/[a-zA-Z0-9][a-zA-Z0-9_-]*\.[a-zA-Z0-9]+$/).max(180);
+
 export const photoRequestSchema = z.object({
-  paths: z.array(z.string().regex(/^[0-9a-f-]{36}\/[0-9a-f-]{36}\.[a-z0-9]+$/).max(180)).max(100),
+  paths: z.array(photoPathSchema).max(100),
 });
 
 /** Only requested paths explicitly attached to public records may be signed. */
