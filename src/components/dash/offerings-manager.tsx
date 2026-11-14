@@ -12,6 +12,7 @@ import { allBusinessesQ } from "@/lib/admin-data";
 import { myBusinessesQ } from "@/lib/owner-data";
 import { priceLabel, type OfferingInput } from "@/lib/offering-schema";
 import { deleteOffering } from "@/lib/offerings.functions";
+import { OfferingHistory } from "./offering-history";
 
 export function OfferingsManager({ ownerId }: { ownerId?: string }) {
   const { data: businesses } = useSuspenseQuery(ownerId ? myBusinessesQ(ownerId) : allBusinessesQ);
@@ -19,6 +20,8 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
   const [q, setQ] = useState("");
   const [business, setBusiness] = useState("");
   const [filter, setFilter] = useState("all");
+  const [reviewFilter, setReviewFilter] = useState("all");
+  const [historyId, setHistoryId] = useState<string>();
   const [adding, setAdding] = useState<"product" | "service">();
   const [editing, setEditing] = useState<OfferingInput & { images: string[] }>();
   const [removing, setRemoving] = useState<{ id: string; name: string }>();
@@ -37,6 +40,7 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
     (x) =>
       (!business || x.business_id === business) &&
       (filter === "all" || x.kind === filter) &&
+      (reviewFilter === "all" || x.review_state === reviewFilter) &&
       `${x.name} ${x.category} ${x.business_name}`.toLowerCase().includes(q.toLowerCase()),
   );
   const close = () => {
@@ -65,6 +69,7 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
         }
       />
       <div className="mb-5 flex flex-wrap gap-3">
+        <select aria-label="Catalogue review state" value={reviewFilter} onChange={e=>setReviewFilter(e.target.value)} className={`${inputCls} sm:max-w-48`}><option value="all">All review states</option>{["draft","review","published"].map(s=><option key={s}>{s}</option>)}</select>
         <div className="flex gap-1">
           {["all", "product", "service"].map((t) => (
             <Btn
@@ -149,6 +154,7 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
                     <Pencil className="size-4" />
                     Edit
                   </Btn>
+                  <Btn variant="ghost" onClick={()=>setHistoryId(item.id)}>History</Btn>
                   <Btn
                     variant="ghost"
                     aria-label={`Delete ${item.name}`}
@@ -179,6 +185,7 @@ export function OfferingsManager({ ownerId }: { ownerId?: string }) {
           )}
         </DialogContent>
       </Dialog>
+      <Dialog open={Boolean(historyId)} onOpenChange={o=>!o&&setHistoryId(undefined)}><DialogContent className="max-h-[90vh] overflow-y-auto"><DialogHeader><DialogTitle>Catalogue revision history</DialogTitle></DialogHeader>{historyId&&<OfferingHistory id={historyId}/>}</DialogContent></Dialog>
       <Dialog open={Boolean(removing)} onOpenChange={(o) => !o && setRemoving(undefined)}>
         <DialogContent>
           <DialogHeader>
