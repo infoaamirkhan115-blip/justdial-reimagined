@@ -6,6 +6,7 @@ import { trustData, trustAction, evidenceLink } from "@/lib/trust.functions";
 import { staffRoles, permissionMatrix } from "@/lib/trust-rules";
 import { Btn } from "@/components/site/ui";
 import { PageTitle, Pill, Empty, inputCls } from "./shell";
+import { ClaimEvidence } from "./claim-evidence";
 export const trustQ = queryOptions({ queryKey: ["trust"], queryFn: () => trustData() });
 export function TrustCenter({
   mode = "claims",
@@ -52,7 +53,7 @@ export function TrustCenter({
     reports: "Review reports & appeals",
     audit: "Trust audit history",
   }[mode];
-  const exp = expiry ? new Date(expiry).toISOString() : null;
+  const exp = expiry && Number.isFinite(new Date(expiry).getTime()) ? new Date(expiry).toISOString() : null;
   return (
     <>
       <PageTitle title={title} />
