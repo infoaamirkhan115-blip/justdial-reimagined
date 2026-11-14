@@ -1,10 +1,13 @@
 # Phase 6 content operations and honest monetization
-- [ ] Add draft/preview/publish/revision CMS with validated selection labels and public content integration.
-- [ ] Add stable business slugs, useful location pages, canonical metadata, structured data, public sitemap and redirect controls.
-- [ ] Add configurable plans, dated subscriptions, invoices/payment records, reasoned manual activation/cancellation and expiry-safe entitlements; keep unconfigured payments explicit.
-- [ ] Add approved targeted dated sponsored placements and measurable activity, separate from verification.
-- [ ] Replace hard-coded offers with merchant-linked managed records and honest redemption states.
-- [ ] Verify authenticated editing/public readback, permissions, date limits, current preview and regression tests.
+- [x] Add draft/preview/publish/revision CMS with validated selection labels, provenance and managed homepage, links, contacts and informational pages; browser save/reload/publish/public readback/unpublish passed.
+- [x] Add immutable business slugs while UUID URLs remain usable, canonical business URLs, genuine-review-only structured data, editorial location pages with coverage gates, public paginated sitemap and managed redirects; sitemap returns 200 with 41 businesses, private URLs excluded, unavailable business returns 404.
+- [x] Add configurable plans, dated subscriptions, invoices/payment records, reasoned manual activation/cancellation and runtime expiry-safe entitlements; inactive plan save/reload and anonymous denial checked, isolated inactive plan removed.
+- [x] Add approved targeted dated placements capped at two per placement request with public impressions/clicks and separate verification; legacy flags no longer govern public ranking.
+- [x] Replace fictional offers with merchant-linked current records, merchant-confirmed redemption ledger, idempotent references and usage-limit locking. Remove fictional testimonials, cashback, certifications and simulated payment/booking successes.
+- [x] Verify 70 tests, current preview, authenticated editorial/public readback, guest private-history/subscription denial, real 404, sitemap and mobile no-overflow.
+- [ ] Connect online payments and verify signed/idempotent provider callbacks. Blocker: no configured payment provider; no checkout or success-page activation is presented.
+- [ ] Complete cross-owner dated subscription/placement/offer/redemption browser tests and attributed-enquiry wiring. Blocker: isolated second-owner commercial fixtures/session still required; enquiries are not yet attributed to sponsored placements.
+- [ ] Publish actual plan prices, legal copy, support contacts and useful location content. Blocker: business-approved content/terms not supplied; empty managed states are shown rather than invented content.
 
 # Agent integrations
 - [x] Enable managed OAuth; existing database, sign-in providers and asymmetric signing preserved; hosted redirect allow-list confirmed.
