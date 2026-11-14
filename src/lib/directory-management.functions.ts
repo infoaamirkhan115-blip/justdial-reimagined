@@ -175,18 +175,15 @@ export const refreshQuality = createServerFn({ method: "POST" })
       ) {
         const fingerprint = `${o.id}:placeholder`;
         if (!known.has(fingerprint)) {
-          const r = await context.supabase
-            .from("directory_quality_issues")
-            .insert({
-              business_id: o.business_id,
-              offering_id: o.id,
-              fingerprint,
-              kind: "placeholder",
-              severity: "high",
-              fields: ["description"],
-              summary:
-                "Catalogue description contains development text; correct before publication.",
-            });
+          const r = await context.supabase.from("directory_quality_issues").insert({
+            business_id: o.business_id,
+            offering_id: o.id,
+            fingerprint,
+            kind: "placeholder",
+            severity: "high",
+            fields: ["description"],
+            summary: "Catalogue description contains development text; correct before publication.",
+          });
           if (r.error) throw new Error(r.error.message);
           count++;
         }
