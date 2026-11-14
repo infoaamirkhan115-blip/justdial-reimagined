@@ -14,6 +14,7 @@ import { useRouterState } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header, Footer, MobileNav } from "@/components/site/layout";
+import { DirectoryDefinitionsProvider } from "@/lib/managed-directory";
 import { CityProvider } from "@/components/site/city";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
@@ -135,7 +136,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
-        <CityProvider>
+        <DirectoryDefinitionsProvider><CityProvider>
           {app ? <Outlet /> : (
             <>
               <Header />
@@ -145,7 +146,7 @@ function RootComponent() {
             </>
           )}
           <Toaster position="top-center" />
-        </CityProvider>
+        </CityProvider></DirectoryDefinitionsProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
