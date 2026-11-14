@@ -141,6 +141,13 @@
       "when": 1794644574102,
       "tag": "0019_protect_operational_lead_fields_and_assignment_content",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1794644750440,
+      "tag": "0020_normalize_optional_event_attribution_and_lead_action_context",
+      "breakpoints": true
     }
   ]
 }
