@@ -1,3 +1,10 @@
+# Phase 5 operational support, notifications and measurable outcomes
+- [ ] Add persistent support tickets, real references, private notes, conversation history and customer/owner/admin queues.
+- [ ] Inspect Phase 3 prerequisites and approved providers; add honest notification setup, consent, outcome and duplicate-prevention controls.
+- [ ] Add privacy-conscious directory events and owner-scoped outcome analytics with precise metric definitions.
+- [ ] Replace overview totals with filtered database aggregates and actionable operational queues.
+- [ ] Verify persistence, access isolation, notification idempotency, aggregate accuracy and desktop/mobile journeys using isolated fixtures.
+
 # Phase 4 ownership, trust and staff controls
 - [x] Add existing-business claims, private evidence updates, competing-claim review and controlled transfer/revocation; isolated browser submission persisted without ownership transfer.
 - [x] Separate evidence-backed verification from paid plans; retain historical flags in staff audit and show public badges only for recorded active checks.
